@@ -13,9 +13,10 @@ categories:
 tags:
   - Active Directory
   - pentesting
-  - Linux
+  - windows
+  - Remot port Forwarding
 ---
-Buenas a todos, en esta ocasión resolveremos una máquina linux llamada flight lo cual está catalogada como hard en la plataforma de HackTheBox, me costó bastante resolver esta máquina más que nada la escalada de privilegios, disfruten el contendido.
+Buenas a todos, en esta ocasión resolveremos una máquina windows llamada flight lo cual está catalogada como hard en la plataforma de HackTheBox, me costó bastante resolver esta máquina más que nada la escalada de privilegios, disfruten el contendido.
 
 ![](/assets/images/htb-writeup-flight/flight.jpg)
 
