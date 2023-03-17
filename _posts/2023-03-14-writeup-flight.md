@@ -75,10 +75,7 @@ PORT      STATE SERVICE          REASON
 49694/tcp open  unknown          syn-ack ttl 127
 49725/tcp open  unknown          syn-ack ttl 127
 ```
-Seguimos con el escaneo de puertos para descubrir puertos y servicios,
-pero antes no viene mal usar la utilidad extractPorts para copiar y pegar los puertos
-sin ninguna dificultad
-
+Seguimos con el escaneo de puertos, pero antes no viene mal usar la utilidad extractPorts para copiar y pegar los puertos sin ninguna dificultad
 ```ruby
 
 ❯ extractPorts target
@@ -167,7 +164,7 @@ Revisemos la web
 
 ![](/assets/images/htb-writeup-flight/pagina.png)
 
-Después de enumerar un largo rato en la web no encontré nada interesante, asé que procederé a buscar subdominios con gobuster
+Después de enumerar un largo rato en la web no encontré nada interesante, así que procederé a buscar subdominios con gobuster
 
 ```ruby
 
