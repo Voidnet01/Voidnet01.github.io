@@ -15,11 +15,19 @@ tags:
   - pentesting
   - Linux
 ---
+<<<<<<< HEAD
 Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.
 
 ![](/assets/images/htb-writeup-stocker/Stocker.png)
 
 Empezamos a escanear para descubrir puertos abiertos en la máquina
+=======
+Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.
+
+![](/assets/images/htb-writeup-stocker/Stocker.png)
+
+Empezamos a escanear para decubrir puertos abiertos en la máquina
+>>>>>>> 4270167b71d3655c262cc0720180d0fdb326a150
 
 ```bash
 ❯ nmap -p- --min-rate 5000 -n -vvv -Pn 10.10.11.196
@@ -41,7 +49,11 @@ PORT   STATE SERVICE REASON
 80/tcp open  http    syn-ack ttl 63
 
 ```
+<<<<<<< HEAD
 Luego seguimos con el escaneo de puertos para ver qué versiones y servicios tiene
+=======
+Luego seguimos con el escaneo de puertos para ver quá versiones y servicios tiene
+>>>>>>> 4270167b71d3655c262cc0720180d0fdb326a150
 
 ```bash
 ❯ nmap -sCV -p22,80 10.10.11.196
@@ -119,7 +131,7 @@ Podemos ver que nos reportó un directorio llamado fonts, veamos con qué nos en
 
 ![](/assets/images/htb-writeup-stocker/direc.png)
 
-vemos que no hay nada, intentemos buscar subdirectorios
+Vemos que no hay nada, intentemos buscar subdirectorios
 
 ```bash
 
@@ -149,7 +161,11 @@ Ingresemos a la web
 
 ![](/assets/images/htb-writeup-stocker/pag.png)
 
+<<<<<<< HEAD
 Podemos ver que tenemos un login, intenté bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, después de muchos intentos con 
+=======
+Podemos ver que tenemos un login, intenté bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, después de muchos intento con 
+>>>>>>> 4270167b71d3655c262cc0720180d0fdb326a150
 BurpSuite me di cuenta que puedo cambiar las peticiones para causar ataques NoSqli
 
 Al interceptar por BurpSuite nos muestra esto
@@ -262,7 +278,11 @@ Deberíamos ver el index.js en el pdf claramente
 
 ![](/assets/images/htb-writeup-stocker/id2.png)
 
+<<<<<<< HEAD
 Donde marqué, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos pobrar esa contraseña para poder conectarnos 
+=======
+Donde marqué, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos probar esa contraseña para poder conectarnos 
+>>>>>>> 4270167b71d3655c262cc0720180d0fdb326a150
 con ssh con el usuario angoose
 
 Nos conectamos por ssh
@@ -334,7 +354,7 @@ Ahora definimos un js para que nos haga una bash suid, cuando lo ejecutemos nos 
 ```
 require('child_process').exec('chmod u+s /bin/bash')
 ```
-Ahora ejecutamos el script de js y al hacer bash -p tendremos privilegio como root
+ Ejecutamos el script de js y al hacer bash -p tendremos privilegio como root
 
 ```bash
 angoose@stocker:~$ sudo node /usr/local/scripts/../../../home/angoose/setensa.js

