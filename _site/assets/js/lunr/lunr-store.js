@@ -1,6 +1,11 @@
 var store = [{
         "title": "Stocker HackTheBox",
-        "excerpt":"Buenas a todos, este es mi primer writeup, en esta ocación vamos a resolver una maquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido. Empezamos a escanear para decubrir puertos abiertos en la maquina ❯ nmap -p- --min-rate 5000 -n -vvv...","categories": ["hackthebox","pentesting"],
+        "excerpt":"Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido. Empezamos a escanear para descubrir puertos abiertos en la máquina ❯ nmap -p- --min-rate 5000 -n -vvv -Pn...","categories": ["hackthebox","pentesting"],
         "tags": ["Hacking web","pentesting","Linux"],
         "url": "http://localhost:4000/writeup-stocker/",
-        "teaser":"http://localhost:4000/assets/images/htb-writeup-stocker/icono.png"}]
+        "teaser":"http://localhost:4000/assets/images/htb-writeup-stocker/icono.png"},{
+        "title": "Flight HackTheBox",
+        "excerpt":"Buenas a todos, en esta ocasión resolveremos una máquina linux llamada flight lo cual está catalogada como hard en la plataforma de HackTheBox, me costó bastante resolver esta máquina más que nada la escalada de privilegios, disfruten el contendido. Empezamos a escanear para descubrir puertos abiertos en la máquina ❯...","categories": ["hackthebox","pentesting"],
+        "tags": ["Active Directory","pentesting","Linux"],
+        "url": "http://localhost:4000/writeup-flight/",
+        "teaser":"http://localhost:4000/assets/images/htb-writeup-flight/icono.png"}]

