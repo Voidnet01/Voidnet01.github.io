@@ -4,9 +4,9 @@ title: Flight HackTheBox
 date: 2023-03-12
 classes: wide
 header:
-  teaser: /assets/images/htb-writeup-flight/icono.png
+  teaser: /assets/images/htb-writeup-flight/icono.
   teaser_home_page: true
-  icon: /assets/images/hackthebox.webp
+  icon: /assets/images/hackthebox.webp     
 categories:
   - hackthebox
   - pentesting
