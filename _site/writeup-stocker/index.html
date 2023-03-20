@@ -10,7 +10,7 @@
     <meta charset="utf-8">
 
 <!-- begin _includes/seo.html --><title>            Stocker HackTheBox - Blog      Writeups de HTB      </title>
-<meta name="description" content="«««&lt; HEADBuenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.">
+<meta name="description" content="Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.">
 
 
 
@@ -21,7 +21,7 @@
 <meta property="og:url" content="http://localhost:4000/writeup-stocker/">
 
 
-  <meta property="og:description" content="«««&lt; HEADBuenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.">
+  <meta property="og:description" content="Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.">
 
 
 
@@ -119,7 +119,7 @@
     <div class="masthead__menu">
       <nav id="site-nav" class="greedy-nav">
         
-          <a class="site-logo" href="/"><img src="/assets/images/hacking.png" alt=""></a>
+          <a class="site-logo" href="/"><img src="/assets/images/perfil.png" alt=""></a>
                 
         <ul class="visible-links"><li class="masthead__menu-item">
               <a href="/" >Home</a>
@@ -199,7 +199,7 @@
     
     
       <p class="author__bio" itemprop="description">
-        Hacker ético, CTFs player<br>Rank de HackTheBox = Hacker
+        Entusiasta del Hacking y CTFs<br>Rank HTB = HACKER<br> I LIVE FOR THIS SHIT
       </p>
     
   </div>
@@ -288,7 +288,7 @@
 
   <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
     <meta itemprop="headline" content="Stocker HackTheBox">
-    <meta itemprop="description" content="«««&lt; HEADBuenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.">
+    <meta itemprop="description" content="Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.">
     <meta itemprop="datePublished" content="March 12, 2023">
     
 
@@ -309,32 +309,15 @@
           
           
         </p>
-        <p>«««&lt; HEAD
-Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.</p>
+        <p>Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.</p>
 
 <p><img src="/assets/images/htb-writeup-stocker/Stocker.png" alt="" /></p>
 
-<h1 id="empezamos-a-escanear-para-descubrir-puertos-abiertos-en-la-máquina">Empezamos a escanear para descubrir puertos abiertos en la máquina</h1>
+<p>Empezamos a escanear para descubrir puertos abiertos en la máquina</p>
+
 <p>Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.</p>
 
-<p><img src="/assets/images/htb-writeup-stocker/Stocker.png" alt="" /></p>
-
 <p>Empezamos a escanear para decubrir puertos abiertos en la máquina</p>
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <blockquote>
-        <blockquote>
-          <blockquote>
-            <blockquote>
-              <p>4270167b71d3655c262cc0720180d0fdb326a150</p>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </blockquote>
-</blockquote>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-p-</span> <span class="nt">--min-rate</span> 5000 <span class="nt">-n</span> <span class="nt">-vvv</span> <span class="nt">-Pn</span> 10.10.11.196
 Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
@@ -355,25 +338,7 @@ PORT   STATE SERVICE REASON
 80/tcp open  http    syn-ack ttl 63
 
 </code></pre></div></div>
-<p>«««&lt; HEAD
-Luego seguimos con el escaneo de puertos para ver qué versiones y servicios tiene
-=======
-Luego seguimos con el escaneo de puertos para ver quá versiones y servicios tiene</p>
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <blockquote>
-        <blockquote>
-          <blockquote>
-            <blockquote>
-              <p>4270167b71d3655c262cc0720180d0fdb326a150</p>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </blockquote>
-</blockquote>
+<p>Luego seguimos con el escaneo de puertos para ver qué versiones y servicios tiene</p>
 
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,80 10.10.11.196
 Starting Nmap 7.93 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2023-03-12 21:47 <span class="nt">-03</span>
@@ -475,26 +440,7 @@ Found: dev.stocker.htb <span class="o">(</span>Status: 302<span class="o">)</spa
 
 <p><img src="/assets/images/htb-writeup-stocker/pag.png" alt="" /></p>
 
-<p>«««&lt; HEAD
-Podemos ver que tenemos un login, intenté bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, después de muchos intentos con 
-=======
-Podemos ver que tenemos un login, intenté bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, después de muchos intento con</p>
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <blockquote>
-        <blockquote>
-          <blockquote>
-            <blockquote>
-              <p>4270167b71d3655c262cc0720180d0fdb326a150
-BurpSuite me di cuenta que puedo cambiar las peticiones para causar ataques NoSqli</p>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </blockquote>
-</blockquote>
+<p>Podemos ver que tenemos un login, intenté bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, después de muchos intentos con BurpSuite me di cuenta que puedo cambiar las peticiones para causar ataques NoSqli</p>
 
 <p>Al interceptar por BurpSuite nos muestra esto</p>
 <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
@@ -601,26 +547,8 @@ Upgrade-Insecure-Requests: 1
 
 <p><img src="/assets/images/htb-writeup-stocker/id2.png" alt="" /></p>
 
-<p>«««&lt; HEAD
-Donde marqué, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos pobrar esa contraseña para poder conectarnos 
-=======
-Donde marqué, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos probar esa contraseña para poder conectarnos</p>
-<blockquote>
-  <blockquote>
-    <blockquote>
-      <blockquote>
-        <blockquote>
-          <blockquote>
-            <blockquote>
-              <p>4270167b71d3655c262cc0720180d0fdb326a150
+<p>Donde marqué, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos probar esa contraseña para poder conectarnos 
 con ssh con el usuario angoose</p>
-            </blockquote>
-          </blockquote>
-        </blockquote>
-      </blockquote>
-    </blockquote>
-  </blockquote>
-</blockquote>
 
 <p>Nos conectamos por ssh</p>
 
