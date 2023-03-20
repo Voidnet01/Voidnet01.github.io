@@ -14,7 +14,7 @@ tags:
   - Active Directory
   - pentesting
   - windows
-  - Remot port Forwarding
+  - Remote port Forwarding
 ---
 Buenas a todos, en esta ocasión resolveremos una máquina windows llamada flight lo cual está catalogada como hard en la plataforma de HackTheBox, me costó bastante resolver esta máquina más que nada la escalada de privilegios, disfruten el contendido.
 
@@ -76,10 +76,7 @@ PORT      STATE SERVICE          REASON
 49694/tcp open  unknown          syn-ack ttl 127
 49725/tcp open  unknown          syn-ack ttl 127
 ```
-Seguimos con el escaneo de puertos para descubrir puertos y servicios,
-pero antes no viene mal usar la utilidad extractPorts para copiar y pegar los puertos
-sin ninguna dificultad
-
+Seguimos con el escaneo de puertos, pero antes no viene mal usar la utilidad extractPorts para copiar y pegar los puertos sin ninguna dificultad
 ```ruby
 
 ❯ extractPorts target
