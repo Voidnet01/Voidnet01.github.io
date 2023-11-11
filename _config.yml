@@ -12,18 +12,18 @@
 
 # theme                  : "minimal-mistakes-jekyll"
 remote_theme             : "mmistakes/minimal-mistakes@4.15.1"
-minimal_mistakes_skin    : "dark" # "aqua", "sunrise", "air", "haxor", "contrast", "dirt", "neon", "mint", "plum"
+minimal_mistakes_skin    : "haxor" # "aqua", "sunrise", "air", "dark", "contrast", "dirt", "neon", "mint", "plum"
 
 # Site Settings
 locale                   : "en-Arg"
-title                    : "Blog | Writeups de HTB"
+title                    : "Blog Ciberseguridad | Writeups"
 title_separator          : "-"
-name                     : "voidnet"
-description              : "Blog de seguridad informatica"
+name                     : "Vo1dN3t"
+description              : "Blog de Hacking Ofensivo"
 url                      : "https://Voidnet01.github.io" # the base hostname & protocol for your site e.g. "https://mmistakes.github.io"
 baseurl                  : # the subpath of your site, e.g. "/blog"
 repository               : "Voidnet01/voidnet.github.io" # GitHub username/repo-name e.g. "mmistakes/minimal-mistakes"
-logo                     : "/assets/images/perfil.png"
+logo                     : "/assets/images/"
 teaser                   : # path of fallback teaser image, e.g. "/assets/images/500x300.png"
 breadcrumbs              : true # true, false (default)
 words_per_minute         : 200
@@ -101,9 +101,9 @@ analytics:
 
 # Site Author
 author:
-  name             : "VØ1DN3T"
-  avatar           : "/assets/images/imagen.jpg"
-  bio              : "Entusiasta del Hacking y CTFs<br>Rank HTB = HACKER<br> I LIVE FOR THIS SHIT"
+  name             : "Vo1dN3t"
+  avatar           : "/assets/images/perfil2.jpg"
+  bio              : "Entusiasta del Hacking y CTFs<br>Ethical Hacker | RedTeam"
   location         : "Argentina"
   email            :
   uri              :
