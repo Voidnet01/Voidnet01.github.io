@@ -1,0 +1,97 @@
+<p>Buenas a todos, en esta ocasión resolveremos una máquina Linux llamada “Pikaboo” la cual está catalogada como Hard en la plataforma de HackTheBox, disfruten el contenido.</p>
+
+<p><img src="/assets/images/htb-writeup-pikaboo/imagen.png" alt="" /></p>
+
+<hr />
+
+<p>Primero le lanzamos un Nmap para ver que puertos abiertos tiene la maquina</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="err">❯</span> <span class="n">nmap</span> <span class="o">-</span><span class="n">sS</span> <span class="o">-</span><span class="n">Pn</span> <span class="o">-</span><span class="n">vvv</span> <span class="o">--</span><span class="nb">min</span><span class="o">-</span><span class="n">rate</span> <span class="mi">5000</span> <span class="o">-</span><span class="n">n</span> <span class="o">-</span><span class="n">p</span><span class="o">-</span> <span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span>
+<span class="n">Starting</span> <span class="n">Nmap</span> <span class="mf">7.94</span><span class="n">SVN</span> <span class="p">(</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">nmap</span><span class="p">.</span><span class="n">org</span> <span class="p">)</span> <span class="n">at</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">12</span> <span class="mi">19</span><span class="p">:</span><span class="mi">10</span> <span class="n">GMT</span>
+<span class="n">Initiating</span> <span class="n">SYN</span> <span class="n">Stealth</span> <span class="n">Scan</span> <span class="n">at</span> <span class="mi">19</span><span class="p">:</span><span class="mi">10</span>
+<span class="n">Scanning</span> <span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span> <span class="p">[</span><span class="mi">65535</span> <span class="n">ports</span><span class="p">]</span>
+<span class="n">Discovered</span> <span class="nb">open</span> <span class="n">port</span> <span class="mi">22</span><span class="o">/</span><span class="n">tcp</span> <span class="n">on</span> <span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span>
+<span class="n">Discovered</span> <span class="nb">open</span> <span class="n">port</span> <span class="mi">21</span><span class="o">/</span><span class="n">tcp</span> <span class="n">on</span> <span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span>
+<span class="n">Discovered</span> <span class="nb">open</span> <span class="n">port</span> <span class="mi">80</span><span class="o">/</span><span class="n">tcp</span> <span class="n">on</span> <span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span>
+<span class="n">Completed</span> <span class="n">SYN</span> <span class="n">Stealth</span> <span class="n">Scan</span> <span class="n">at</span> <span class="mi">19</span><span class="p">:</span><span class="mi">11</span><span class="p">,</span> <span class="mf">14.23</span><span class="n">s</span> <span class="n">elapsed</span> <span class="p">(</span><span class="mi">65535</span> <span class="n">total</span> <span class="n">ports</span><span class="p">)</span>
+<span class="n">Nmap</span> <span class="n">scan</span> <span class="n">report</span> <span class="k">for</span> <span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span>
+<span class="n">Host</span> <span class="ow">is</span> <span class="n">up</span><span class="p">,</span> <span class="n">received</span> <span class="n">user</span><span class="o">-</span><span class="nb">set</span> <span class="p">(</span><span class="mf">0.26</span><span class="n">s</span> <span class="n">latency</span><span class="p">).</span>
+<span class="n">Scanned</span> <span class="n">at</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">12</span> <span class="mi">19</span><span class="p">:</span><span class="mi">10</span><span class="p">:</span><span class="mi">56</span> <span class="n">GMT</span> <span class="k">for</span> <span class="mi">14</span><span class="n">s</span>
+<span class="n">Not</span> <span class="n">shown</span><span class="p">:</span> <span class="mi">65532</span> <span class="n">closed</span> <span class="n">tcp</span> <span class="n">ports</span> <span class="p">(</span><span class="n">reset</span><span class="p">)</span>
+<span class="n">PORT</span>   <span class="n">STATE</span> <span class="n">SERVICE</span> <span class="n">REASON</span>
+<span class="mi">21</span><span class="o">/</span><span class="n">tcp</span> <span class="nb">open</span>  <span class="n">ftp</span>     <span class="n">syn</span><span class="o">-</span><span class="n">ack</span> <span class="n">ttl</span> <span class="mi">63</span>
+<span class="mi">22</span><span class="o">/</span><span class="n">tcp</span> <span class="nb">open</span>  <span class="n">ssh</span>     <span class="n">syn</span><span class="o">-</span><span class="n">ack</span> <span class="n">ttl</span> <span class="mi">63</span>
+<span class="mi">80</span><span class="o">/</span><span class="n">tcp</span> <span class="nb">open</span>  <span class="n">http</span>    <span class="n">syn</span><span class="o">-</span><span class="n">ack</span> <span class="n">ttl</span> <span class="mi">63</span>
+
+<span class="n">Read</span> <span class="n">data</span> <span class="n">files</span> <span class="k">from</span><span class="p">:</span> <span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="nb">bin</span><span class="o">/</span><span class="p">..</span><span class="o">/</span><span class="n">share</span><span class="o">/</span><span class="n">nmap</span>
+<span class="n">Nmap</span> <span class="n">done</span><span class="p">:</span> <span class="mi">1</span> <span class="n">IP</span> <span class="n">address</span> <span class="p">(</span><span class="mi">1</span> <span class="n">host</span> <span class="n">up</span><span class="p">)</span> <span class="n">scanned</span> <span class="ow">in</span> <span class="mf">14.33</span> <span class="n">seconds</span>
+           <span class="n">Raw</span> <span class="n">packets</span> <span class="n">sent</span><span class="p">:</span> <span class="mi">68629</span> <span class="p">(</span><span class="mf">3.020</span><span class="n">MB</span><span class="p">)</span> <span class="o">|</span> <span class="n">Rcvd</span><span class="p">:</span> <span class="mi">68604</span> <span class="p">(</span><span class="mf">2.744</span><span class="n">MB</span><span class="p">)</span>
+
+</code></pre></div></div>
+<p>Sigamos con el escaneo para poder identificar que servicios corre en cada puerto.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="err">❯</span> <span class="n">nmap</span> <span class="o">-</span><span class="n">sCV</span> <span class="o">-</span><span class="n">p21</span><span class="p">,</span><span class="mi">22</span><span class="p">,</span><span class="mi">80</span> <span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span>
+<span class="n">Starting</span> <span class="n">Nmap</span> <span class="mf">7.94</span><span class="n">SVN</span> <span class="p">(</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">nmap</span><span class="p">.</span><span class="n">org</span> <span class="p">)</span> <span class="n">at</span> <span class="mi">2023</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">12</span> <span class="mi">19</span><span class="p">:</span><span class="mi">14</span> <span class="n">GMT</span>
+<span class="n">Nmap</span> <span class="n">scan</span> <span class="n">report</span> <span class="k">for</span> <span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span>
+<span class="n">Host</span> <span class="ow">is</span> <span class="n">up</span> <span class="p">(</span><span class="mf">0.26</span><span class="n">s</span> <span class="n">latency</span><span class="p">).</span>
+
+<span class="n">PORT</span>   <span class="n">STATE</span> <span class="n">SERVICE</span> <span class="n">VERSION</span>
+<span class="mi">21</span><span class="o">/</span><span class="n">tcp</span> <span class="nb">open</span>  <span class="n">ftp</span>     <span class="n">vsftpd</span> <span class="mf">3.0</span><span class="p">.</span><span class="mi">3</span>
+<span class="mi">22</span><span class="o">/</span><span class="n">tcp</span> <span class="nb">open</span>  <span class="n">ssh</span>     <span class="n">OpenSSH</span> <span class="mf">7.9</span><span class="n">p1</span> <span class="n">Debian</span> <span class="mi">10</span><span class="o">+</span><span class="n">deb10u2</span> <span class="p">(</span><span class="n">protocol</span> <span class="mf">2.0</span><span class="p">)</span>
+<span class="o">|</span> <span class="n">ssh</span><span class="o">-</span><span class="n">hostkey</span><span class="p">:</span> 
+<span class="o">|</span>   <span class="mi">2048</span> <span class="mi">17</span><span class="p">:</span><span class="n">e1</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="n">fe</span><span class="p">:</span><span class="mi">66</span><span class="p">:</span><span class="mi">6</span><span class="n">d</span><span class="p">:</span><span class="mi">26</span><span class="p">:</span><span class="n">b6</span><span class="p">:</span><span class="mi">90</span><span class="p">:</span><span class="mi">68</span><span class="p">:</span><span class="n">d0</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="mi">2</span><span class="n">e</span><span class="p">:</span><span class="n">e2</span><span class="p">:</span><span class="mi">9</span><span class="n">f</span> <span class="p">(</span><span class="n">RSA</span><span class="p">)</span>
+<span class="o">|</span>   <span class="mi">256</span> <span class="mi">92</span><span class="p">:</span><span class="mi">86</span><span class="p">:</span><span class="mi">54</span><span class="p">:</span><span class="n">f7</span><span class="p">:</span><span class="n">cc</span><span class="p">:</span><span class="mi">5</span><span class="n">a</span><span class="p">:</span><span class="mi">1</span><span class="n">a</span><span class="p">:</span><span class="mi">15</span><span class="p">:</span><span class="n">fe</span><span class="p">:</span><span class="n">c6</span><span class="p">:</span><span class="mi">09</span><span class="p">:</span><span class="n">cc</span><span class="p">:</span><span class="n">e5</span><span class="p">:</span><span class="mi">7</span><span class="n">c</span><span class="p">:</span><span class="mi">0</span><span class="n">d</span><span class="p">:</span><span class="n">c3</span> <span class="p">(</span><span class="n">ECDSA</span><span class="p">)</span>
+<span class="o">|</span><span class="n">_</span>  <span class="mi">256</span> <span class="n">f4</span><span class="p">:</span><span class="n">cd</span><span class="p">:</span><span class="mi">6</span><span class="n">f</span><span class="p">:</span><span class="mi">3</span><span class="n">b</span><span class="p">:</span><span class="mi">19</span><span class="p">:</span><span class="mi">9</span><span class="n">c</span><span class="p">:</span><span class="n">cf</span><span class="p">:</span><span class="mi">33</span><span class="p">:</span><span class="n">c6</span><span class="p">:</span><span class="mi">6</span><span class="n">d</span><span class="p">:</span><span class="n">a5</span><span class="p">:</span><span class="mi">13</span><span class="p">:</span><span class="mi">6</span><span class="n">a</span><span class="p">:</span><span class="mi">61</span><span class="p">:</span><span class="mi">01</span><span class="p">:</span><span class="mi">42</span> <span class="p">(</span><span class="n">ED25519</span><span class="p">)</span>
+<span class="mi">80</span><span class="o">/</span><span class="n">tcp</span> <span class="nb">open</span>  <span class="n">http</span>    <span class="n">nginx</span> <span class="mf">1.14</span><span class="p">.</span><span class="mi">2</span>
+<span class="o">|</span><span class="n">_http</span><span class="o">-</span><span class="n">title</span><span class="p">:</span> <span class="n">Pikaboo</span>
+<span class="o">|</span><span class="n">_http</span><span class="o">-</span><span class="n">server</span><span class="o">-</span><span class="n">header</span><span class="p">:</span> <span class="n">nginx</span><span class="o">/</span><span class="mf">1.14</span><span class="p">.</span><span class="mi">2</span>
+<span class="n">Service</span> <span class="n">Info</span><span class="p">:</span> <span class="n">OSs</span><span class="p">:</span> <span class="n">Unix</span><span class="p">,</span> <span class="n">Linux</span><span class="p">;</span> <span class="n">CPE</span><span class="p">:</span> <span class="n">cpe</span><span class="p">:</span><span class="o">/</span><span class="n">o</span><span class="p">:</span><span class="n">linux</span><span class="p">:</span><span class="n">linux_kernel</span>
+
+</code></pre></div></div>
+<hr />
+
+<h2 id="enumeración">Enumeración</h2>
+
+<p>Vemos que el puerto 21 osea el ftp esta abierto, podriamos probar en conectarnos con el usuario Anonymous.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="err">❯</span> <span class="n">ftp</span> <span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span>
+<span class="n">Connected</span> <span class="n">to</span> <span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span><span class="p">.</span>
+<span class="mi">220</span> <span class="p">(</span><span class="n">vsFTPd</span> <span class="mf">3.0</span><span class="p">.</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">Name</span> <span class="p">(</span><span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span><span class="p">:</span><span class="n">void</span><span class="p">):</span> <span class="n">anonymous</span>
+<span class="mi">331</span> <span class="n">Please</span> <span class="n">specify</span> <span class="n">the</span> <span class="n">password</span><span class="p">.</span>
+<span class="n">Password</span><span class="p">:</span> 
+<span class="mi">530</span> <span class="n">Login</span> <span class="n">incorrect</span><span class="p">.</span>
+<span class="n">ftp</span><span class="p">:</span> <span class="n">Login</span> <span class="n">failed</span>
+<span class="n">ftp</span><span class="o">&gt;</span> 
+
+</code></pre></div></div>
+<p>Pero no me deja, necesitariamos credenciales para acceder.</p>
+
+<p>Tambien vemos que el puerto 80 está abierto, podemos lanzarle un whatweb para ver que tecnologías corren por detrás.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="err">❯</span> <span class="n">whatweb</span> <span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span>
+<span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span> <span class="p">[</span><span class="mi">200</span> <span class="n">OK</span><span class="p">]</span> <span class="n">Bootstrap</span><span class="p">,</span> <span class="n">Country</span><span class="p">[</span><span class="n">RESERVED</span><span class="p">][</span><span class="n">ZZ</span><span class="p">],</span> <span class="n">HTML5</span><span class="p">,</span> <span class="n">HTTPServer</span><span class="p">[</span><span class="n">nginx</span><span class="o">/</span><span class="mf">1.14</span><span class="p">.</span><span class="mi">2</span><span class="p">],</span> <span class="n">IP</span><span class="p">[</span><span class="mf">10.10</span><span class="p">.</span><span class="mf">10.249</span><span class="p">],</span> <span class="n">Script</span><span class="p">,</span> <span class="n">Title</span><span class="p">[</span><span class="n">Pikaboo</span><span class="p">],</span> <span class="n">nginx</span><span class="p">[</span><span class="mf">1.14</span><span class="p">.</span><span class="mi">2</span><span class="p">]</span>
+
+</code></pre></div></div>
+
+<p>Accedamos a la pagina web para poder analizarla un poco.</p>
+
+<p><img src="/assets/images/htb-writeup-pikaboo/web.png" alt="" /></p>
+
+<p>Si vamos a Pokatdex nos encontramos con esto:</p>
+
+<p><img src="/assets/images/htb-writeup-pikaboo/web2.jpg" alt="" /></p>
+
+<p>Podemos ver que hay un apartado Admin, si entramos nos podemos encontrar con un panel de login.</p>
+
+<p><img src="/assets/images/htb-writeup-pikaboo/panel.jpg" alt="" /></p>
+
+<p>Intente entrar usando credenciales predeterminadas como “admin:admin”, “guest:guest” y “admin:password”, pero no tuve resultados, asi que el siguente paso es hacer fuzzing.</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+
+</code></pre></div></div>

